@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ArenaBackend.Configs;
+using api.Models;
 
 namespace ArenaBackend.Services
 {
@@ -86,7 +87,7 @@ namespace ArenaBackend.Services
         public async Task<dynamic> GetMatchDetails(string matchId)
         {
             string url = $"https://{REGION}.api.riotgames.com/lol/match/v5/matches/{matchId}";
-            return await MakeApiRequest<dynamic>(url, $"match details for matchId {matchId}");
+            return await MakeApiRequest<GetMatchDataModel>(url, $"match details for matchId {matchId}");
         }
         #endregion
 
@@ -152,7 +153,9 @@ namespace ArenaBackend.Services
                 {
                     Console.WriteLine("Success");
                     string jsonResponse = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(jsonResponse);
+                    var jsonDeserialized = JsonConvert.DeserializeObject<T>(jsonResponse);
+
+                    return jsonDeserialized;
                 }
                 else if (response.StatusCode == HttpStatusCode.NotFound)
                 {
