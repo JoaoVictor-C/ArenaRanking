@@ -21,17 +21,22 @@ public class RiotApiController : ControllerBase
    }
 
    [HttpGet("verify/{riotId}")]
-   public async Task<ActionResult<string>> VerifyRiotId(string riotId)
+   public async Task<ActionResult<object>> VerifyRiotId(string riotId)
    {
       try
       {
-         Console.WriteLine(riotId);
-         var result = await _riotApiService.ConsultarRiotApi(riotId);
-         return Ok(result);
+         (var ResultMessage, var Success) = await _riotApiService.ConsultarRiotApi(riotId);
+         if (!Success)
+         {
+            return NotFound(ResultMessage);
+         }
+
+          var puuid = ResultMessage;
+          return Ok(new { puuid });
       }
       catch (System.Exception)
       {
-         Console.WriteLine("Erro ao consultar a API da Riot");
+         Console.WriteLine("Erro ao consultar a API da Riot - VerifyRiotId");
          throw;
       }
    }
@@ -39,7 +44,7 @@ public class RiotApiController : ControllerBase
    [HttpGet("matches/{puuid}")]
    public async Task<ActionResult<List<string>>> GetMatchHistory(string puuid)
    {
-      var matches = await _riotApiService.GetMatchHistoryPuuid(puuid);
+      var matches = await _riotApiService.GetMatchHistoryPuuid(puuid, 5, "NORMAL");
       if (matches == null)
       {
          return NotFound("No matches found or error occurred");
@@ -58,46 +63,61 @@ public class RiotApiController : ControllerBase
       return Ok(matchDetails);
    }
 
+   [HttpGet("user/{puuid}")]
+   public async Task<ActionResult<string>> GetPlayer(string puuid)
+   {
+      // Debug purpose
+      var result = await _riotApiService.GetPlayer(puuid);
+      return Ok(result);
+   }
+
    [HttpPost("register")]
-   public async Task<ActionResult<Player>> RegisterPlayer(string riotId)
+   public async Task<ActionResult<Player>> RegisterPlayer([FromQuery] string tagLine, [FromQuery] string gameName)
    {
       try
       {
-         string[] parts = riotId.Split('#');
-         if (parts.Length != 2)
-         {
-            return BadRequest("Invalid Riot ID format. Use name#tagline format.");
-         }
-
-         string name = parts[0];
-         string tagline = parts[1];
-
-         string? puuid = await _riotApiService.VerifyRiotId(tagline, name);
+         string? puuid = await _riotApiService.VerifyRiotId(tagLine, gameName);
          if (puuid == null)
          {
-            return NotFound($"Player {riotId} not found in Riot API.");
+            return NotFound($"Player {gameName} not found in Riot API.");
          }
 
          // Check if player already exists
-         var existingPlayers = await _playerRepository.GetAllPlayersAsync();
-         var existingPlayer = existingPlayers.FirstOrDefault(p => p.Puuid == puuid);
+         var existingPlayer = await _playerRepository.GetPlayerByPuuidAsync(puuid);
 
          if (existingPlayer != null)
          {
-            return BadRequest($"Player with Riot ID {riotId} is already registered.");
+            if (existingPlayer.TrackingEnabled)
+            {
+               return BadRequest($"Player {gameName} is already registered and being tracked.");
+            }
+            else
+            {
+               // Player exists but tracking is disabled, reset data and enable tracking
+               existingPlayer.TrackingEnabled = true;
+               existingPlayer.Pdl = 1000;
+               existingPlayer.MatchStats = new MatchStats();
+               existingPlayer.LastUpdate = System.DateTime.UtcNow;
+               existingPlayer.DateAdded = System.DateTime.UtcNow;
+               
+               await _playerRepository.UpdatePlayerAsync(existingPlayer);
+               return Ok(existingPlayer);
+            }
          }
 
          // Create new player
          var player = new Player
          {
             Puuid = puuid,
-            RiotId = riotId,
-            Nome = name,
-            DateAdded = System.DateTime.UtcNow
+            GameName = gameName,
+            TagLine = tagLine,
+            DateAdded = System.DateTime.UtcNow,
+            LastUpdate = System.DateTime.UtcNow,
+            TrackingEnabled = true,
          };
 
          await _playerRepository.CreatePlayerAsync(player);
-         return CreatedAtAction(nameof(RegisterPlayer), new { riotId }, player);
+         return CreatedAtAction(nameof(RegisterPlayer), new { puuid }, player);
       }
       catch (System.Exception ex)
       {

@@ -1,0 +1,88 @@
+2025-03-17 17:27:59,831 - Main - INFO - Iniciando aplicação Arena Ranking
+2025-03-17 17:27:59,832 - Main - INFO - Tentando conectar ao MongoDB Atlas...
+2025-03-17 17:28:01,840 - Main - INFO - Conectado ao MongoDB Atlas!
+2025-03-17 17:28:01,868 - Scheduler - INFO - Adicionando tarefa 'process_mmr' para executar a cada 2 minutos
+2025-03-17 17:28:01,869 - Scheduler - INFO - Loop do agendador iniciado
+2025-03-17 17:28:01,869 - Scheduler - INFO - Agendador iniciado em thread separada
+2025-03-17 17:28:01,870 - Main - INFO - Agendamento de tarefa MMR configurado.
+2025-03-17 17:28:01,870 - Main - INFO - Inicializando o bot Discord...
+2025-03-17 17:28:02,392 - Main - INFO - Executando o bot Discord...
+2025-03-17 17:28:05,647 - AutomatedChannels - INFO - Iniciada tarefa de atualização para o servidor 1235302805666005002, canal 1350239344220442644
+2025-03-17 17:28:05,649 - AutomatedChannels - INFO - Carregados 1 canais de ranking automático
+2025-03-17 17:28:15,239 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-17 17:28:15,240 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-17 17:28:22,612 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-17 17:28:22,886 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-17 17:28:23,157 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-17 17:28:23,449 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-17 17:28:23,734 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-17 17:28:24,023 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-17 17:28:24,326 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-17 17:28:24,613 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-17 17:28:25,579 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-17 17:28:25,885 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-17 17:28:26,169 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-17 17:28:26,433 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-17 17:28:27,324 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-17 17:28:27,591 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-17 17:28:27,874 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-17 17:28:28,170 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-17 17:28:28,446 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-17 17:28:28,713 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-17 17:28:41,925 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-17 17:28:42,236 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-17 17:28:42,550 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-17 17:28:42,840 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-17 17:28:43,118 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-17 17:28:43,433 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-17 17:28:43,721 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-17 17:28:44,020 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-17 17:28:44,296 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-17 17:28:44,605 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-17 17:28:45,490 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-17 17:28:45,784 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-17 17:28:46,116 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-17 17:28:46,397 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-17 17:28:46,709 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-17 17:28:47,065 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-17 17:28:47,420 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-17 17:28:47,728 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-17 17:29:04,042 - AutomatedChannels - INFO - Tarefa de atualização cancelada para servidor 1235302805666005002
+2025-03-17 17:40:50,951 - Main - INFO - Iniciando aplicação Arena Ranking
+2025-03-17 17:40:50,979 - Main - INFO - Tentando conectar ao MongoDB Atlas...
+2025-03-17 17:40:52,008 - Main - INFO - Conectado ao MongoDB Atlas!
+2025-03-17 17:40:52,043 - Scheduler - INFO - Adicionando tarefa 'process_mmr' para executar a cada 2 minutos
+2025-03-17 17:40:52,045 - Scheduler - INFO - Loop do agendador iniciado
+2025-03-17 17:40:52,045 - Scheduler - INFO - Agendador iniciado em thread separada
+2025-03-17 17:40:52,048 - Main - INFO - Agendamento de tarefa MMR configurado.
+2025-03-17 17:40:52,049 - Main - INFO - Inicializando o bot Discord...
+2025-03-17 17:40:52,602 - Main - INFO - Executando o bot Discord...
+2025-03-17 17:40:55,852 - AutomatedChannels - INFO - Iniciada tarefa de atualização para o servidor 1235302805666005002, canal 1350239344220442644
+2025-03-17 17:40:55,853 - AutomatedChannels - INFO - Carregados 1 canais de ranking automático
+2025-03-17 17:40:57,077 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-17 17:40:57,078 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-17 17:41:03,672 - ArenaRankingBot - INFO - Jogador Crazzyboy#br2: Placement 2, MMR 1110 -> 1170 (Δ60)
+2025-03-17 17:41:05,076 - ArenaRankingBot - INFO - Jogador Crazzyboy#br2: Placement 2, MMR 1170 -> 1230 (Δ60)
+2025-03-17 17:41:06,382 - ArenaRankingBot - INFO - Jogador Crazzyboy#br2: Placement 2, MMR 1230 -> 1290 (Δ60)
+2025-03-17 17:41:15,538 - ArenaRankingBot - INFO - Jogador Pedro Henrique#Pyke: Placement 5, MMR 1489 -> 1464 (Δ-25)
+2025-03-17 17:41:16,995 - ArenaRankingBot - INFO - Jogador Pedro Henrique#Pyke: Placement 3, MMR 1464 -> 1499 (Δ35)
+2025-03-17 17:41:18,771 - ArenaRankingBot - INFO - Jogador Pedro Henrique#Pyke: Placement 8, MMR 1499 -> 1449 (Δ-50)
+2025-03-17 17:41:19,985 - ArenaRankingBot - INFO - Jogador Pedro Henrique#Pyke: Placement 2, MMR 1449 -> 1509 (Δ60)
+2025-03-17 17:41:21,455 - ArenaRankingBot - INFO - Jogador Pedro Henrique#Pyke: Placement 2, MMR 1509 -> 1569 (Δ60)
+2025-03-17 17:41:23,945 - ArenaRankingBot - INFO - Jogador Cold3d#Br1: Placement 1, MMR 1010 -> 1085 (Δ75)
+2025-03-17 17:41:26,997 - ArenaRankingBot - INFO - Jogador Veradux#Shen: Placement 7, MMR 1025 -> 985 (Δ-40)
+2025-03-17 17:41:29,535 - ArenaRankingBot - INFO - Jogador Veradux#Shen: Placement 1, MMR 985 -> 1060 (Δ75)
+2025-03-17 17:41:31,127 - ArenaRankingBot - INFO - Jogador Veradux#Shen: Placement 6, MMR 1060 -> 1025 (Δ-35)
+2025-03-17 17:41:32,431 - ArenaRankingBot - INFO - Jogador Veradux#Shen: Placement 5, MMR 1025 -> 1000 (Δ-25)
+2025-03-17 17:41:34,018 - ArenaRankingBot - INFO - Jogador Veradux#Shen: Placement 2, MMR 1000 -> 1060 (Δ60)
+2025-03-17 17:41:34,947 - ArenaRankingBot - INFO - Jogador palmiteiro#br1: Placement 1, MMR 1530 -> 1605 (Δ75)
+2025-03-17 17:41:35,679 - ArenaRankingBot - INFO - Jogador palmiteiro#br1: Placement 4, MMR 1605 -> 1630 (Δ25)
+2025-03-17 17:41:36,801 - ArenaRankingBot - INFO - Jogador Grinex#Zed: Placement 1, MMR 1530 -> 1605 (Δ75)
+2025-03-17 17:41:37,644 - ArenaRankingBot - INFO - Jogador Grinex#Zed: Placement 4, MMR 1605 -> 1630 (Δ25)
+2025-03-17 17:41:45,617 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-17 17:41:45,917 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-17 17:42:52,181 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-17 17:43:07,913 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-17 17:43:08,205 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-17 17:43:08,208 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 16.03 segundos
+2025-03-17 17:44:45,477 - AutomatedChannels - INFO - Tarefa de atualização cancelada para servidor 1235302805666005002

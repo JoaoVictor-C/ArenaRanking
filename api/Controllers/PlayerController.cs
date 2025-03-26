@@ -24,10 +24,31 @@ public class PlayerController : ControllerBase
         return Ok(players);
     }
 
+    [HttpGet("ranking")]
+    public async Task<ActionResult<IEnumerable<Player>>> GetRanking()
+    {
+        var players = await _playerRepository.GetAllPlayersAsync();
+        // Show only players with at least 1 match played
+        players = players.Where(p => p.TotalGames > 0 && p.TrackingEnabled == true).ToList();
+        var ranking = players.OrderByDescending(p => p.Pdl).ToList();
+        return Ok(ranking);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<Player>> GetPlayer(string id)
     {
         var player = await _playerRepository.GetPlayerByIdAsync(id);
+        if (player == null)
+        {
+            return NotFound();
+        }
+        return Ok(player);
+    }
+
+    [HttpGet("riot")]
+    public async Task<ActionResult<Player>> GetPlayerByRiotId([FromQuery] string gameName, [FromQuery] string tagLine)
+    {
+        var player = await _playerRepository.GetPlayerByRiotIdAsync(gameName, tagLine);
         if (player == null)
         {
             return NotFound();
@@ -71,6 +92,20 @@ public class PlayerController : ControllerBase
         }
 
         await _playerRepository.DeletePlayerAsync(id);
+        return NoContent();
+    }
+
+    [HttpPut("rename")]
+    public async Task<IActionResult> RenamePlayer([FromQuery] string gameName, [FromQuery] string tagLine, [FromQuery] string newName)
+    {
+        var player = await _playerRepository.GetPlayerByRiotIdAsync(gameName, tagLine);
+        if (player == null)
+        {
+            return NotFound();
+        }
+
+        player.GameName = newName;
+        await _playerRepository.UpdatePlayerAsync(player);
         return NoContent();
     }
 }

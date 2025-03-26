@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ArenaBackend.Configs;
-using api.Models;
+using ArenaBackend.Models;
 
 namespace ArenaBackend.Services
 {
@@ -13,6 +13,7 @@ namespace ArenaBackend.Services
         private readonly RiotApiSettings _riotApiSettings;
         private readonly ILogger<RiotApiService> _logger;
         private const string REGION = "americas";
+        private const string REGION2 = "br1";
         private const int RATE_LIMIT_DELAY_MS = 10000;
 
         public RiotApiService(IOptions<RiotApiSettings> riotApiSettings, ILogger<RiotApiService> logger)
@@ -32,7 +33,6 @@ namespace ArenaBackend.Services
             return _httpClient;
         }
 
-        #region Summoner Endpoints
         public async Task<object?> GetSummonerByPuuid(string puuid)
         {
             string url = $"https://{REGION}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}";
@@ -46,12 +46,11 @@ namespace ArenaBackend.Services
             var responseJson = await MakeApiRequest<Dictionary<string, object>>(url, $"Summoner ID by name {summonerName}");
             return responseJson?.TryGetValue("id", out var id) == true ? id.ToString() : null;
         }
-        #endregion
 
-        #region League Endpoints
+
         public async Task<string?> GetPlayer(string puuid)
         {
-            string url = $"https://{REGION}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
+            string url = $"https://{REGION2}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
             
             var data = await MakeApiRequest<List<Dictionary<string, object>>>(url, $"Ranked data for puuid {puuid}");
             if (data == null) return null;
@@ -75,23 +74,20 @@ namespace ArenaBackend.Services
             string url = $"https://{REGION}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
             return await MakeApiRequest<object>(url, $"ranked data for puuid {puuid}");
         }
-        #endregion
 
-        #region Match Endpoints
-        public async Task<List<object>?> GetMatchHistoryPuuid(string puuid)
+
+        public async Task<List<string>?> GetMatchHistoryPuuid(string puuid, int quantity, string type)
         {
-            string url = $"https://{REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?type=normal&start=0&count=5";
-            return await MakeApiRequest<List<object>>(url, $"match history for puuid {puuid}");
+            string url = $"https://{REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?{type}=normal&start=0&count={quantity}";
+            return await MakeApiRequest<List<string>>(url, $"match history for puuid {puuid}");
         }
 
-        public async Task<dynamic> GetMatchDetails(string matchId)
+        public async Task<GetMatchDataModel?> GetMatchDetails(string matchId)
         {
             string url = $"https://{REGION}.api.riotgames.com/lol/match/v5/matches/{matchId}";
             return await MakeApiRequest<GetMatchDataModel>(url, $"match details for matchId {matchId}");
         }
-        #endregion
 
-        #region Account Endpoints
         public async Task<string?> VerifyRiotId(string tagline, string name)
         {
             name = name.Replace(" ", "%20");
@@ -100,48 +96,36 @@ namespace ArenaBackend.Services
             var responseJson = await MakeApiRequest<Dictionary<string, object>>(url, $"Riot ID {name}#{tagline}");
             return responseJson?.TryGetValue("puuid", out var puuid) == true ? puuid.ToString() : null;
         }
-        #endregion
 
-        public async Task<string> ConsultarRiotApi(string riotId)
+
+        public async Task<(string, bool)> ConsultarRiotApi(string riotId)
         {
             try
             {
-                Console.WriteLine(riotId);
                 string[] parts = riotId.Split('#');
                 if (parts.Length != 2)
                 {
-                    return "Formato de Riot ID inválido. Use o formato nome#tagline.";
+                    return ("Formato de Riot ID inválido. Use o formato nome#tagline.", false);
                 }
                 
                 string name = parts[0];
                 string tagline = parts[1];
                 
                 string? puuid = await VerifyRiotId(tagline, name);
-                Console.WriteLine(puuid);
                 if (puuid == null)
                 {
-                    return $"Jogador {riotId} não encontrado na Riot API.";
+                    return ($"Jogador {riotId} não encontrado na API da Riot.", false);
                 }
                 
-                var matches = await GetMatchHistoryPuuid(puuid);
-                if (matches != null && matches.Count > 0)
-                {
-                    var latestMatch = matches[0];
-                    return $"Jogador {riotId} encontrado. Última partida: {latestMatch}";
-                }
-                else
-                {
-                    return $"O jogador {riotId} não tem partidas recentes.";
-                }
+                return (puuid, true);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Erro inesperado ao consultar a Riot API para {riotId}");
-                return "Ocorreu um erro inesperado ao consultar o jogador.";
+                return ("Erro inesperado ao consultar a API da Riot.", false);
             }
         }
 
-        #region Helper Methods
         private async Task<T?> MakeApiRequest<T>(string url, string resourceDescription) where T : class 
         {
             try
@@ -151,7 +135,6 @@ namespace ArenaBackend.Services
                 
                 if (response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("Success");
                     string jsonResponse = await response.Content.ReadAsStringAsync();
                     var jsonDeserialized = JsonConvert.DeserializeObject<T>(jsonResponse);
 
@@ -180,6 +163,6 @@ namespace ArenaBackend.Services
                 return null;
             }
         }
-        #endregion
+
     }
 }

@@ -1,0 +1,960 @@
+2025-03-18 12:41:33,662 - Main - INFO - Iniciando aplicação Arena Ranking
+2025-03-18 12:41:33,662 - Main - INFO - Tentando conectar ao MongoDB Atlas...
+2025-03-18 12:41:34,308 - Main - INFO - Conectado ao MongoDB Atlas!
+2025-03-18 12:41:34,342 - Scheduler - INFO - Adicionando tarefa 'process_mmr' para executar a cada 2 minutos
+2025-03-18 12:41:34,343 - Scheduler - INFO - Loop do agendador iniciado
+2025-03-18 12:41:34,343 - Scheduler - INFO - Agendador iniciado em thread separada
+2025-03-18 12:41:34,343 - Main - INFO - Agendamento de tarefa MMR configurado.
+2025-03-18 12:41:34,343 - Main - INFO - Inicializando o bot Discord...
+2025-03-18 12:41:34,731 - Main - INFO - Executando o bot Discord...
+2025-03-18 12:41:37,848 - AutomatedChannels - INFO - Iniciada tarefa de atualização para o servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 12:41:37,848 - AutomatedChannels - INFO - Carregados 1 canais de ranking automático
+2025-03-18 12:41:41,176 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 12:41:41,176 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 12:43:34,422 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 12:43:48,220 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 12:43:48,506 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 12:43:48,821 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 12:43:48,823 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 14.40 segundos
+2025-03-18 12:45:35,709 - AutomatedChannels - INFO - Tarefa de atualização cancelada para servidor 1235302805666005002
+2025-03-18 12:45:38,681 - Main - INFO - Iniciando aplicação Arena Ranking
+2025-03-18 12:45:38,681 - Main - INFO - Tentando conectar ao MongoDB Atlas...
+2025-03-18 12:45:39,520 - Main - INFO - Conectado ao MongoDB Atlas!
+2025-03-18 12:45:39,550 - Scheduler - INFO - Adicionando tarefa 'process_mmr' para executar a cada 2 minutos
+2025-03-18 12:45:39,550 - Scheduler - INFO - Loop do agendador iniciado
+2025-03-18 12:45:39,550 - Scheduler - INFO - Agendador iniciado em thread separada
+2025-03-18 12:45:39,551 - Main - INFO - Agendamento de tarefa MMR configurado.
+2025-03-18 12:45:39,551 - Main - INFO - Inicializando o bot Discord...
+2025-03-18 12:45:39,942 - Main - INFO - Executando o bot Discord...
+2025-03-18 12:45:43,452 - AutomatedChannels - INFO - Iniciada tarefa de atualização para o servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 12:45:43,453 - AutomatedChannels - INFO - Carregados 1 canais de ranking automático
+2025-03-18 12:45:48,928 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 12:45:48,928 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 12:47:39,593 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 12:47:52,347 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 12:47:52,616 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 12:47:52,877 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 12:47:52,880 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.29 segundos
+2025-03-18 12:49:52,921 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 12:50:08,096 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 12:50:08,379 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 12:50:08,651 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 12:50:08,653 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 15.73 segundos
+2025-03-18 12:52:08,697 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 12:52:21,067 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 12:52:21,338 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 12:52:21,600 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 12:52:21,602 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.91 segundos
+2025-03-18 12:54:21,641 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 12:54:34,994 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 12:54:35,277 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 12:54:35,560 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 12:54:35,562 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.92 segundos
+2025-03-18 12:55:49,468 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 12:55:49,468 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 12:56:35,603 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 12:56:48,799 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 12:56:49,061 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 12:56:49,350 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 12:56:49,352 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.75 segundos
+2025-03-18 12:58:49,397 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 12:59:03,797 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 12:59:04,074 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 12:59:04,321 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 12:59:04,323 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 14.93 segundos
+2025-03-18 13:01:04,367 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:01:18,351 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:01:18,785 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:01:19,085 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:01:19,087 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 14.72 segundos
+2025-03-18 13:03:19,132 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:03:30,899 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:03:31,166 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:03:31,464 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:03:31,466 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.33 segundos
+2025-03-18 13:05:31,509 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:05:42,697 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:05:43,002 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:05:43,257 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:05:43,357 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.85 segundos
+2025-03-18 13:05:50,020 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:05:50,020 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:07:43,399 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:07:55,357 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:07:55,667 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:07:55,946 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:07:55,949 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.55 segundos
+2025-03-18 13:09:55,991 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:10:07,746 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:10:08,009 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:10:08,284 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:10:08,287 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.30 segundos
+2025-03-18 13:12:08,330 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:12:21,862 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:12:22,169 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:12:22,424 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:12:22,426 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 14.10 segundos
+2025-03-18 13:14:22,472 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:14:33,957 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:14:34,226 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:14:34,488 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:14:34,491 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.02 segundos
+2025-03-18 13:15:50,678 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:15:50,678 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:16:34,533 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:16:46,849 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:16:47,117 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:16:47,384 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:16:47,386 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.85 segundos
+2025-03-18 13:18:47,428 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:18:58,511 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:18:58,790 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:18:59,090 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:18:59,092 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.66 segundos
+2025-03-18 13:20:59,134 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:21:11,835 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:21:12,171 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:21:12,440 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:21:12,442 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.31 segundos
+2025-03-18 13:23:12,486 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:23:25,917 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:23:26,189 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:23:27,306 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:23:27,309 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 14.82 segundos
+2025-03-18 13:25:27,355 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:25:39,151 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:25:39,401 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:25:39,676 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:25:39,679 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.32 segundos
+2025-03-18 13:25:51,243 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:25:51,244 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:27:39,720 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:27:52,779 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:27:53,059 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:27:53,332 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:27:53,334 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.61 segundos
+2025-03-18 13:29:53,375 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:30:04,983 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:30:05,237 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:30:05,528 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:30:05,531 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.16 segundos
+2025-03-18 13:32:05,572 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:32:12,646 - ArenaRankingBot - INFO - Jogador Rámmùs#BR1: Placement 1, MMR 1305 -> 1380 (Δ75)
+2025-03-18 13:32:14,264 - ArenaRankingBot - INFO - Jogador Pedro Henrique#Pyke: Placement 6, MMR 2174 -> 2139 (Δ-35)
+2025-03-18 13:32:19,722 - ArenaRankingBot - INFO - Jogador marselo#mar: Placement 6, MMR 1110 -> 1075 (Δ-35)
+2025-03-18 13:32:20,051 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:32:20,300 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:32:20,576 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:32:20,578 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 15.01 segundos
+2025-03-18 13:34:20,619 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:34:32,174 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:34:32,442 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:34:32,779 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:34:32,781 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.16 segundos
+2025-03-18 13:35:51,856 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:35:51,856 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:36:32,824 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:36:45,324 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:36:45,595 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:36:45,859 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:36:45,864 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.04 segundos
+2025-03-18 13:38:45,907 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:38:56,507 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:38:56,812 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:38:57,141 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:38:57,143 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.24 segundos
+2025-03-18 13:40:57,189 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:41:13,451 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:41:13,883 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:41:14,358 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:41:14,360 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 17.17 segundos
+2025-03-18 13:43:14,402 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:43:27,244 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:43:27,522 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:43:27,803 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:43:27,807 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.41 segundos
+2025-03-18 13:45:27,849 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:45:40,469 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:45:40,755 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:45:41,024 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:45:41,026 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.18 segundos
+2025-03-18 13:45:52,449 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:45:52,450 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:47:41,071 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:47:52,042 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:47:52,314 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:47:52,571 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:47:52,574 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.50 segundos
+2025-03-18 13:49:52,616 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:50:05,428 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:50:05,678 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:50:05,940 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:50:05,943 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.33 segundos
+2025-03-18 13:52:05,985 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:52:19,268 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:52:19,527 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:52:20,082 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:52:20,085 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 14.10 segundos
+2025-03-18 13:54:20,124 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:54:31,214 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:54:31,503 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:54:31,770 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:54:31,773 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.65 segundos
+2025-03-18 13:55:53,108 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:55:53,109 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 13:56:31,816 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:56:38,979 - ArenaRankingBot - INFO - Jogador Pedro Henrique#Pyke: Placement 1, MMR 2139 -> 2214 (Δ75)
+2025-03-18 13:56:44,872 - ArenaRankingBot - INFO - Jogador marselo#mar: Placement 1, MMR 1075 -> 1150 (Δ75)
+2025-03-18 13:56:45,169 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:56:46,033 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:56:46,297 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:56:46,299 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 14.48 segundos
+2025-03-18 13:58:46,341 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 13:58:59,327 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 13:58:59,606 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 13:59:00,168 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 13:59:00,171 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.83 segundos
+2025-03-18 14:01:00,212 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:01:11,077 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:01:11,351 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:01:11,648 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:01:11,652 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.44 segundos
+2025-03-18 14:03:11,693 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:03:25,184 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:03:25,482 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:03:25,758 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:03:25,760 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 14.07 segundos
+2025-03-18 14:05:25,801 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:05:37,763 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:05:38,029 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:05:38,324 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:05:38,326 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.53 segundos
+2025-03-18 14:05:53,688 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:05:53,688 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:07:38,370 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:07:50,216 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:07:50,534 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:07:50,832 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:07:50,835 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.46 segundos
+2025-03-18 14:09:50,877 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:10:02,567 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:10:02,860 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:10:03,134 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:10:03,136 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.26 segundos
+2025-03-18 14:12:03,181 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:12:14,293 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:12:14,560 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:12:15,495 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:12:15,497 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.32 segundos
+2025-03-18 14:14:15,539 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:14:27,374 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:14:27,638 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:14:27,911 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:14:27,915 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.38 segundos
+2025-03-18 14:15:54,328 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:15:54,329 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:16:27,958 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:16:40,751 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:16:41,045 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:16:41,295 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:16:41,299 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.34 segundos
+2025-03-18 14:18:41,338 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:18:54,918 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:18:55,217 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:18:55,497 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:18:55,501 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 14.16 segundos
+2025-03-18 14:20:55,548 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:21:08,488 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:21:08,750 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:21:09,292 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:21:09,296 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.75 segundos
+2025-03-18 14:23:09,339 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:23:21,939 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:23:22,204 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:23:22,487 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:23:22,491 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.15 segundos
+2025-03-18 14:25:22,529 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:25:32,556 - ArenaRankingBot - INFO - Jogador Veradux#Shen: Placement 2, MMR 1035 -> 1095 (Δ60)
+2025-03-18 14:25:36,957 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:25:37,233 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:25:37,532 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:25:37,535 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 15.01 segundos
+2025-03-18 14:25:54,921 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:25:54,921 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:27:37,577 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:27:48,808 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:27:49,087 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:27:49,358 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:27:49,361 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.78 segundos
+2025-03-18 14:29:49,401 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:29:59,769 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:30:00,044 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:30:00,305 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:30:00,309 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 10.91 segundos
+2025-03-18 14:32:00,349 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:32:11,333 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:32:11,614 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:32:11,878 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:32:11,880 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.53 segundos
+2025-03-18 14:34:11,923 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:34:24,512 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:34:24,772 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:34:25,078 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:34:25,082 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.16 segundos
+2025-03-18 14:35:55,536 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:35:55,536 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:36:25,126 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:36:36,777 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:36:37,051 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:36:37,327 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:36:37,329 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.20 segundos
+2025-03-18 14:38:37,374 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:38:49,660 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:38:49,946 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:38:50,197 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:38:50,199 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.82 segundos
+2025-03-18 14:40:50,241 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:41:01,340 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:41:01,600 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:41:01,893 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:41:01,895 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.65 segundos
+2025-03-18 14:43:01,938 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:43:14,075 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:43:14,363 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:43:14,642 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:43:14,645 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.71 segundos
+2025-03-18 14:45:14,688 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:45:27,771 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:45:28,066 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:45:28,327 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:45:28,329 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.64 segundos
+2025-03-18 14:45:56,173 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:45:56,173 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:47:28,372 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:47:40,097 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:47:40,386 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:47:40,663 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:47:40,667 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.30 segundos
+2025-03-18 14:49:40,711 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:49:52,523 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:49:52,804 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:49:53,075 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:49:53,077 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.37 segundos
+2025-03-18 14:51:53,122 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:52:04,646 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:52:04,930 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:52:05,323 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:52:05,327 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.21 segundos
+2025-03-18 14:54:05,370 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:54:17,551 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:54:17,808 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:54:18,105 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:54:18,108 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.74 segundos
+2025-03-18 14:55:56,868 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:55:56,868 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 14:56:18,152 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:56:29,632 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:56:29,905 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:56:30,190 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:56:30,195 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.04 segundos
+2025-03-18 14:58:30,236 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 14:58:42,565 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 14:58:42,849 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 14:58:43,111 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 14:58:43,115 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.88 segundos
+2025-03-18 15:00:43,157 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:00:54,463 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 15:00:54,737 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 15:00:55,020 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:00:55,024 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.87 segundos
+2025-03-18 15:02:55,067 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:03:05,845 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 15:03:06,119 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 15:03:06,388 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:03:06,391 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.32 segundos
+2025-03-18 15:05:06,432 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:05:18,827 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 15:05:19,120 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 15:05:19,399 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:05:19,403 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.97 segundos
+2025-03-18 15:05:57,462 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 15:05:57,462 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 15:07:19,446 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:07:31,395 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 15:07:31,680 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 15:07:31,928 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:07:31,931 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.48 segundos
+2025-03-18 15:09:31,976 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:09:45,140 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 15:09:45,415 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 15:09:45,722 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:09:45,726 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.75 segundos
+2025-03-18 15:11:45,765 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:11:57,588 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 15:11:57,858 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 15:11:58,108 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:12:01,482 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 15.72 segundos
+2025-03-18 15:12:59,426 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:12:59,725 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:13:00,022 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:13:00,322 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:13:00,585 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:13:00,845 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:13:01,119 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:13:01,404 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:13:01,664 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:13:01,958 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:13:02,234 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:13:02,722 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:13:04,313 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:13:04,565 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:13:04,829 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:13:05,118 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:13:05,418 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:13:05,690 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:13:05,991 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:13:09,546 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:13:09,836 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:14:01,523 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:14:02,067 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:14:02,353 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:14:02,618 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:14:02,895 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:14:03,165 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:14:03,459 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:14:03,725 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:14:04,002 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:14:04,306 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:14:04,584 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:14:06,391 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:14:06,710 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:14:06,987 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:14:07,252 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:14:07,525 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:14:07,809 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:14:08,087 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:14:08,344 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:14:08,614 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:14:11,299 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:14:11,617 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:14:11,621 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 10.10 segundos
+2025-03-18 15:15:58,109 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 15:15:58,109 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 15:16:11,664 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:16:12,245 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:16:12,519 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:16:12,847 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:16:13,139 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:16:13,437 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:16:13,693 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:16:13,967 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:16:14,242 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:16:14,499 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:16:14,788 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:16:15,070 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:16:15,364 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:16:15,643 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:16:15,903 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:16:16,200 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:16:16,518 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:16:16,803 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:16:17,087 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:16:17,400 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:16:20,382 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:16:20,640 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:16:20,643 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 8.98 segundos
+2025-03-18 15:18:20,684 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:18:21,314 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:18:21,579 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:18:21,849 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:18:22,104 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:18:22,424 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:18:22,729 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:18:23,087 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:18:23,341 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:18:23,616 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:18:23,890 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:18:25,605 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:18:25,870 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:18:26,190 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:18:26,457 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:18:26,735 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:18:27,024 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:18:27,294 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:18:27,543 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:18:27,814 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:18:30,376 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:18:30,712 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:18:30,717 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 10.03 segundos
+2025-03-18 15:20:30,758 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:20:31,299 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:20:31,551 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:20:31,812 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:20:32,112 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:20:32,405 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:20:32,674 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:20:32,954 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:20:33,226 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:20:33,494 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:20:33,781 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:20:34,030 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:20:34,289 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:20:34,540 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:20:34,792 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:20:35,081 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:20:35,357 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:20:35,640 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:20:35,911 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:20:36,169 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:20:39,430 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:20:39,710 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:20:39,712 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 8.95 segundos
+2025-03-18 15:22:39,753 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:22:40,313 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:22:40,604 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:22:40,856 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:22:41,120 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:22:41,385 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:22:41,653 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:22:41,931 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:22:42,201 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:22:42,467 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:22:42,740 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:22:43,028 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:22:44,633 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:22:44,930 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:22:45,331 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:22:45,659 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:22:46,544 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:22:46,821 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:22:47,116 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:22:47,382 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:22:49,947 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:22:50,223 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:22:50,226 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 10.47 segundos
+2025-03-18 15:24:50,267 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:24:50,895 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:24:51,173 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:24:51,434 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:24:51,717 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:24:52,001 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:24:52,274 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:24:52,558 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:24:52,864 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:24:53,141 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:24:53,423 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:24:55,126 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:24:55,397 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:24:55,649 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:24:55,896 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:24:56,198 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:24:56,504 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:24:56,802 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:24:57,066 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:24:57,342 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:25:00,118 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:25:00,403 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:25:00,406 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 10.14 segundos
+2025-03-18 15:25:58,668 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 15:25:58,669 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 15:27:00,449 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:27:01,047 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:27:01,321 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:27:01,599 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:27:01,877 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:27:02,154 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:27:02,721 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:27:02,974 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:27:03,542 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:27:05,318 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:27:05,602 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:27:05,859 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:27:06,163 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:27:06,431 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:27:06,707 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:27:06,968 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:27:07,230 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:27:07,523 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:27:07,772 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:27:08,036 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:27:11,496 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:27:11,760 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:27:11,765 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.32 segundos
+2025-03-18 15:29:11,809 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:29:12,529 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:29:12,791 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:29:13,052 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:29:13,304 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:29:13,578 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:29:13,862 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:29:14,131 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:29:14,435 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:29:14,679 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:29:14,950 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:29:16,684 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:29:16,973 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:29:17,339 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:29:17,600 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:29:17,853 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:29:19,154 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:29:19,413 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:29:19,687 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:29:19,961 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:29:22,519 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:29:22,765 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:29:22,769 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 10.96 segundos
+2025-03-18 15:31:22,811 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:31:23,393 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:31:23,732 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:31:23,992 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:31:24,267 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:31:24,532 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:31:24,825 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:31:25,114 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:31:25,386 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:31:25,689 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:31:25,972 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:31:27,667 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:31:27,930 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:31:28,206 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:31:28,518 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:31:29,030 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:31:29,317 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:31:29,642 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:31:29,931 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:31:30,209 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:31:33,374 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:31:33,646 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:31:33,649 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 10.84 segundos
+2025-03-18 15:33:33,690 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:33:34,289 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:33:34,536 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:33:34,839 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:33:35,099 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:33:35,361 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:33:35,645 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:33:35,902 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:33:36,185 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:33:36,459 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:33:36,750 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:33:38,610 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:33:38,915 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:33:39,217 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:33:39,484 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:33:39,766 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:33:40,041 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:33:40,331 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:33:40,681 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:33:40,952 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:33:44,922 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:33:45,182 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:33:45,185 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.49 segundos
+2025-03-18 15:35:45,228 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:35:45,772 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:35:46,027 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:35:46,337 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:35:46,608 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:35:46,876 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:35:47,151 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:35:47,414 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:35:47,716 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:35:47,968 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:35:48,233 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:35:50,078 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:35:50,380 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:35:50,670 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:35:50,946 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:35:51,225 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:35:51,516 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:35:51,791 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:35:52,058 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:35:52,304 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:35:54,722 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:35:55,008 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:35:55,011 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 9.78 segundos
+2025-03-18 15:35:59,218 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 15:35:59,218 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 15:37:55,056 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:37:55,662 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:37:55,928 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:37:56,209 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:37:57,054 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:37:57,335 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:37:57,594 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:37:57,885 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:37:58,132 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:37:59,945 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:38:00,212 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:38:00,494 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:38:00,750 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:38:01,014 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:38:01,287 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:38:01,569 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:38:01,888 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:38:02,159 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:38:02,445 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:38:02,727 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:38:05,881 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:38:06,165 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:38:06,169 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.11 segundos
+2025-03-18 15:40:06,212 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:40:06,791 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:40:07,063 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:40:07,324 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:40:07,593 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:40:07,894 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:40:08,187 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:40:08,466 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:40:08,755 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:40:09,050 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:40:09,310 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:40:11,066 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:40:11,367 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:40:11,654 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:40:11,944 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:40:12,208 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:40:12,508 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:40:12,789 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:40:13,068 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:40:13,331 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:40:15,699 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:40:16,006 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:40:16,009 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 9.80 segundos
+2025-03-18 15:42:16,052 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:42:16,875 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:42:17,277 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:42:17,616 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:42:17,906 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:42:18,295 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:42:19,301 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:42:20,981 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:42:21,272 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:42:21,534 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:42:21,809 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:42:22,078 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:42:22,373 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:42:22,664 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:42:22,928 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:42:23,193 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:42:23,450 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:42:23,721 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:42:23,985 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:42:24,241 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:42:26,759 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:42:27,019 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:42:27,022 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 10.97 segundos
+2025-03-18 15:44:27,066 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 15:44:27,582 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br2.
+2025-03-18 15:44:27,838 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Mamei%20o%20banhos%20#br1.
+2025-03-18 15:44:28,399 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Presente#1001.
+2025-03-18 15:44:28,687 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Frederic%20Boulos%20#fred.
+2025-03-18 15:44:29,062 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pep%20Guardiola#ysph.
+2025-03-18 15:44:29,355 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para VOLPATO#7289.
+2025-03-18 15:44:29,673 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Dusa#omg.
+2025-03-18 15:44:29,933 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para espanca%20tubarao#oscar.
+2025-03-18 15:44:30,222 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Rámmùs#BR1.
+2025-03-18 15:44:31,989 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Pedro Henrique#Pyke.
+2025-03-18 15:44:32,259 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Cold3d#Br1.
+2025-03-18 15:44:32,511 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Veradux#Shen.
+2025-03-18 15:44:32,767 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro#br1.
+2025-03-18 15:44:33,648 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Grinex#Zed.
+2025-03-18 15:44:33,911 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para kami#br1.
+2025-03-18 15:44:34,191 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para palmiteiro ii#br1.
+2025-03-18 15:44:34,450 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para galodosenai#777.
+2025-03-18 15:44:34,720 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Gwent Player#BR0.
+2025-03-18 15:44:34,996 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para marselo#mar.
+2025-03-18 15:44:37,566 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 15:44:37,819 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para man of faith#GOD.
+2025-03-18 15:44:37,822 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 10.76 segundos
+2025-03-18 15:45:18,874 - AutomatedChannels - INFO - Tarefa de atualização cancelada para servidor 1235302805666005002
+2025-03-18 17:13:18,965 - Main - INFO - Iniciando aplicação Arena Ranking
+2025-03-18 17:13:18,974 - Main - INFO - Tentando conectar ao MongoDB Atlas...
+2025-03-18 17:13:20,715 - Main - INFO - Conectado ao MongoDB Atlas!
+2025-03-18 17:13:20,741 - Scheduler - INFO - Adicionando tarefa 'process_mmr' para executar a cada 2 minutos
+2025-03-18 17:13:20,742 - Scheduler - INFO - Loop do agendador iniciado
+2025-03-18 17:13:20,742 - Scheduler - INFO - Agendador iniciado em thread separada
+2025-03-18 17:13:20,742 - Main - INFO - Agendamento de tarefa MMR configurado.
+2025-03-18 17:13:20,743 - Main - INFO - Inicializando o bot Discord...
+2025-03-18 17:13:21,175 - Main - INFO - Executando o bot Discord...
+2025-03-18 17:13:24,439 - AutomatedChannels - INFO - Iniciada tarefa de atualização para o servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:13:24,439 - AutomatedChannels - INFO - Carregados 1 canais de ranking automático
+2025-03-18 17:13:26,436 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:13:26,436 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:13:45,898 - ArenaRankingBot - INFO - Jogador Crazzyboy#br2: Placement 1, MMR 1650 -> 1725 (Δ75)
+2025-03-18 17:13:47,548 - ArenaRankingBot - INFO - Jogador Crazzyboy#br2: Placement 3, MMR 1725 -> 1760 (Δ35)
+2025-03-18 17:13:52,115 - ArenaRankingBot - INFO - Jogador Frederic%20Boulos%20#fred: Placement 2, MMR 1000 -> 1060 (Δ60)
+2025-03-18 17:13:56,535 - ArenaRankingBot - INFO - Jogador Cold3d#Br1: Placement 3, MMR 1155 -> 1190 (Δ35)
+2025-03-18 17:13:58,064 - ArenaRankingBot - INFO - Jogador Cold3d#Br1: Placement 5, MMR 1190 -> 1165 (Δ-25)
+2025-03-18 17:14:00,309 - ArenaRankingBot - INFO - Jogador Veradux#Shen: Placement 7, MMR 1095 -> 1055 (Δ-40)
+2025-03-18 17:14:01,890 - ArenaRankingBot - INFO - Jogador Veradux#Shen: Placement 1, MMR 1055 -> 1130 (Δ75)
+2025-03-18 17:14:03,116 - ArenaRankingBot - INFO - Jogador palmiteiro#br1: Placement 6, MMR 1640 -> 1605 (Δ-35)
+2025-03-18 17:14:05,122 - ArenaRankingBot - INFO - Jogador palmiteiro#br1: Placement 2, MMR 1605 -> 1665 (Δ60)
+2025-03-18 17:14:06,058 - ArenaRankingBot - INFO - Jogador palmiteiro#br1: Placement 5, MMR 1665 -> 1640 (Δ-25)
+2025-03-18 17:14:10,361 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 17:14:10,647 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 17:14:10,946 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:14:14,808 - ArenaRankingBot - INFO - Jogador man of faith#GOD: Placement 2, MMR 1000 -> 1060 (Δ60)
+2025-03-18 17:15:20,846 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:15:28,884 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 17:15:29,161 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 17:15:29,432 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:15:29,723 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 8.88 segundos
+2025-03-18 17:16:08,483 - AutomatedChannels - INFO - Tarefa de atualização cancelada para servidor 1235302805666005002
+2025-03-18 17:16:12,323 - Main - INFO - Iniciando aplicação Arena Ranking
+2025-03-18 17:16:12,324 - Main - INFO - Tentando conectar ao MongoDB Atlas...
+2025-03-18 17:16:13,140 - Main - INFO - Conectado ao MongoDB Atlas!
+2025-03-18 17:16:13,172 - Scheduler - INFO - Adicionando tarefa 'process_mmr' para executar a cada 2 minutos
+2025-03-18 17:16:13,271 - Scheduler - INFO - Loop do agendador iniciado
+2025-03-18 17:16:13,271 - Scheduler - INFO - Agendador iniciado em thread separada
+2025-03-18 17:16:13,272 - Main - INFO - Agendamento de tarefa MMR configurado.
+2025-03-18 17:16:13,272 - Main - INFO - Inicializando o bot Discord...
+2025-03-18 17:16:13,584 - Main - INFO - Executando o bot Discord...
+2025-03-18 17:16:16,719 - AutomatedChannels - INFO - Iniciada tarefa de atualização para o servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:16:16,719 - AutomatedChannels - INFO - Carregados 1 canais de ranking automático
+2025-03-18 17:16:17,695 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:16:17,695 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:18:13,320 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:18:21,446 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 17:18:21,721 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 17:18:22,005 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:18:22,291 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 8.97 segundos
+2025-03-18 17:20:22,340 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:20:30,882 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 17:20:31,398 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 17:20:31,693 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:20:31,980 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 9.64 segundos
+2025-03-18 17:22:32,072 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:22:43,024 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Crazzyboy#br1.
+2025-03-18 17:22:43,296 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para Ag4tinhaa #BR1.
+2025-03-18 17:22:43,597 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:22:43,874 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.80 segundos
+2025-03-18 17:24:44,042 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:24:54,792 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:24:55,095 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.05 segundos
+2025-03-18 17:26:18,455 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:26:18,455 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:26:55,181 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:27:08,152 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:27:08,478 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.30 segundos
+2025-03-18 17:29:08,620 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:29:19,234 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:29:19,536 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 10.91 segundos
+2025-03-18 17:31:19,588 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:31:30,823 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:31:31,114 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.53 segundos
+2025-03-18 17:33:31,160 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:33:43,017 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:33:43,313 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.15 segundos
+2025-03-18 17:34:54,517 - AutomatedChannels - INFO - Tarefa de atualização cancelada para servidor 1235302805666005002
+2025-03-18 17:35:06,383 - Main - INFO - Iniciando aplicação Arena Ranking
+2025-03-18 17:35:06,384 - Main - INFO - Tentando conectar ao MongoDB Atlas...
+2025-03-18 17:35:08,318 - Main - INFO - Conectado ao MongoDB Atlas!
+2025-03-18 17:35:08,342 - Scheduler - INFO - Adicionando tarefa 'process_mmr' para executar a cada 2 minutos
+2025-03-18 17:35:08,343 - Scheduler - INFO - Loop do agendador iniciado
+2025-03-18 17:35:08,343 - Scheduler - INFO - Agendador iniciado em thread separada
+2025-03-18 17:35:08,344 - Main - INFO - Agendamento de tarefa MMR configurado.
+2025-03-18 17:35:08,344 - Main - INFO - Inicializando o bot Discord...
+2025-03-18 17:35:08,668 - Main - INFO - Executando o bot Discord...
+2025-03-18 17:35:11,853 - AutomatedChannels - INFO - Iniciada tarefa de atualização para o servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:35:11,854 - AutomatedChannels - INFO - Carregados 1 canais de ranking automático
+2025-03-18 17:35:12,680 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:35:12,681 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:36:54,051 - AutomatedChannels - INFO - Tarefa de atualização cancelada para servidor 1235302805666005002
+2025-03-18 17:36:58,014 - Main - INFO - Iniciando aplicação Arena Ranking
+2025-03-18 17:36:58,015 - Main - INFO - Tentando conectar ao MongoDB Atlas...
+2025-03-18 17:36:58,607 - Main - INFO - Conectado ao MongoDB Atlas!
+2025-03-18 17:36:58,637 - Scheduler - INFO - Adicionando tarefa 'process_mmr' para executar a cada 2 minutos
+2025-03-18 17:36:58,639 - Scheduler - INFO - Loop do agendador iniciado
+2025-03-18 17:36:58,640 - Scheduler - INFO - Agendador iniciado em thread separada
+2025-03-18 17:36:58,641 - Main - INFO - Agendamento de tarefa MMR configurado.
+2025-03-18 17:36:58,641 - Main - INFO - Inicializando o bot Discord...
+2025-03-18 17:36:58,965 - Main - INFO - Executando o bot Discord...
+2025-03-18 17:37:01,976 - AutomatedChannels - INFO - Iniciada tarefa de atualização para o servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:37:01,976 - AutomatedChannels - INFO - Carregados 1 canais de ranking automático
+2025-03-18 17:37:02,796 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:37:02,796 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:38:34,946 - AutomatedChannels - INFO - Tarefa de atualização cancelada para servidor 1235302805666005002
+2025-03-18 17:38:38,513 - Main - INFO - Iniciando aplicação Arena Ranking
+2025-03-18 17:38:38,514 - Main - INFO - Tentando conectar ao MongoDB Atlas...
+2025-03-18 17:38:39,127 - Main - INFO - Conectado ao MongoDB Atlas!
+2025-03-18 17:38:39,153 - Scheduler - INFO - Adicionando tarefa 'process_mmr' para executar a cada 2 minutos
+2025-03-18 17:38:39,155 - Scheduler - INFO - Loop do agendador iniciado
+2025-03-18 17:38:39,156 - Scheduler - INFO - Agendador iniciado em thread separada
+2025-03-18 17:38:39,156 - Main - INFO - Agendamento de tarefa MMR configurado.
+2025-03-18 17:38:39,157 - Main - INFO - Inicializando o bot Discord...
+2025-03-18 17:38:39,827 - Main - INFO - Executando o bot Discord...
+2025-03-18 17:38:43,181 - AutomatedChannels - INFO - Iniciada tarefa de atualização para o servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:38:43,181 - AutomatedChannels - INFO - Carregados 1 canais de ranking automático
+2025-03-18 17:38:43,982 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:38:43,982 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:40:39,203 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:40:54,443 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:40:54,776 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 15.57 segundos
+2025-03-18 17:41:55,199 - AutomatedChannels - INFO - Tarefa de atualização cancelada para servidor 1235302805666005002
+2025-03-18 17:42:43,889 - Main - INFO - Iniciando aplicação Arena Ranking
+2025-03-18 17:42:43,933 - Main - INFO - Tentando conectar ao MongoDB Atlas...
+2025-03-18 17:42:45,859 - Main - INFO - Conectado ao MongoDB Atlas!
+2025-03-18 17:42:45,890 - Scheduler - INFO - Adicionando tarefa 'process_mmr' para executar a cada 2 minutos
+2025-03-18 17:42:45,891 - Scheduler - INFO - Loop do agendador iniciado
+2025-03-18 17:42:45,891 - Scheduler - INFO - Agendador iniciado em thread separada
+2025-03-18 17:42:45,893 - Main - INFO - Agendamento de tarefa MMR configurado.
+2025-03-18 17:42:45,893 - Main - INFO - Inicializando o bot Discord...
+2025-03-18 17:42:46,414 - Main - INFO - Executando o bot Discord...
+2025-03-18 17:42:50,130 - AutomatedChannels - INFO - Iniciada tarefa de atualização para o servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:42:50,130 - AutomatedChannels - INFO - Carregados 1 canais de ranking automático
+2025-03-18 17:42:50,851 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:42:50,852 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:44:45,971 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:44:58,737 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:44:59,000 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.03 segundos
+2025-03-18 17:45:32,946 - ArenaRankingBot - WARNING - Não foi possível obter o histórico de partidas para KAMI#BR2.
+2025-03-18 17:46:59,060 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:47:12,827 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.77 segundos
+2025-03-18 17:48:07,777 - AutomatedChannels - INFO - Tarefa de atualização cancelada para servidor 1235302805666005002
+2025-03-18 17:48:18,859 - Main - INFO - Iniciando aplicação Arena Ranking
+2025-03-18 17:48:18,860 - Main - INFO - Tentando conectar ao MongoDB Atlas...
+2025-03-18 17:48:21,482 - Main - INFO - Conectado ao MongoDB Atlas!
+2025-03-18 17:48:21,531 - Scheduler - INFO - Adicionando tarefa 'process_mmr' para executar a cada 2 minutos
+2025-03-18 17:48:21,532 - Scheduler - INFO - Loop do agendador iniciado
+2025-03-18 17:48:21,533 - Scheduler - INFO - Agendador iniciado em thread separada
+2025-03-18 17:48:21,534 - Main - INFO - Agendamento de tarefa MMR configurado.
+2025-03-18 17:48:21,534 - Main - INFO - Inicializando o bot Discord...
+2025-03-18 17:48:21,986 - Main - INFO - Executando o bot Discord...
+2025-03-18 17:48:25,850 - AutomatedChannels - INFO - Iniciada tarefa de atualização para o servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:48:25,850 - AutomatedChannels - INFO - Carregados 1 canais de ranking automático
+2025-03-18 17:48:26,742 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:48:26,743 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:50:21,587 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:50:34,148 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.56 segundos
+2025-03-18 17:52:34,198 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:52:48,128 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.93 segundos
+2025-03-18 17:54:48,184 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:54:59,758 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.57 segundos
+2025-03-18 17:56:59,808 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:57:11,716 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.91 segundos
+2025-03-18 17:58:27,471 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:58:27,471 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 17:59:11,770 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 17:59:24,717 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.95 segundos
+2025-03-18 18:01:24,771 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 18:01:36,813 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.04 segundos
+2025-03-18 18:03:36,863 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 18:03:49,154 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.29 segundos
+2025-03-18 18:05:49,207 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 18:06:02,602 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.39 segundos
+2025-03-18 18:08:02,653 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 18:08:14,381 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 11.73 segundos
+2025-03-18 18:08:28,610 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 18:08:28,610 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 18:10:14,432 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 18:10:26,888 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 12.46 segundos
+2025-03-18 18:12:26,943 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 18:12:57,739 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 30.79 segundos
+2025-03-18 18:14:57,785 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 18:15:12,243 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 14.46 segundos
+2025-03-18 18:17:12,303 - Scheduler - INFO - Executando tarefa agendada: process_mmr
+2025-03-18 18:17:15,055 - ArenaRankingBot - INFO - Jogador Crazzyboy#br2: Placement 3, MMR 1760 -> 1795 (Δ35)
+2025-03-18 18:17:25,663 - Scheduler - INFO - Tarefa 'process_mmr' concluída em 13.36 segundos
+2025-03-18 18:18:29,209 - AutomatedChannels - INFO - Mensagem de ranking editada no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 18:18:29,209 - AutomatedChannels - INFO - Ranking atualizado no servidor 1235302805666005002, canal 1350239344220442644
+2025-03-18 18:18:54,289 - AutomatedChannels - INFO - Tarefa de atualização cancelada para servidor 1235302805666005002

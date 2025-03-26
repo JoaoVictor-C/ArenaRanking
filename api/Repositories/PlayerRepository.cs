@@ -7,37 +7,49 @@ namespace ArenaBackend.Repositories
 {
     public class PlayerRepository : IPlayerRepository
     {
-        private readonly IMongoCollection<Player> _Players;
+        private readonly IMongoCollection<Player> _players;
 
         public PlayerRepository(IMongoClient client)
         {
-            var database = client.GetDatabase("arena_ranking");
-            _Players = database.GetCollection<Player>("players");
+            var database = client.GetDatabase("arena_rank");
+            // drop player
+            //database.DropCollection("player");
+            _players = database.GetCollection<Player>("player");
         }
 
         public async Task<IEnumerable<Player>> GetAllPlayersAsync()
         {
-            return await _Players.Find(Player => true).ToListAsync();
+            return await _players.Find(player => true).ToListAsync();    
         }
 
         public async Task<Player> GetPlayerByIdAsync(string id)
         {
-            return await _Players.Find(Player => Player.Id == id).FirstOrDefaultAsync();
+            return await _players.Find(player => player.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task CreatePlayerAsync(Player Player)
+        public async Task<Player> GetPlayerByPuuidAsync(string puuid)
         {
-            await _Players.InsertOneAsync(Player);
+            return await _players.Find(player => player.Puuid == puuid).FirstOrDefaultAsync();
         }
 
-        public async Task UpdatePlayerAsync(Player Player)
+        public async Task<Player> GetPlayerByRiotIdAsync(string gameName, string tagLine)
         {
-            await _Players.ReplaceOneAsync(a => a.Id == Player.Id, Player);
+            return await _players.Find(player => player.TagLine == tagLine && player.GameName == gameName).FirstOrDefaultAsync();
+        }
+
+        public async Task CreatePlayerAsync(Player player)
+        {
+            await _players.InsertOneAsync(player);
+        }
+
+        public async Task UpdatePlayerAsync(Player player)
+        {
+            await _players.ReplaceOneAsync(p => p.Id == player.Id, player);
         }
 
         public async Task DeletePlayerAsync(string id)
         {
-            await _Players.DeleteOneAsync(Player => Player.Id == id);
+            await _players.DeleteOneAsync(player => player.Id == id);
         }
     }
 }

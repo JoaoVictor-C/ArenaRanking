@@ -1,4 +1,4 @@
-﻿namespace api.Models;
+﻿namespace ArenaBackend.Models;
 
 public class GetMatchDataModel
 {
@@ -17,10 +17,13 @@ public class GetMatchDataModel
 
         public class ParticipantesInfo
         {
-            public string placement { get; set; }
+            public int placement { get; set; }
             public string riotIdGameName { get; set; }
             public string riotIdTagline { get; set; }
-            public string championId { get; set; }
+            public int championId { get; set; }
+            public string championName { get; set; }
+            public string puuid { get; set; }
+            public int profileIcon { get; set; }
         }
     }
 }
