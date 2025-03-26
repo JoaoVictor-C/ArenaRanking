@@ -19,7 +19,7 @@ public class MatchStats
    public double AveragePlacement { get; set; } = 0;
 
    [BsonElement("championsPlayed")]
-   public List<Dictionary<string, int>> ChampionsPlayed { get; set; } = new List<Dictionary<string, int>>();
+   public List<Dictionary<int, string>> ChampionsPlayed { get; set; } = new List<Dictionary<int, string>>();
       
    [BsonIgnore]
    public int TotalGames => Win + Loss;

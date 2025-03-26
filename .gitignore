@@ -3,3 +3,7 @@
 api/appsettings.json
 api/appsettings.Development.json
 /api/bin
+/api/bin
+/api/bin/Debug
+/api/obj
+/api/obj/Debug

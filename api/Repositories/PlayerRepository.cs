@@ -12,8 +12,6 @@ namespace ArenaBackend.Repositories
         public PlayerRepository(IMongoClient client)
         {
             var database = client.GetDatabase("arena_rank");
-            // drop player
-            //database.DropCollection("player");
             _players = database.GetCollection<Player>("player");
         }
 

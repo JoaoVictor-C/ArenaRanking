@@ -156,7 +156,7 @@ namespace ArenaBackend.Services
          var currentPdls = new Dictionary<string, int>();
          var win = new Dictionary<string, int>();
          var loss = new Dictionary<string, int>();
-         var championsPlayed = new Dictionary<string, List<Dictionary<string, int>>>();
+         var championsPlayed = new Dictionary<string, List<Dictionary<int, string>>>();
          var profileIcon = new Dictionary<string, int>();
 
          foreach (var participant in matchDetails.info.participants)
@@ -187,12 +187,12 @@ namespace ArenaBackend.Services
                profileIcon[participant.puuid] = participant.profileIcon;
 
                // Update champion data in the list of dictionaries format
-               var championEntry = new Dictionary<string, int> { { participant.championName, participant.championId } };
+               var championEntry = new Dictionary<int, string> { { participant.championId, participant.championName } };
 
                // Check if player already has champion data
                if (player.MatchStats.ChampionsPlayed == null)
                {
-                  player.MatchStats.ChampionsPlayed = new List<Dictionary<string, int>>();
+                  player.MatchStats.ChampionsPlayed = new List<Dictionary<int, string>>();
                }
 
                // Add new champion to the tracking list
@@ -230,9 +230,9 @@ namespace ArenaBackend.Services
                win[participant.puuid] = isWin ? 1 : 0;
                loss[participant.puuid] = isWin ? 0 : 1;
                profileIcon[participant.puuid] = participant.profileIcon;
-               championsPlayed[participant.puuid] = new List<Dictionary<string, int>>
+               championsPlayed[participant.puuid] = new List<Dictionary<int, string>>
                {
-                  new Dictionary<string, int> { { participant.championName, participant.championId } }
+                  new Dictionary<int, string> { { participant.championId, participant.championName  } }
                };
 
                totalPdl += pdl;
@@ -262,7 +262,7 @@ namespace ArenaBackend.Services
                matchId,
                win.TryGetValue(playerPuuid, out var playerWin) ? playerWin : 0,
                loss.TryGetValue(playerPuuid, out var playerLoss) ? playerLoss : 0,
-               championsPlayed.TryGetValue(playerPuuid, out var playerChampions) ? playerChampions : new List<Dictionary<string, int>>(),
+               championsPlayed.TryGetValue(playerPuuid, out var playerChampions) ? playerChampions : new List<Dictionary<int, string>>(),
                placements.TryGetValue(playerPuuid, out var playerPlacement) ? playerPlacement : 0,
                profileIcon.TryGetValue(playerPuuid, out var playerProfileIcon) ? playerProfileIcon : 0
             );
@@ -325,7 +325,7 @@ namespace ArenaBackend.Services
          return Math.Max(-100, Math.Min(100, pdlChange));
       }
 
-      public async Task<bool> UpdatePlayerPdlAsync(string puuid, int newPdl, string lastMatchId, int win, int loss, List<Dictionary<string, int>> championsPlayed, int placement, int profileIcon)
+      public async Task<bool> UpdatePlayerPdlAsync(string puuid, int newPdl, string lastMatchId, int win, int loss, List<Dictionary<int, string>> championsPlayed, int placement, int profileIcon)
       {
          try
          {

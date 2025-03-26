@@ -29,7 +29,7 @@ public class PlayerController : ControllerBase
     {
         var players = await _playerRepository.GetAllPlayersAsync();
         // Show only players with at least 1 match played
-        players = players.Where(p => p.TotalGames > 0 && p.TrackingEnabled == true).ToList();
+        players = players.Where(p => p.MatchStats.TotalGames > 0 && p.TrackingEnabled == true).ToList();
         var ranking = players.OrderByDescending(p => p.Pdl).ToList();
         return Ok(ranking);
     }

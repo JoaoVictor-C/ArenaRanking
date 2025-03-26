@@ -49,16 +49,4 @@ public class Player
        get => _dateAdded?.ToLocalTime(); 
        set => _dateAdded = value; 
    }
-   
-   [BsonIgnore]
-   public int Wins => MatchStats.Win;
-   
-   [BsonIgnore]
-   public int Losses => MatchStats.Loss;
-   
-   [BsonIgnore]
-   public int TotalGames => MatchStats.TotalGames;
-   
-   [BsonIgnore]
-   public double WinRate => MatchStats.WinRate;
 }
