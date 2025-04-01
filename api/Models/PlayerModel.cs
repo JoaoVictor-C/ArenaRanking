@@ -26,6 +26,9 @@ public class Player
    [BsonElement("pdl")]
    public int Pdl { get; set; } = 1000;
    
+   [BsonElement("rankPosition")]
+   public int RankPosition { get; set; } = 0;
+   
    [BsonElement("matchStats")]
    public MatchStats MatchStats { get; set; } = new MatchStats();
 

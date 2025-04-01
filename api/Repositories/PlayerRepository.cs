@@ -56,5 +56,22 @@ namespace ArenaBackend.Repositories
         {
             await _players.DeleteOneAsync(player => player.Id == id);
         }
+
+        public async Task UpdateAllPlayerRankingsAsync()
+        {
+            // Buscar jogadores ordenados por PDL (decrescente)
+            var allPlayers = await _players
+                .Find(player => true)
+                .SortByDescending(player => player.Pdl)
+                .ToListAsync();
+
+            // Atribuir posições de ranking
+            for (int i = 0; i < allPlayers.Count; i++)
+            {
+                var player = allPlayers[i];
+                player.RankPosition = i + 1; // Ranking começa em 1
+                await _players.ReplaceOneAsync(p => p.Id == player.Id, player);
+            }
+        }
     }
 }

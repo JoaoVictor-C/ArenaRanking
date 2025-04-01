@@ -1,4 +1,6 @@
 using ArenaBackend.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ArenaBackend.Repositories
 {
@@ -12,5 +14,6 @@ namespace ArenaBackend.Repositories
         Task CreatePlayersAsync(IEnumerable<Player> players);
         Task UpdatePlayerAsync(Player player);
         Task DeletePlayerAsync(string id);
+        Task UpdateAllPlayerRankingsAsync();
     }
 }
