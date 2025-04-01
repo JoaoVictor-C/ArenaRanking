@@ -9,6 +9,7 @@ namespace ArenaBackend.Repositories
         Task<Player> GetPlayerByPuuidAsync(string puuid);
         Task<Player> GetPlayerByRiotIdAsync(string gameName, string tagLine);
         Task CreatePlayerAsync(Player player);
+        Task CreatePlayersAsync(IEnumerable<Player> players);
         Task UpdatePlayerAsync(Player player);
         Task DeletePlayerAsync(string id);
     }

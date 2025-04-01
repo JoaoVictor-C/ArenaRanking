@@ -28,6 +28,9 @@ public class Player
    
    [BsonElement("matchStats")]
    public MatchStats MatchStats { get; set; } = new MatchStats();
+
+   [BsonElement("lastPlacement")]
+    public int LastPlacement { get; set; } = 0;
    
    private DateTime? _lastUpdate;
    [BsonElement("lastUpdate")]

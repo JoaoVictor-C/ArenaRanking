@@ -12,6 +12,8 @@ namespace ArenaBackend.Repositories
         public PlayerRepository(IMongoClient client)
         {
             var database = client.GetDatabase("arena_rank");
+            //d rop
+            // database.DropCollection("player");
             _players = database.GetCollection<Player>("player");
         }
 
@@ -38,6 +40,11 @@ namespace ArenaBackend.Repositories
         public async Task CreatePlayerAsync(Player player)
         {
             await _players.InsertOneAsync(player);
+        }
+
+        public async Task CreatePlayersAsync(IEnumerable<Player> players)
+        {
+            await _players.InsertManyAsync(players);
         }
 
         public async Task UpdatePlayerAsync(Player player)

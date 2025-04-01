@@ -7,3 +7,12 @@ api/appsettings.Development.json
 /api/bin/Debug
 /api/obj
 /api/obj/Debug
+/api/bin
+api/appsettings.json
+api/bin/Debug/net8.0/api.exe
+api/bin/Debug/net8.0/api.pdb
+/api/certificado
+/api/obj
+/api/obj/Debug/net8.0
+/api/obj/Debug
+/api/obj

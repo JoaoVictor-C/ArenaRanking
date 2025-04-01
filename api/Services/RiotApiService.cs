@@ -14,7 +14,7 @@ namespace ArenaBackend.Services
         private readonly ILogger<RiotApiService> _logger;
         private const string REGION = "americas";
         private const string REGION2 = "br1";
-        private const int RATE_LIMIT_DELAY_MS = 5000;
+        private const int RATE_LIMIT_DELAY_MS = 20000;
 
         public RiotApiService(IOptions<RiotApiSettings> riotApiSettings, ILogger<RiotApiService> logger)
         {
@@ -143,6 +143,11 @@ namespace ArenaBackend.Services
                 else if (response.StatusCode == HttpStatusCode.NotFound)
                 {
                     _logger.LogWarning($"Not found: {resourceDescription}");
+                    return null;
+                }
+                else if (response.StatusCode == (HttpStatusCode)403) // Forbidden, normally for riot api key issues
+                {
+                    _logger.LogError($"Forbidden while fetching {resourceDescription}. Check your Riot API key.");
                     return null;
                 }
                 else if (response.StatusCode == (HttpStatusCode)429) // Rate Limit

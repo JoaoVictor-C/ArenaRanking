@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+hIISeBTSmx9k3QmpwhQPJH+Q5+1qIu08ylSkmV6Q9srFwTPYe+11rdMrFc0URsEKnQpIpuOLxdG0wvMZkJKgg==",
+  "dgSpecHash": "t9UET+1rvkSAOdJKZgVc4LhXDw0PSsW+eK04kJGwxo7b/W4I9XHTB0BXu6L6Q51M+QHx3Byc0R0GNFxEj0zAgQ==",
   "success": true,
-  "projectFilePath": "D:\\JV\\Meus Projetos\\arena-ranking\\backend\\api\\api.csproj",
+  "projectFilePath": "d:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fabio\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\fabio\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",

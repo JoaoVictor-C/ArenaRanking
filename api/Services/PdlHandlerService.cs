@@ -51,11 +51,17 @@ namespace ArenaBackend.Services
          string gameName = playerData.GameName;
          string tagLine = playerData.TagLine;
          DateTime? dateAdded = playerData.DateAdded;
+         DateTime? lastUpdate = playerData.LastUpdate;
+
+         if (DateTime.UtcNow - lastUpdate < TimeSpan.FromMinutes(6))
+         {
+            return false;
+         }
 
          string lastMatchId = playerData.MatchStats.LastProcessedMatchId;
 
          // Get match history for the player
-         var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 5, "NORMAL");
+         var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 1, "NORMAL");
          if (matchIds == null || matchIds.Count == 0)
          {
             _logger.LogWarning("Could not retrieve match history for player {GameName}#{TagLine}", gameName, tagLine);
@@ -117,19 +123,24 @@ namespace ArenaBackend.Services
             if (player != null)
             {
                player.MatchStats.LastProcessedMatchId = matchId;
+               player.LastUpdate = DateTime.UtcNow;
                await _playerRepository.UpdatePlayerAsync(player);
             }
             return false;
          }
 
          // Skip if match is older than when the player was added
-         // DateTime gameCreationDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchDetails.info.gameCreation)).UtcDateTime;
+         DateTime gameCreationDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchDetails.info.gameCreation)).UtcDateTime;
 
-         // long gameCreation = gameCreationDate.Ticks;
-         // if (dateAdded.HasValue && gameCreation < dateAdded.Value.ToUniversalTime().Ticks)
-         // {
-         //    return false;
-         // }
+         long gameCreation = gameCreationDate.Ticks;
+         if (dateAdded.HasValue && gameCreation < dateAdded.Value.ToUniversalTime().Ticks)
+         {
+            var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
+            player.MatchStats.LastProcessedMatchId = matchId;
+            player.LastUpdate = DateTime.UtcNow;
+            await _playerRepository.UpdatePlayerAsync(player);
+            return false;
+         }
 
          var participantsPuuids = matchDetails.info.participants.Select(p => p.puuid).ToList();
          var existingPlayers = new List<Player>();
@@ -156,7 +167,7 @@ namespace ArenaBackend.Services
          var currentPdls = new Dictionary<string, int>();
          var win = new Dictionary<string, int>();
          var loss = new Dictionary<string, int>();
-         var championsPlayed = new Dictionary<string, List<Dictionary<int, string>>>();
+         var championsPlayed = new Dictionary<string, List<Dictionary<string, string>>>();
          var profileIcon = new Dictionary<string, int>();
 
          foreach (var participant in matchDetails.info.participants)
@@ -187,12 +198,16 @@ namespace ArenaBackend.Services
                profileIcon[participant.puuid] = participant.profileIcon;
 
                // Update champion data in the list of dictionaries format
-               var championEntry = new Dictionary<int, string> { { participant.championId, participant.championName } };
+               var championEntry = new ChampionPlayed
+               {
+                  ChampionId = participant.championId.ToString(),
+                  ChampionName = participant.championName
+               };
 
                // Check if player already has champion data
                if (player.MatchStats.ChampionsPlayed == null)
                {
-                  player.MatchStats.ChampionsPlayed = new List<Dictionary<int, string>>();
+                  player.MatchStats.ChampionsPlayed = new List<ChampionPlayed>();
                }
 
                // Add new champion to the tracking list
@@ -208,7 +223,10 @@ namespace ArenaBackend.Services
                }
 
                // Store in the temporary dictionary for this match processing
-               championsPlayed[participant.puuid] = player.MatchStats.ChampionsPlayed;
+               championsPlayed[participant.puuid] = player.MatchStats.ChampionsPlayed
+                  .Select(c => new Dictionary<string, string> { { c.ChampionId, c.ChampionName } })
+                  .ToList();
+               // Update player properties
 
                totalPdl += pdl;
             }
@@ -230,9 +248,9 @@ namespace ArenaBackend.Services
                win[participant.puuid] = isWin ? 1 : 0;
                loss[participant.puuid] = isWin ? 0 : 1;
                profileIcon[participant.puuid] = participant.profileIcon;
-               championsPlayed[participant.puuid] = new List<Dictionary<int, string>>
+               championsPlayed[participant.puuid] = new List<Dictionary<string, string>>
                {
-                  new Dictionary<int, string> { { participant.championId, participant.championName  } }
+                  new Dictionary<string, string> { { $"{participant.championId}", participant.championName  } }
                };
 
                totalPdl += pdl;
@@ -262,7 +280,7 @@ namespace ArenaBackend.Services
                matchId,
                win.TryGetValue(playerPuuid, out var playerWin) ? playerWin : 0,
                loss.TryGetValue(playerPuuid, out var playerLoss) ? playerLoss : 0,
-               championsPlayed.TryGetValue(playerPuuid, out var playerChampions) ? playerChampions : new List<Dictionary<int, string>>(),
+               championsPlayed.TryGetValue(playerPuuid, out var playerChampions) ? playerChampions : new List<Dictionary<string, string>>(),
                placements.TryGetValue(playerPuuid, out var playerPlacement) ? playerPlacement : 0,
                profileIcon.TryGetValue(playerPuuid, out var playerProfileIcon) ? playerProfileIcon : 0
             );
@@ -325,7 +343,8 @@ namespace ArenaBackend.Services
          return Math.Max(-100, Math.Min(100, pdlChange));
       }
 
-      public async Task<bool> UpdatePlayerPdlAsync(string puuid, int newPdl, string lastMatchId, int win, int loss, List<Dictionary<int, string>> championsPlayed, int placement, int profileIcon)
+      public async Task<bool> UpdatePlayerPdlAsync(string puuid, int newPdl, string lastMatchId, int win, int loss,
+   List<Dictionary<string, string>> championsPlayed, int placement, int profileIcon)
       {
          try
          {
@@ -354,7 +373,19 @@ namespace ArenaBackend.Services
                player.LastUpdate = DateTime.UtcNow;
                player.MatchStats.Win = win;
                player.MatchStats.Loss = loss;
-               player.MatchStats.ChampionsPlayed = championsPlayed;
+               player.LastPlacement = placement;
+
+               // Convert the list of dictionaries to ChampionPlayed objects
+               player.MatchStats.ChampionsPlayed = championsPlayed.Select(dict =>
+               {
+                  var entry = dict.First();
+                  return new ChampionPlayed
+                  {
+                     ChampionId = entry.Key,
+                     ChampionName = entry.Value
+                  };
+               }).ToList();
+
                player.ProfileIconId = profileIcon;
 
                // Calculate new average placement

@@ -19,11 +19,18 @@ public class MatchStats
    public double AveragePlacement { get; set; } = 0;
 
    [BsonElement("championsPlayed")]
-   public List<Dictionary<int, string>> ChampionsPlayed { get; set; } = new List<Dictionary<int, string>>();
+   public List<ChampionPlayed> ChampionsPlayed { get; set; } = new List<ChampionPlayed>();
+
       
    [BsonIgnore]
    public int TotalGames => Win + Loss;
    
    [BsonIgnore]
    public double WinRate => TotalGames > 0 ? (double)Win / TotalGames : 0;
+}
+
+public class ChampionPlayed
+{
+    public string ChampionId { get; set; } = string.Empty;
+    public string ChampionName { get; set; } = string.Empty;
 }
