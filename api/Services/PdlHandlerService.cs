@@ -434,6 +434,9 @@ namespace ArenaBackend.Services
          {
             await ProcessPlayerPdlAsync(player);
          }
+         
+         // Atualizar posições de ranking após processar o PDL de todos os jogadores
+         await _playerRepository.UpdateAllPlayerRankingsAsync();
 
          _logger.LogInformation("PDL processing for all players completed.");
       }

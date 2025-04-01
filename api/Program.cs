@@ -71,6 +71,13 @@ builder.Services.AddControllers();
 // Build app
 var app = builder.Build();
 
+// Inicializar rankings na inicialização do aplicativo
+using (var scope = app.Services.CreateScope())
+{
+    var playerRepository = scope.ServiceProvider.GetRequiredService<IPlayerRepository>();
+    await playerRepository.UpdateAllPlayerRankingsAsync();
+}
+
 // Configure middleware
 
 app.UseCors("CorsPolicy");
