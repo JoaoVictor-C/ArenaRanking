@@ -61,7 +61,7 @@ namespace ArenaBackend.Repositories
         {
             // Buscar jogadores ordenados por PDL (decrescente)
             var allPlayers = await _players
-                .Find(player => true)
+                .Find(player => player.TrackingEnabled == true && player.MatchStats.TotalGames > 0)
                 .SortByDescending(player => player.Pdl)
                 .ToListAsync();
 
