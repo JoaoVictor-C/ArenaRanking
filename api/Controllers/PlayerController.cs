@@ -13,9 +13,11 @@ public class PlayerController : ControllerBase
 {
     private readonly IPlayerRepository _playerRepository;
     private readonly IRiotApiService _riotApiService;
+    private readonly IPdlHandlerService _pdlHandlerService;
 
-    public PlayerController(IPlayerRepository playerRepository, IRiotApiService riotApiService)
+    public PlayerController(IPlayerRepository playerRepository, IRiotApiService riotApiService, IPdlHandlerService pdlHandlerService)
     {
+        _pdlHandlerService = pdlHandlerService;
         _playerRepository = playerRepository;
         _riotApiService = riotApiService;
     }
@@ -120,6 +122,21 @@ public class PlayerController : ControllerBase
         player.GameName = newName;
         await _playerRepository.UpdatePlayerAsync(player);
         return NoContent();
+    }
+    
+    [HttpGet("processPlayer")]
+    public async Task<IActionResult> ProcessPlayer([FromQuery] string gameName, [FromQuery] string tagLine)
+    {
+        var player = await _playerRepository.GetPlayerByRiotIdAsync(gameName, tagLine);
+        if (player == null)
+        {
+            return NotFound();
+        }
+
+        // Process the player data
+        await _pdlHandlerService.ProcessPlayerPdlAsync(player);
+
+        return Ok(player);
     }
 
 
