@@ -39,6 +39,13 @@ namespace ArenaBackend.Repositories
 
         public async Task CreatePlayerAsync(Player player)
         {
+            // Verify if player already exists
+            var existingPlayer = await GetPlayerByRiotIdAsync(player.GameName, player.TagLine);
+            if (existingPlayer != null)
+            {
+                return;
+            }
+            // If player does not exist, create a new one
             await _players.InsertOneAsync(player);
         }
 
