@@ -17,9 +17,9 @@ WORKDIR /app
 COPY --from=build /app/publish .
 
 # Criar pasta para os certificados e copiar
-# RUN mkdir -p /app/certificado
-# COPY --from=build /src/certificado/fullchain.pem /app/certificado/
-# COPY --from=build /src/certificado/privkey.pem /app/certificado/
+RUN mkdir -p /app/certificado
+COPY --from=build /src/certificado/fullchain.pem /app/certificado/
+COPY --from=build /src/certificado/privkey.pem /app/certificado/
 
 # Configurar variáveis de ambiente
 ENV ASPNETCORE_URLS=http://+:3002;https://+:3002
