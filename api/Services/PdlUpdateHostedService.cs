@@ -46,7 +46,7 @@ namespace ArenaBackend.Services
                 }
 
                 // Wait for 2 minutes before next execution
-                await Task.Delay(TimeSpan.FromMinutes(2), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(4), stoppingToken);
             }
         }
 

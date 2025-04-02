@@ -53,7 +53,7 @@ namespace ArenaBackend.Services
          DateTime? dateAdded = playerData.DateAdded;
          DateTime? lastUpdate = playerData.LastUpdate;
 
-         if (DateTime.UtcNow - lastUpdate < TimeSpan.FromMinutes(6))
+         if (DateTime.UtcNow - lastUpdate < TimeSpan.FromMinutes(30))
          {
             return false;
          }
