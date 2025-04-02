@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\api.csproj": {}
+    "D:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\api.csproj": {}
   },
   "projects": {
-    "d:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\api.csproj": {
+    "D:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\api.csproj",
+        "projectUniqueName": "D:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "d:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\api.csproj",
+        "projectPath": "D:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\api.csproj",
         "packagesPath": "C:\\Users\\fabio\\.nuget\\packages\\",
-        "outputPath": "d:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\obj\\",
+        "outputPath": "D:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\fabio\\AppData\\Roaming\\NuGet\\NuGet.Config"

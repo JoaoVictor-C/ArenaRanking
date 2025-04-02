@@ -20,10 +20,10 @@ namespace ArenaBackend.Services
       // Placement multipliers
       private readonly Dictionary<int, float> PLACEMENT_MULTIPLIERS = new Dictionary<int, float>
       {
-         { 1, 1.1f },
-         { 2, 0.8f },
-         { 3, 0.6f },
-         { 4, 0.4f },
+         { 1, 1.3f },
+         { 2, 1.1f },
+         { 3, 0.8f },
+         { 4, 0.6f },
          { 5, -0.4f },
          { 6, -0.6f },
          { 7, -1.0f },
@@ -305,6 +305,10 @@ namespace ArenaBackend.Services
          if (matchesPlayed < MIN_MATCHES_STABLE)
          {
             k = K_FACTOR_NEW_PLAYER;
+            if (placement > 4 && playerPdl <= 3000)
+            {
+               k = Math.Max(40, k - (placement - 4) * 10);
+            }
          }
          else
          {
