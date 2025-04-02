@@ -305,10 +305,6 @@ namespace ArenaBackend.Services
          if (matchesPlayed < MIN_MATCHES_STABLE)
          {
             k = K_FACTOR_NEW_PLAYER;
-            if (placement > 4 && playerPdl <= 3000)
-            {
-               k = Math.Max(40, k - (placement - 4) * 10);
-            }
          }
          else
          {
@@ -334,6 +330,11 @@ namespace ArenaBackend.Services
                   k *= 1.15f; // Higher bonus for weaker players doing well
                }
             }
+         }
+
+         if (placement > 4 && playerPdl <= 3000)
+         {
+            k = Math.Max(40, k - (placement - 4) * 10);
          }
 
          // Get multiplier for placement
