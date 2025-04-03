@@ -30,7 +30,7 @@ namespace ArenaBackend.Services
             _logger.LogInformation("PDL Update Background Service starting");
 
             // Small delay to let the application start completely
-            await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -46,7 +46,7 @@ namespace ArenaBackend.Services
                 }
 
                 // Wait for 2 minutes before next execution
-                await Task.Delay(TimeSpan.FromMinutes(4), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(6), stoppingToken);
             }
         }
 
