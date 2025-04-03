@@ -61,7 +61,7 @@ namespace ArenaBackend.Services
          string lastMatchId = playerData.MatchStats.LastProcessedMatchId;
 
          // Get match history for the player
-         var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 1, "NORMAL");
+         var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 3, "NORMAL");
          if (matchIds == null || matchIds.Count == 0)
          {
             _logger.LogWarning("Could not retrieve match history for player {GameName}#{TagLine}", gameName, tagLine);
@@ -130,17 +130,17 @@ namespace ArenaBackend.Services
          }
 
          // Skip if match is older than when the player was added
-         // DateTime gameCreationDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchDetails.info.gameCreation)).UtcDateTime;
+         DateTime gameCreationDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchDetails.info.gameCreation)).UtcDateTime;
 
-         // long gameCreation = gameCreationDate.Ticks;
-         // if (dateAdded.HasValue && gameCreation < dateAdded.Value.ToUniversalTime().Ticks)
-         // {
-         //    var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
-         //    player.MatchStats.LastProcessedMatchId = matchId;
-         //    player.LastUpdate = DateTime.UtcNow;
-         //    await _playerRepository.UpdatePlayerAsync(player);
-         //    return false;
-         // }
+         long gameCreation = gameCreationDate.Ticks;
+         if (dateAdded.HasValue && gameCreation < dateAdded.Value.ToUniversalTime().Ticks)
+         {
+            var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
+            player.MatchStats.LastProcessedMatchId = matchId;
+            player.LastUpdate = DateTime.UtcNow;
+            await _playerRepository.UpdatePlayerAsync(player);
+            return false;
+         }
 
          var participantsPuuids = matchDetails.info.participants.Select(p => p.puuid).ToList();
          var existingPlayers = new List<Player>();
