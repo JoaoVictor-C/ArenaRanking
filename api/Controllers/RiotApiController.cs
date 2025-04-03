@@ -67,7 +67,7 @@ public class RiotApiController : ControllerBase
    public async Task<ActionResult<string>> GetPlayer(string puuid)
    {
       // Debug purpose
-      var result = await _riotApiService.GetPlayer(puuid);
+      var result = await _riotApiService.GetRiotIdByPuuid(puuid);
       return Ok(result);
    }
 }

@@ -47,8 +47,27 @@ namespace ArenaBackend.Services
             return responseJson?.TryGetValue("id", out var id) == true ? id.ToString() : null;
         }
 
+        public async Task<GetRiotIdDataModel?> GetRiotIdByPuuid(string puuid)
+        {
+            string url = $"https://{REGION}.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}";
+            
+            var responseJson = await MakeApiRequest<Dictionary<string, object>>(url, $"Riot ID by puuid {puuid}");
+            if (responseJson == null) return null;
+            if (responseJson.TryGetValue("gameName", out var gameName) && 
+                responseJson.TryGetValue("tagLine", out var tagLine))
+            {
+                return new GetRiotIdDataModel
+                {
+                    GameName = gameName.ToString(),
+                    TagLine = tagLine.ToString(),
+                    Puuid = puuid
+                };
+            }
+            return null;
+        }
 
-        public async Task<string?> GetPlayer(string puuid)
+
+        public async Task<string?> GetTier(string puuid)
         {
             string url = $"https://{REGION2}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
             

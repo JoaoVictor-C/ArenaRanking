@@ -1,128 +1,171 @@
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\api.exe
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\api.deps.json
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\api.runtimeconfig.json
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\api.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\api.pdb
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\AWSSDK.Core.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\DnsClient.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\MongoDB.Bson.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\MongoDB.Driver.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\MongoDB.Driver.Core.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\MongoDB.Libmongocrypt.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Newtonsoft.Json.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\SharpCompress.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\Snappier.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\ZstdSharp.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\runtimes\linux\native\libmongocrypt.so
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\runtimes\osx\native\libmongocrypt.dylib
-D:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\api.csproj.AssemblyReference.cache
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\api.GeneratedMSBuildEditorConfig.editorconfig
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\api.AssemblyInfoInputs.cache
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\api.AssemblyInfo.cs
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\api.csproj.CoreCompileInputs.cache
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\api.csproj.Up2Date
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\api.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\refint\api.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\api.pdb
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\api.genruntimeconfig.cache
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\ref\api.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\api.exe
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\api.deps.json
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\api.runtimeconfig.json
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\api.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\api.pdb
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\AWSSDK.Core.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\DnsClient.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\MongoDB.Bson.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\MongoDB.Driver.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\MongoDB.Driver.Core.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\MongoDB.Libmongocrypt.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Newtonsoft.Json.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\SharpCompress.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\Snappier.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\ZstdSharp.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\runtimes\linux\native\libmongocrypt.so
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\runtimes\osx\native\libmongocrypt.dylib
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\api.csproj.AssemblyReference.cache
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\api.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\api.AssemblyInfoInputs.cache
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\api.AssemblyInfo.cs
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\api.csproj.CoreCompileInputs.cache
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\api.sourcelink.json
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\api.csproj.Up2Date
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\api.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\refint\api.dll
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\api.pdb
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\api.genruntimeconfig.cache
-C:\Users\Yago Aguiar\Desktop\ArenaRanking\api\obj\Debug\net8.0\ref\api.dll
-D:\JV\Meus Projetos\arena-ranking\backend\api\obj\Debug\net8.0\api.sourcelink.json
-d:\JV\Meus Projetos\arena-ranking\backend\api\bin\Debug\net8.0\appsettings.json
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\appsettings.json
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\api.exe
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\api.deps.json
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\api.runtimeconfig.json
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\api.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\api.pdb
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\AWSSDK.Core.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\AWSSDK.SecurityToken.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\DnsClient.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\MongoDB.Bson.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\MongoDB.Driver.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\MongoDB.Driver.Core.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\MongoDB.Libmongocrypt.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Newtonsoft.Json.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\SharpCompress.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\Snappier.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\ZstdSharp.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\runtimes\linux\native\libmongocrypt.so
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\runtimes\osx\native\libmongocrypt.dylib
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\bin\Debug\net8.0\runtimes\win\native\mongocrypt.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.csproj.AssemblyReference.cache
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.GeneratedMSBuildEditorConfig.editorconfig
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.AssemblyInfoInputs.cache
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.AssemblyInfo.cs
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.csproj.CoreCompileInputs.cache
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.sourcelink.json
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.csproj.Up2Date
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\refint\api.dll
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.pdb
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.genruntimeconfig.cache
-D:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\ref\api.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/api.exe
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/api.deps.json
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/api.runtimeconfig.json
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/api.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/api.pdb
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/AWSSDK.Core.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/AWSSDK.SecurityToken.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/DnsClient.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.AspNetCore.JsonPatch.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/MongoDB.Bson.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/MongoDB.Driver.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/MongoDB.Driver.Core.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/MongoDB.Libmongocrypt.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Newtonsoft.Json.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/SharpCompress.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/Snappier.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/ZstdSharp.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/runtimes/linux/native/libmongocrypt.so
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/runtimes/osx/native/libmongocrypt.dylib
+D:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/runtimes/win/native/mongocrypt.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/api.csproj.AssemblyReference.cache
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/api.GeneratedMSBuildEditorConfig.editorconfig
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/api.AssemblyInfoInputs.cache
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/api.AssemblyInfo.cs
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/api.csproj.CoreCompileInputs.cache
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/api.csproj.Up2Date
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/api.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/refint/api.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/api.pdb
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/api.genruntimeconfig.cache
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/ref/api.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/api.exe
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/api.deps.json
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/api.runtimeconfig.json
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/api.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/api.pdb
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/AWSSDK.Core.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/AWSSDK.SecurityToken.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/DnsClient.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Microsoft.AspNetCore.JsonPatch.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/MongoDB.Bson.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/MongoDB.Driver.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/MongoDB.Driver.Core.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/MongoDB.Libmongocrypt.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Newtonsoft.Json.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/SharpCompress.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/Snappier.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/ZstdSharp.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/runtimes/linux/native/libmongocrypt.so
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/runtimes/osx/native/libmongocrypt.dylib
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/bin/Debug/net8.0/runtimes/win/native/mongocrypt.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/api.csproj.AssemblyReference.cache
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/api.GeneratedMSBuildEditorConfig.editorconfig
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/api.AssemblyInfoInputs.cache
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/api.AssemblyInfo.cs
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/api.csproj.CoreCompileInputs.cache
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/api.sourcelink.json
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/api.csproj.Up2Date
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/api.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/refint/api.dll
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/api.pdb
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/api.genruntimeconfig.cache
+C:/Users/Yago Aguiar/Desktop/ArenaRanking/api/obj/Debug/net8.0/ref/api.dll
+D:/JV/Meus Projetos/arena-ranking/backend/api/obj/Debug/net8.0/api.sourcelink.json
+d:/JV/Meus Projetos/arena-ranking/backend/api/bin/Debug/net8.0/appsettings.json
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/appsettings.json
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/api.exe
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/api.deps.json
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/api.runtimeconfig.json
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/api.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/api.pdb
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/AWSSDK.Core.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/AWSSDK.SecurityToken.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/DnsClient.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.AspNetCore.JsonPatch.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/MongoDB.Bson.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/MongoDB.Driver.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/MongoDB.Driver.Core.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/MongoDB.Libmongocrypt.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Newtonsoft.Json.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/SharpCompress.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/Snappier.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/ZstdSharp.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/runtimes/linux/native/libmongocrypt.so
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/runtimes/osx/native/libmongocrypt.dylib
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/bin/Debug/net8.0/runtimes/win/native/mongocrypt.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/api.csproj.AssemblyReference.cache
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/api.GeneratedMSBuildEditorConfig.editorconfig
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/api.AssemblyInfoInputs.cache
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/api.AssemblyInfo.cs
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/api.csproj.CoreCompileInputs.cache
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/api.sourcelink.json
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/api.csproj.Up2Date
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/api.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/refint/api.dll
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/api.pdb
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/api.genruntimeconfig.cache
+D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/ref/api.dll
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/api.csproj.AssemblyReference.cache
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/api.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/api.AssemblyInfoInputs.cache
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/api.AssemblyInfo.cs
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/api.csproj.CoreCompileInputs.cache
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/api.sourcelink.json
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/api.dll
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/refint/api.dll
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/api.pdb
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/appsettings.json
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/api
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/api.deps.json
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/api.runtimeconfig.json
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/api.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/api.pdb
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/AWSSDK.Core.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/AWSSDK.SecurityToken.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/DnsClient.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Microsoft.AspNetCore.JsonPatch.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/MongoDB.Bson.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/MongoDB.Driver.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/MongoDB.Driver.Core.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/MongoDB.Libmongocrypt.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Newtonsoft.Json.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Newtonsoft.Json.Bson.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/SharpCompress.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/Snappier.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/ZstdSharp.dll
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/runtimes/linux/native/libmongocrypt.so
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/runtimes/osx/native/libmongocrypt.dylib
+/workspaces/ArenaRanking/api/bin/Debug/net8.0/runtimes/win/native/mongocrypt.dll
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/api.csproj.Up2Date
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/api.genruntimeconfig.cache
+/workspaces/ArenaRanking/api/obj/Debug/net8.0/ref/api.dll

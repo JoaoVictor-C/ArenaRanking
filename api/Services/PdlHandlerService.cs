@@ -232,7 +232,7 @@ namespace ArenaBackend.Services
             }
             else
             {
-               string? tier = await _riotApiService.GetPlayer(participant.puuid);
+               string? tier = await _riotApiService.GetTier(participant.puuid);
                if (string.IsNullOrEmpty(tier))
                {
                   _logger.LogWarning($"Could not retrieve tier for {participant.riotIdGameName}#{participant.riotIdTagline}");

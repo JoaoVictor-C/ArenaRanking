@@ -11,6 +11,10 @@ using System.IO;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Hosting;
+using System;
+
+System.TimeZoneInfo.TryConvertIanaIdToWindowsId("America/Sao_Paulo", out var windowsTimeZoneId);
+Environment.SetEnvironmentVariable("TZ", "America/Sao_Paulo");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,8 +57,12 @@ builder.Services.AddScoped<IOldPlayerRepository, OldPlayerRepository>();
 builder.Services.AddScoped<IMigrateOldSystemService, MigrateOldSystemService>();
 builder.Services.AddScoped<IRiotApiService, RiotApiService>();
 builder.Services.AddScoped<IPdlHandlerService, PdlHandlerService>();
+builder.Services.AddScoped<IRiotIdUpdateService, RiotIdUpdateService>();
+
 builder.Services.AddSingleton<IScheduleService, ScheduleService>();
-builder.Services.AddHostedService<PdlUpdateHostedService>();
+
+builder.Services.AddHostedService<RiotIdUpdateHostedService>();
+// builder.Services.AddHostedService<PdlUpdateHostedService>();
 
 // Add CORS
 builder.Services.AddCors(options =>
