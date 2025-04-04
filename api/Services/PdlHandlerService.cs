@@ -106,7 +106,7 @@ namespace ArenaBackend.Services
          return newMatchIds;
       }
 
-      private async Task<bool> ProcessMatchAsync(string matchId, string puuid, DateTime? dateAdded)
+      public async Task<bool> ProcessMatchAsync(string matchId, string puuid, DateTime? dateAdded)
       {
          GetMatchDataModel? matchDetails = await _riotApiService.GetMatchDetails(matchId);
          if (matchDetails == null)

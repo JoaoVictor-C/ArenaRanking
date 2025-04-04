@@ -58,11 +58,12 @@ builder.Services.AddScoped<IMigrateOldSystemService, MigrateOldSystemService>();
 builder.Services.AddScoped<IRiotApiService, RiotApiService>();
 builder.Services.AddScoped<IPdlHandlerService, PdlHandlerService>();
 builder.Services.AddScoped<IRiotIdUpdateService, RiotIdUpdateService>();
+builder.Services.AddScoped<IPdlRecalculationService, PdlRecalculationService>();
 
 builder.Services.AddSingleton<IScheduleService, ScheduleService>();
 
 builder.Services.AddHostedService<RiotIdUpdateHostedService>();
-// builder.Services.AddHostedService<PdlUpdateHostedService>();
+builder.Services.AddHostedService<PdlUpdateHostedService>();
 
 // Add CORS
 builder.Services.AddCors(options =>

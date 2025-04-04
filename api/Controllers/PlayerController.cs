@@ -14,12 +14,14 @@ public class PlayerController : ControllerBase
     private readonly IPlayerRepository _playerRepository;
     private readonly IRiotApiService _riotApiService;
     private readonly IPdlHandlerService _pdlHandlerService;
+    private readonly IPdlRecalculationService _pdlRecalculationService;
 
-    public PlayerController(IPlayerRepository playerRepository, IRiotApiService riotApiService, IPdlHandlerService pdlHandlerService)
+    public PlayerController(IPlayerRepository playerRepository, IRiotApiService riotApiService, IPdlHandlerService pdlHandlerService, IPdlRecalculationService pdlRecalculationService)
     {
         _pdlHandlerService = pdlHandlerService;
         _playerRepository = playerRepository;
         _riotApiService = riotApiService;
+        _pdlRecalculationService = pdlRecalculationService;
     }
 
     [HttpGet]
@@ -46,7 +48,7 @@ public class PlayerController : ControllerBase
         var players = await _playerRepository.GetAllPlayersAsync();
         players = players.Where(p => p.TrackingEnabled == true).ToList();
         var ranking = players.OrderByDescending(p => p.Pdl).ToList();
-        return Ok(ranking.Select(p => new { p.GameName, p.TagLine, p.ProfileIconId  }));
+        return Ok(ranking.Select(p => new { p.GameName, p.TagLine, p.ProfileIconId }));
     }
 
     [HttpGet("{id}")]
@@ -123,7 +125,7 @@ public class PlayerController : ControllerBase
         await _playerRepository.UpdatePlayerAsync(player);
         return NoContent();
     }
-    
+
     [HttpGet("processPlayer")]
     public async Task<IActionResult> ProcessPlayer([FromQuery] string gameName, [FromQuery] string tagLine)
     {
@@ -194,4 +196,30 @@ public class PlayerController : ControllerBase
         }
     }
 
+    [HttpPost("recalculate-all")]
+    public async Task<IActionResult> RecalculateAllPlayers()
+    {
+        await _pdlRecalculationService.RecalculateAllPlayersPdlAsync();
+        return Ok("Recálculo de PDL para todos os jogadores foi iniciado.");
+    }
+
+    [HttpPost("recalculate-player")]
+    public async Task<IActionResult> RecalculatePlayer([FromQuery] string puuid)
+    {
+        await _pdlRecalculationService.RecalculatePlayerPdlAsync(puuid);
+        return Ok($"Recálculo de PDL para o jogador com PUUID {puuid} foi concluído.");
+    }
+
+    [HttpPost("recalculate-by-riot-id")]
+    public async Task<IActionResult> RecalculatePlayerByRiotId([FromQuery] string gameName, [FromQuery] string tagLine)
+    {
+        var player = await _playerRepository.GetPlayerByRiotIdAsync(gameName, tagLine);
+        if (player == null)
+        {
+            return NotFound($"Jogador {gameName}#{tagLine} não encontrado.");
+        }
+
+        await _pdlRecalculationService.RecalculatePlayerPdlAsync(player.Puuid);
+        return Ok($"Recálculo de PDL para o jogador {gameName}#{tagLine} foi concluído.");
+    }
 }
