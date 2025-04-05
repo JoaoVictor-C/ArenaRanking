@@ -38,6 +38,13 @@ public class PlayerController : ControllerBase
         return Ok(players);
     }
 
+    [HttpGet("ranking/total")]
+    public async Task<ActionResult<int>> GetTotalPlayers()
+    {
+        var players = await _playerRepository.GetRanking(1, 999999);
+        return Ok(players.Count());
+    }
+
     [HttpGet("search")]
     public async Task<ActionResult<IEnumerable<Player>>> SearchPlayers()
     {

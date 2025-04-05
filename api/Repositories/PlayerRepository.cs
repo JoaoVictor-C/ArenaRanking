@@ -26,7 +26,7 @@ namespace ArenaBackend.Repositories
         {
             return await _players
                 .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
-                .SortByDescending(player => player.RankPosition)
+                .SortBy(player => player.RankPosition)
                 .Skip((page - 1) * pageSize)
                 .Limit(pageSize)
                 .ToListAsync();
