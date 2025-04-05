@@ -20,6 +20,24 @@ namespace ArenaBackend.Repositories
         public async Task<IEnumerable<Player>> GetAllPlayersAsync()
         {
             return await _players.Find(player => true).ToListAsync();    
+        } 
+
+        public async Task<IEnumerable<Player>> GetRanking(int page = 1, int pageSize = 200)
+        {
+            return await _players
+                .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
+                .SortByDescending(player => player.RankPosition)
+                .Skip((page - 1) * pageSize)
+                .Limit(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Player>> GetRanking()
+        {
+            return await _players
+                .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
+                .SortByDescending(player => player.Pdl)
+                .ToListAsync();
         }
 
         public async Task<Player> GetPlayerByIdAsync(string id)

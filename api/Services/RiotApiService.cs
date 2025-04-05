@@ -10,17 +10,16 @@ namespace ArenaBackend.Services
 {
     public class RiotApiService : IRiotApiService
     {
-        private readonly RiotApiSettings _riotApiSettings;
+        private readonly IRiotApiKeyManager _apiKeyManager;
         private readonly ILogger<RiotApiService> _logger;
         private const string REGION = "americas";
         private const string REGION2 = "br1";
         private const int RATE_LIMIT_DELAY_MS = 121000; // 2 minutes 1 second
 
-        public RiotApiService(IOptions<RiotApiSettings> riotApiSettings, ILogger<RiotApiService> logger)
+        public RiotApiService(IRiotApiKeyManager apiKeyManager, ILogger<RiotApiService> logger)
         {
-            _riotApiSettings = riotApiSettings.Value;
+            _apiKeyManager = apiKeyManager;
             _logger = logger;
-            
         }
         
         private HttpClient ConfigureHttpClient()
@@ -29,7 +28,7 @@ namespace ArenaBackend.Services
 
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", _riotApiSettings.ApiKey);
+            _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", _apiKeyManager.GetApiKey());
             return _httpClient;
         }
 

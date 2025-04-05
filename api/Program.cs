@@ -60,6 +60,7 @@ builder.Services.AddScoped<IPdlHandlerService, PdlHandlerService>();
 builder.Services.AddScoped<IRiotIdUpdateService, RiotIdUpdateService>();
 builder.Services.AddScoped<IPdlRecalculationService, PdlRecalculationService>();
 
+builder.Services.AddSingleton<IRiotApiKeyManager, RiotApiKeyManager>();
 builder.Services.AddSingleton<IScheduleService, ScheduleService>();
 
 builder.Services.AddHostedService<RiotIdUpdateHostedService>();

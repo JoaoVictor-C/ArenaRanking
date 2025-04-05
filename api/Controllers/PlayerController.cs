@@ -32,13 +32,10 @@ public class PlayerController : ControllerBase
     }
 
     [HttpGet("ranking")]
-    public async Task<ActionResult<IEnumerable<Player>>> GetRanking()
+    public async Task<ActionResult<IEnumerable<Player>>> GetRanking([FromQuery] int page = 1, [FromQuery] int pageSize = 100)
     {
-        var players = await _playerRepository.GetAllPlayersAsync();
-        // Show only players with at least 1 match played
-        players = players.Where(p => p.MatchStats.TotalGames > 0 && p.TrackingEnabled == true).ToList();
-        var ranking = players.OrderByDescending(p => p.Pdl).ToList();
-        return Ok(ranking);
+        var players = await _playerRepository.GetRanking(page, pageSize);
+        return Ok(players);
     }
 
     [HttpGet("search")]
