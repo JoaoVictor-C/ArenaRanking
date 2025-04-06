@@ -14,13 +14,6 @@ namespace ArenaBackend.Services
         private readonly ILogger<RiotApiService> _logger;
         private const string REGION = "americas";
         private const string REGION2 = "br1";
-        {
-            "br1": "americas",
-            "la1": "americas",
-            "na1": "americas",
-            "euw1": "europe",
-            "eun1": "europe",
-        }
         private const int RATE_LIMIT_DELAY_MS = 121000; // 2 minutes 1 second
 
         public RiotApiService(IRiotApiKeyManager apiKeyManager, ILogger<RiotApiService> logger)
