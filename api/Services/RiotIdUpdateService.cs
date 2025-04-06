@@ -27,16 +27,20 @@ namespace ArenaBackend.Services
                 _logger.LogInformation("Iniciando atualização diária de Riot IDs");
 
                 var allPlayers = await _playerRepository.GetAllPlayersAsync();
-                // For now we'll get only the player Presente#1001 for debugging purposes
-                // var player = await _playerRepository.GetPlayerByRiotIdAsync("Presente", "1001");
+                
+                if (allPlayers.Count() == 0)
+                {
+                    _logger.LogInformation("Nenhum jogador encontrado para atualizar os Riot IDs.");
+                    return;
+                }
+
                 int updatedCount = 0;
 
                 foreach (var player in allPlayers)
                 {
                     try
                     {
-                        // Obtém informações atualizadas do jogador usando a API da Riot
-                        GetRiotIdDataModel riotIdInfo = await _riotApiService.GetRiotIdByPuuid(player.Puuid);
+                        GetRiotIdDataModel? riotIdInfo = await _riotApiService.GetRiotIdByPuuid(player.Puuid);
                         if (riotIdInfo == null)
                         {
                             _logger.LogWarning($"Riot ID não encontrado para o jogador {player.GameName}#{player.TagLine} (PUUID: {player.Puuid})");
@@ -47,14 +51,12 @@ namespace ArenaBackend.Services
                             (!string.Equals(player.GameName, riotIdInfo.GameName) ||
                              !string.Equals(player.TagLine, riotIdInfo.TagLine)))
                         {
-                            // Registra os valores anteriores para o log
                             string oldGameName = player.GameName;
                             string oldTagLine = player.TagLine;
 
-                            // Atualiza o jogador se o nome ou tagLine mudou
                             player.GameName = riotIdInfo.GameName;
                             player.TagLine = riotIdInfo.TagLine;
-                            //await _playerRepository.UpdatePlayerAsync(player);
+                            await _playerRepository.UpdatePlayerAsync(player);
                             updatedCount++;
 
                             _logger.LogInformation($"Riot ID atualizado de {oldGameName}#{oldTagLine} para {player.GameName}#{player.TagLine} (PUUID: {player.Puuid})");

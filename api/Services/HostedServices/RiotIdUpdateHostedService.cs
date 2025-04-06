@@ -12,7 +12,6 @@ namespace ArenaBackend.Services
         private readonly ILogger<RiotIdUpdateHostedService> _logger;
         private readonly IServiceProvider _serviceProvider;
         
-        // TimeZone para Brasília
         private static readonly TimeZoneInfo BrasiliaTimeZone = GetBrasiliaTimeZone();
         
         public RiotIdUpdateHostedService(
@@ -27,12 +26,10 @@ namespace ArenaBackend.Services
         {
             _logger.LogInformation("Serviço de atualização de Riot IDs iniciado");
             
-            // Pequeno atraso para permitir que a aplicação inicialize completamente
             await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                // Calcula o tempo até a próxima execução (4h da manhã em horário de Brasília)
                 var delay = CalculateDelayUntil4AM();
                 
                 _logger.LogInformation(
@@ -40,12 +37,10 @@ namespace ArenaBackend.Services
                     DateTime.UtcNow.Add(delay).ToString("yyyy-MM-dd HH:mm:ss"),
                     delay);
                 
-                // Espera até a próxima execução
                 await Task.Delay(delay, stoppingToken);
                 
                 if (!stoppingToken.IsCancellationRequested)
                 {
-                    // Executa a atualização dos IDs
                     await UpdateRiotIdsAsync(stoppingToken);
                 }
             }
@@ -53,19 +48,15 @@ namespace ArenaBackend.Services
 
         private TimeSpan CalculateDelayUntil4AM()
         {
-            // Obtém a hora atual em Brasília
             DateTime now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, BrasiliaTimeZone);
             
-            // Define o próximo horário de execução às 4h
             DateTime target = now.Date.AddHours(4);
             
-            // Se já passou das 4h hoje, agenda para amanhã
             if (now >= target)
             {
                 target = target.AddDays(1);
             }
             
-            // Converte de volta para UTC para calcular o delay
             DateTime targetUtc = TimeZoneInfo.ConvertTimeToUtc(target, BrasiliaTimeZone);
             return targetUtc - DateTime.UtcNow;
         }
@@ -97,12 +88,11 @@ namespace ArenaBackend.Services
             {
                 try
                 {
-                    // Windows usa formato Windows
                     return TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
                 }
                 catch
                 {
-                    // Fallback: usar UTC-3 diretamente
+                    // Fallback: use UTC-3 directly
                     return TimeZoneInfo.CreateCustomTimeZone(
                         "Brasilia Standard Time",
                         new TimeSpan(-3, 0, 0),
