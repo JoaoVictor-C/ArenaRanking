@@ -34,6 +34,7 @@ public class Player
 
    [BsonElement("lastPlacement")]
     public int LastPlacement { get; set; } = 0;
+
    
    private DateTime? _lastUpdate;
    [BsonElement("lastUpdate")]

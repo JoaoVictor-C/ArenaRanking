@@ -15,13 +15,20 @@ public class PlayerController : ControllerBase
     private readonly IRiotApiService _riotApiService;
     private readonly IPdlHandlerService _pdlHandlerService;
     private readonly IPdlRecalculationService _pdlRecalculationService;
+    private readonly IRankingCacheService _rankingCacheService;
 
-    public PlayerController(IPlayerRepository playerRepository, IRiotApiService riotApiService, IPdlHandlerService pdlHandlerService, IPdlRecalculationService pdlRecalculationService)
+    public PlayerController(
+        IPlayerRepository playerRepository, 
+        IRiotApiService riotApiService, 
+        IPdlHandlerService pdlHandlerService, 
+        IPdlRecalculationService pdlRecalculationService,
+        IRankingCacheService rankingCacheService)
     {
         _pdlHandlerService = pdlHandlerService;
         _playerRepository = playerRepository;
         _riotApiService = riotApiService;
         _pdlRecalculationService = pdlRecalculationService;
+        _rankingCacheService = rankingCacheService;
     }
 
     [HttpGet]
@@ -34,15 +41,15 @@ public class PlayerController : ControllerBase
     [HttpGet("ranking")]
     public async Task<ActionResult<IEnumerable<Player>>> GetRanking([FromQuery] int page = 1, [FromQuery] int pageSize = 100)
     {
-        var players = await _playerRepository.GetRanking(page, pageSize);
+        var players = await _rankingCacheService.GetCachedRankingAsync(page, pageSize);
         return Ok(players);
     }
 
     [HttpGet("ranking/total")]
     public async Task<ActionResult<int>> GetTotalPlayers()
     {
-        var players = await _playerRepository.GetRanking(1, 999999);
-        return Ok(players.Count());
+        var totalPlayers = await _rankingCacheService.GetTotalPlayersAsync();
+        return Ok(totalPlayers);
     }
 
     [HttpGet("search")]

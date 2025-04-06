@@ -52,6 +52,7 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
     return new MongoClient(settings.ConnectionString);
 });
 
+builder.Services.AddSingleton<IRiotApiKeyManager, RiotApiKeyManager>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IOldPlayerRepository, OldPlayerRepository>();
 builder.Services.AddScoped<IMigrateOldSystemService, MigrateOldSystemService>();
@@ -59,10 +60,11 @@ builder.Services.AddScoped<IRiotApiService, RiotApiService>();
 builder.Services.AddScoped<IPdlHandlerService, PdlHandlerService>();
 builder.Services.AddScoped<IRiotIdUpdateService, RiotIdUpdateService>();
 builder.Services.AddScoped<IPdlRecalculationService, PdlRecalculationService>();
+builder.Services.AddSingleton<IRankingCacheService, RankingCacheService>();
 
-builder.Services.AddSingleton<IRiotApiKeyManager, RiotApiKeyManager>();
 builder.Services.AddSingleton<IScheduleService, ScheduleService>();
 
+builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
 builder.Services.AddHostedService<RiotIdUpdateHostedService>();
 builder.Services.AddHostedService<PdlUpdateHostedService>();
 
@@ -81,18 +83,28 @@ builder.Services.AddControllers();
 // Build app
 var app = builder.Build();
 
-// Inicializar rankings na inicialização do aplicativo
-using (var scope = app.Services.CreateScope())
-{
-    var playerRepository = scope.ServiceProvider.GetRequiredService<IPlayerRepository>();
-    await playerRepository.UpdateAllPlayerRankingsAsync();
-}
-
 // Configure middleware
-
 app.UseCors("CorsPolicy");
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
+
+// Inicializar rankings após a inicialização completa da aplicação
+app.Lifetime.ApplicationStarted.Register(async () => 
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var playerRepository = scope.ServiceProvider.GetRequiredService<IPlayerRepository>();
+        try
+        {
+            await playerRepository.UpdateAllPlayerRankingsAsync();
+            Console.WriteLine("Rankings inicializados com sucesso.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao inicializar rankings: {ex.Message}");
+        }
+    }
+});
 
 app.Run();
