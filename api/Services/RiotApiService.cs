@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ArenaBackend.Configs;
 using ArenaBackend.Models;
+using ArenaBackend.Repositories;
 
 namespace ArenaBackend.Services
 {
@@ -12,14 +13,17 @@ namespace ArenaBackend.Services
     {
         private readonly IRiotApiKeyManager _apiKeyManager;
         private readonly ILogger<RiotApiService> _logger;
-        private const string REGION = "americas";
-        private const string REGION2 = "br1";
+        private readonly IPlayerRepository _playerRepository;
         private const int RATE_LIMIT_DELAY_MS = 121000; // 2 minutes 1 second
 
-        public RiotApiService(IRiotApiKeyManager apiKeyManager, ILogger<RiotApiService> logger)
+        public RiotApiService(
+            IRiotApiKeyManager apiKeyManager, 
+            ILogger<RiotApiService> logger,
+            IPlayerRepository playerRepository)
         {
             _apiKeyManager = apiKeyManager;
             _logger = logger;
+            _playerRepository = playerRepository;
         }
         
         private HttpClient ConfigureHttpClient()
@@ -32,23 +36,23 @@ namespace ArenaBackend.Services
             return _httpClient;
         }
 
-        public async Task<object?> GetSummonerByPuuid(string puuid)
+        public async Task<object?> GetSummonerByPuuid(string puuid, string region = "americas")
         {
-            string url = $"https://{REGION}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}";
+            string url = $"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}";
             return await MakeApiRequest<object>(url, $"summoner data for puuid {puuid}");
         }
 
-        public async Task<string?> GetSummonerIdByName(string summonerName)
+        public async Task<string?> GetSummonerIdByName(string summonerName, string region = "americas")
         {
-            string url = $"https://{REGION}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summonerName}";
+            string url = $"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summonerName}";
             
             var responseJson = await MakeApiRequest<Dictionary<string, object>>(url, $"Summoner ID by name {summonerName}");
             return responseJson?.TryGetValue("id", out var id) == true ? id.ToString() : null;
         }
 
-        public async Task<GetRiotIdDataModel?> GetRiotIdByPuuid(string puuid)
+        public async Task<GetRiotIdDataModel?> GetRiotIdByPuuid(string puuid, string region = "americas")
         {
-            string url = $"https://{REGION}.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}";
+            string url = $"https://{region}.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}";
             
             var responseJson = await MakeApiRequest<Dictionary<string, object>>(url, $"Riot ID by puuid {puuid}");
             if (responseJson == null) return null;
@@ -65,10 +69,12 @@ namespace ArenaBackend.Services
             return null;
         }
 
-
         public async Task<string?> GetTier(string puuid)
         {
-            string url = $"https://{REGION2}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
+            var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
+            if (player == null) return null;
+
+            string url = $"https://{player.Server}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
             
             var data = await MakeApiRequest<List<Dictionary<string, object>>>(url, $"Ranked data for puuid {puuid}");
             if (data == null) return null;
@@ -87,34 +93,67 @@ namespace ArenaBackend.Services
             return "UNRANKED";
         }
 
-        public async Task<object?> GetRankedDataByPuuid(string puuid)
+        public async Task<object?> GetRankedDataByPuuid(string puuid, string region = "americas")
         {
-            string url = $"https://{REGION}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
+            string url = $"https://{region}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
             return await MakeApiRequest<object>(url, $"ranked data for puuid {puuid}");
         }
 
-
         public async Task<List<string>?> GetMatchHistoryPuuid(string puuid, int quantity, string type)
         {
-            string url = $"https://{REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?{type}=normal&start=0&count={quantity}";
+            var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
+            if (player == null) return null;
+
+            string url = $"https://{player.Region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?{type}=normal&start=0&count={quantity}";
             return await MakeApiRequest<List<string>>(url, $"match history for puuid {puuid}");
         }
 
         public async Task<GetMatchDataModel?> GetMatchDetails(string matchId)
         {
-            string url = $"https://{REGION}.api.riotgames.com/lol/match/v5/matches/{matchId}";
+            string region = matchId.Split('_')[0].ToLower();
+            string baseRegion = GetBaseRegion(region);
+
+            string url = $"https://{baseRegion}.api.riotgames.com/lol/match/v5/matches/{matchId}";
             return await MakeApiRequest<GetMatchDataModel>(url, $"match details for matchId {matchId}");
+        }
+
+        private string GetBaseRegion(string serverRegion)
+        {
+            return serverRegion.ToLower() switch
+            {
+                "br1" or "la1" or "la2" or "na1" => "americas",
+                "eun1" or "euw1" or "tr1" or "ru" => "europe",
+                "kr" or "jp1" => "asia",
+                "oc1" or "ph2" or "sg2" or "th2" or "tw2" or "vn2" => "sea",
+                _ => "americas"
+            };
         }
 
         public async Task<string?> VerifyRiotId(string tagline, string name)
         {
-            name = name.Replace(" ", "%20");
-            string url = $"https://{REGION}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{name}/{tagline}";
+            if (string.IsNullOrEmpty(tagline) || string.IsNullOrEmpty(name))
+            {
+                _logger.LogWarning("Riot ID ou Tagline inválido.");
+                return null;
+            }
+            // Search for the user to get the region
+            Player player = await _playerRepository.GetPlayerByRiotIdAsync(name, tagline);
+            if (player != null)
+            {
+                return player.Puuid;
+            }
+
+            string region = player?.Region ?? "americas";
+            if (string.IsNullOrEmpty(region))
+            {
+                _logger.LogWarning($"Região não encontrada para o jogador {name}#{tagline}");
+                return null;
+            }
+            string url = $"https://{region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{name}/{tagline}";
             
             var responseJson = await MakeApiRequest<Dictionary<string, object>>(url, $"Riot ID {name}#{tagline}");
             return responseJson?.TryGetValue("puuid", out var puuid) == true ? puuid.ToString() : null;
         }
-
 
         public async Task<(string, bool)> ConsultarRiotApi(string riotId)
         {
@@ -163,16 +202,16 @@ namespace ArenaBackend.Services
                     _logger.LogWarning($"Not found: {resourceDescription}");
                     return null;
                 }
-                else if (response.StatusCode == (HttpStatusCode)403) // Forbidden, normally for riot api key issues
+                else if (response.StatusCode == (HttpStatusCode)403)
                 {
                     _logger.LogError($"Forbidden while fetching {resourceDescription}. Check your Riot API key.");
                     return null;
                 }
-                else if (response.StatusCode == (HttpStatusCode)429) // Rate Limit
+                else if (response.StatusCode == (HttpStatusCode)429)
                 {
                     _logger.LogWarning($"Rate limit exceeded while fetching {resourceDescription}. Waiting before retry...");
                     await Task.Delay(RATE_LIMIT_DELAY_MS);
-                    return await MakeApiRequest<T>(url, resourceDescription); // Retry
+                    return await MakeApiRequest<T>(url, resourceDescription);
                 }
                 else
                 {
