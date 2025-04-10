@@ -60,8 +60,10 @@ builder.Services.AddScoped<IRiotApiService, RiotApiService>();
 builder.Services.AddScoped<IPdlHandlerService, PdlHandlerService>();
 builder.Services.AddScoped<IRiotIdUpdateService, RiotIdUpdateService>();
 builder.Services.AddScoped<IPdlRecalculationService, PdlRecalculationService>();
-builder.Services.AddSingleton<IRankingCacheService, RankingCacheService>();
+builder.Services.AddScoped<ISetRegionService, SetRegionService>();
+builder.Services.AddScoped<DatabaseMigrationService>();
 
+builder.Services.AddSingleton<IRankingCacheService, RankingCacheService>();
 builder.Services.AddSingleton<IScheduleService, ScheduleService>();
 
 builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
@@ -106,5 +108,11 @@ app.Lifetime.ApplicationStarted.Register(async () =>
         }
     }
 });
+
+using (var scope = app.Services.CreateScope())
+{
+    var migrationService = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
+    await migrationService.MigrateRegionFields();
+}
 
 app.Run();

@@ -16,19 +16,22 @@ public class PlayerController : ControllerBase
     private readonly IPdlHandlerService _pdlHandlerService;
     private readonly IPdlRecalculationService _pdlRecalculationService;
     private readonly IRankingCacheService _rankingCacheService;
+    private readonly ISetRegionService _setRegionService;
 
     public PlayerController(
         IPlayerRepository playerRepository, 
         IRiotApiService riotApiService, 
         IPdlHandlerService pdlHandlerService, 
         IPdlRecalculationService pdlRecalculationService,
-        IRankingCacheService rankingCacheService)
+        IRankingCacheService rankingCacheService,
+        ISetRegionService setRegionService)
     {
         _pdlHandlerService = pdlHandlerService;
         _playerRepository = playerRepository;
         _riotApiService = riotApiService;
         _pdlRecalculationService = pdlRecalculationService;
         _rankingCacheService = rankingCacheService;
+        _setRegionService = setRegionService;
     }
 
     [HttpGet]
@@ -232,5 +235,21 @@ public class PlayerController : ControllerBase
 
         await _pdlRecalculationService.RecalculatePlayerPdlAsync(player.Puuid);
         return Ok($"Recálculo de PDL para o jogador {gameName}#{tagLine} foi concluído.");
+    }
+
+    // Test
+
+    [HttpGet("SetRegionAll")]
+    public async Task<IActionResult> SetRegionAll()
+    {
+        var result = await _setRegionService.SetRegionAll();
+        if (result)
+        {
+            return Ok("Regiões definidas com sucesso.");
+        }
+        else
+        {
+            return BadRequest("Falha ao definir regiões.");
+        }
     }
 }

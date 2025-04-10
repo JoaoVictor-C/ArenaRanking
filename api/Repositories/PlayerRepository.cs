@@ -2,19 +2,22 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ArenaBackend.Models;
+using Microsoft.Extensions.Logging;
 
 namespace ArenaBackend.Repositories
 {
     public class PlayerRepository : IPlayerRepository
     {
         private readonly IMongoCollection<Player> _players;
+        private readonly ILogger<PlayerRepository> _logger;
 
-        public PlayerRepository(IMongoClient client)
+        public PlayerRepository(IMongoClient client, ILogger<PlayerRepository> logger)
         {
             var database = client.GetDatabase("arena_rank");
             //d rop
             // database.DropCollection("player");
             _players = database.GetCollection<Player>("player");
+            _logger = logger;
         }
 
         public async Task<IEnumerable<Player>> GetAllPlayersAsync()
@@ -24,12 +27,28 @@ namespace ArenaBackend.Repositories
 
         public async Task<IEnumerable<Player>> GetRanking(int page = 1, int pageSize = 200)
         {
-            return await _players
-                .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
-                .SortBy(player => player.RankPosition)
-                .Skip((page - 1) * pageSize)
-                .Limit(pageSize)
-                .ToListAsync();
+            try
+            {
+                return await _players
+                    .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
+                    .Project<Player>(Builders<Player>.Projection.Include(p => p.Id)
+                        .Include(p => p.GameName)
+                        .Include(p => p.TagLine)
+                        .Include(p => p.Pdl)
+                        .Include(p => p.RankPosition)
+                        .Include(p => p.MatchStats)
+                        .Include(p => p.Region)
+                        .Include(p => p.Server))
+                    .SortBy(player => player.RankPosition)
+                    .Skip((page - 1) * pageSize)
+                    .Limit(pageSize)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting ranking");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<Player>> GetRanking()

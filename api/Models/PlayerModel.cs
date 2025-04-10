@@ -22,6 +22,12 @@ public class Player
    
    [BsonElement("profileIconId")]
    public int ProfileIconId { get; set; } = 0;
+
+   [BsonElement("region")]
+   public string Region { get; set; } = "americas";
+
+   [BsonElement("server")]
+    public string Server { get; set; } = "br1";
    
    [BsonElement("pdl")]
    public int Pdl { get; set; } = 1000;
