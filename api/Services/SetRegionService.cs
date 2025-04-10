@@ -17,88 +17,59 @@ public class SetRegionService : ISetRegionService
        _logger = logger;
    }
 
-   public Task<bool> SetRegionAll() {
-      // We'll get all ranked players, then we'll get the the recent matches. After that we'll use this dictionary to get the correct region and server, based on the first 3 letters of the game ID
-      var referenceRegions = new Dictionary<string, string>
+   public Task<bool> SetRegionAll()
+   {
+      var referenceRegions = new Dictionary<string, (string region, string server)>
       {
-         { "BR1", "americas" },
-         { "NA1", "americas" },
-         { "LA1", "americas" },
-         { "LA2", "americas" },
-         { "EUN", "europe" },
-         { "EUW", "europe" },
-         { "TR1", "europe" },
-         { "RU", "europe" },
-         { "JP1", "asia" },
-         { "KR", "asia" },
-         { "OC1", "sea" },
-         { "PH2", "sea" },
-         { "SG2", "sea" },
-         { "TH2", "sea" },
-         { "TW2", "sea" },
-         { "VN2", "sea" },
+         { "BR1", ("americas", "br1") },
+         { "NA1", ("americas", "na1") },
+         { "LA1", ("americas", "la1") },
+         { "LA2", ("americas", "la2") },
+         { "EUN", ("europe", "eun1") },
+         { "EUW", ("europe", "euw1") },
+         { "TR1", ("europe", "tr1") },
+         { "RU", ("europe", "ru") },
+         { "JP1", ("asia", "jp1") },
+         { "KR", ("asia", "kr") },
+         { "OC1", ("sea", "oc1") },
+         { "PH2", ("sea", "ph2") },
+         { "SG2", ("sea", "sg2") },
+         { "TH2", ("sea", "th2") },
+         { "TW2", ("sea", "tw2") },
+         { "VN2", ("sea", "vn2") }
       };
 
-      // For now let's get all unique regions that appear on the first 3 lettes of the game ID
       var players = _playerRepository.GetAllPlayersAsync().Result;
-
       if (players == null)
       {
          _logger.LogWarning("No players found in the database.");
          return Task.FromResult(false);
       }
 
-      var regions = new HashSet<string>();
       foreach (var player in players)
       {
-         if (player.MatchStats?.RecentGames == null || player.MatchStats.RecentGames.Count == 0 || 
-             string.IsNullOrEmpty(player.Region) || string.IsNullOrEmpty(player.Server))
+         var tagLine = player.TagLine?.ToUpper();
+         if (string.IsNullOrEmpty(tagLine))
          {
-            // Default to BR1/americas for players without games or region/server
-            player.Region = "americas";
-            player.Server = "br1";
-            _playerRepository.UpdatePlayerAsync(player);
+            _logger.LogWarning($"Player {player.GameName} has no tagline.");
             continue;
          }
 
-         var gameId = player.MatchStats.RecentGames[0];
-         if (gameId != null && gameId.Length >= 3)
+         if (tagLine == "EUNE")
          {
-            var regionKey = gameId.Substring(0, 3);
-            if (referenceRegions.ContainsKey(regionKey))
-            {
-               regions.Add(referenceRegions[regionKey]);
-               player.Region = referenceRegions[regionKey];
-               player.Server = regionKey.ToLower();
-               _playerRepository.UpdatePlayerAsync(player);
-            }
-            else
-            {
-               _logger.LogWarning($"Region not found for game ID: {gameId}");
-            }
+            tagLine = "EUN";
          }
-         else
-         {
-            _logger.LogWarning($"Invalid game ID: {gameId}");
-         }
-      }
 
-      // Get all players again to see if any were updated
-      var updatedPlayers = _playerRepository.GetRanking().Result;
-      if (updatedPlayers == null)
-      {
-         _logger.LogWarning("No players found in the database after update.");
-         return Task.FromResult(false);
-      }
-      foreach (var player in updatedPlayers)
-      {
-         if (string.IsNullOrEmpty(player.Region) || string.IsNullOrEmpty(player.Server))
+         if (referenceRegions.TryGetValue(tagLine, out var regionInfo))
          {
-            _logger.LogWarning($"Player {player.GameName}#{player.TagLine} - Region or Server not set.");
+            player.Region = regionInfo.region;
+            player.Server = regionInfo.server;
+            // _playerRepository.UpdatePlayerAsync(player);
+            _logger.LogInformation($"Updated player {player.GameName}#{player.TagLine} - Region: {player.Region}, Server: {player.Server}");
          }
          else
          {
-            Console.WriteLine($"Player {player.GameName}#{player.TagLine} - Region: {player.Region}, Server: {player.Server}");
+            _logger.LogWarning($"No matching region found for tagline: {tagLine}");
          }
       }
 

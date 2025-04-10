@@ -36,20 +36,6 @@ namespace ArenaBackend.Services
             return _httpClient;
         }
 
-        public async Task<object?> GetSummonerByPuuid(string puuid, string region = "americas")
-        {
-            string url = $"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}";
-            return await MakeApiRequest<object>(url, $"summoner data for puuid {puuid}");
-        }
-
-        public async Task<string?> GetSummonerIdByName(string summonerName, string region = "americas")
-        {
-            string url = $"https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summonerName}";
-            
-            var responseJson = await MakeApiRequest<Dictionary<string, object>>(url, $"Summoner ID by name {summonerName}");
-            return responseJson?.TryGetValue("id", out var id) == true ? id.ToString() : null;
-        }
-
         public async Task<GetRiotIdDataModel?> GetRiotIdByPuuid(string puuid, string region = "americas")
         {
             string url = $"https://{region}.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}";

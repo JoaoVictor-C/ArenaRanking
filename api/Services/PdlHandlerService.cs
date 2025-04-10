@@ -169,6 +169,7 @@ namespace ArenaBackend.Services
          var loss = new Dictionary<string, int>();
          var championsPlayed = new Dictionary<string, List<Dictionary<string, string>>>();
          var profileIcon = new Dictionary<string, int>();
+         var playerDTOs = new List<PlayerDTO>();
 
          foreach (var participant in matchDetails.info.participants)
          {
@@ -232,6 +233,9 @@ namespace ArenaBackend.Services
             }
             else
             {
+               // When adding a new player, determine region and server from matchId
+               string server = matchId.Split('_')[0];
+               string region = GetBaseRegion(server);
                string? tier = await _riotApiService.GetTier(participant.puuid);
                if (string.IsNullOrEmpty(tier))
                {
@@ -255,9 +259,27 @@ namespace ArenaBackend.Services
 
                totalPdl += pdl;
 
-               // Add new player to the database
-               await AddPlayerAsync(participant.puuid, participant.riotIdGameName, participant.riotIdTagline, false, pdl);
+               // Add new player to the database with region and server
+               await AddPlayerAsync(participant.puuid, participant.riotIdGameName, participant.riotIdTagline, false, pdl, region, server);
             }
+
+            // Create PlayerDTO for the match
+            var playerDTO = new PlayerDTO
+            {
+               GameName = participant.riotIdGameName,
+               TagLine = participant.riotIdTagline,
+               ChampionId = participant.championId,
+               ChampionName = participant.championName,
+               Placement = participant.placement,
+               Augments = participant.augments ?? new List<string>(),
+               Items = participant.items ?? new List<int>(),
+               Kills = participant.kills,
+               Deaths = participant.deaths,
+               Assists = participant.assists,
+               TotalDamageDealt = participant.totalDamageDealt,
+            };
+
+            playerDTOs.Add(playerDTO);
          }
 
          // Calculate average PDL
@@ -282,7 +304,9 @@ namespace ArenaBackend.Services
                loss.TryGetValue(playerPuuid, out var playerLoss) ? playerLoss : 0,
                championsPlayed.TryGetValue(playerPuuid, out var playerChampions) ? playerChampions : new List<Dictionary<string, string>>(),
                placements.TryGetValue(playerPuuid, out var playerPlacement) ? playerPlacement : 0,
-               profileIcon.TryGetValue(playerPuuid, out var playerProfileIcon) ? playerProfileIcon : 0
+               profileIcon.TryGetValue(playerPuuid, out var playerProfileIcon) ? playerProfileIcon : 0,
+               matchDetails.info,
+               playerDTOs
             );
 
             // Log PDL changes for auto-checked players
@@ -349,38 +373,46 @@ namespace ArenaBackend.Services
       }
 
       public async Task<bool> UpdatePlayerPdlAsync(string puuid, int newPdl, string lastMatchId, int win, int loss,
-   List<Dictionary<string, string>> championsPlayed, int placement, int profileIcon)
+         List<Dictionary<string, string>> championsPlayed, int placement, int profileIcon, GetMatchDataModel.Info matchInfo, List<PlayerDTO> playerDTO = null)
       {
          try
          {
-            // Get the player to calculate PDL delta
             var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
 
             if (player != null)
             {
-               int currentPdl = player.Pdl;
-               int pdlChange = newPdl - currentPdl;
-
-               // Keep recent games list updated
-               if (!player.MatchStats.RecentGames.Contains(lastMatchId))
+               // Create detailed match 
+               var detailedMatch = new DetailedMatch
                {
-                  player.MatchStats.RecentGames.Add(lastMatchId);
+                  MatchId = lastMatchId,
+                  Players = playerDTO ?? new List<PlayerDTO>(),
+                  GameCreation = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchInfo.gameCreation)).UtcDateTime
+               };
+
+               // Update recent games
+               if (!player.MatchStats.RecentGames.Any(g => g.MatchId == lastMatchId))
+               {
+                  player.MatchStats.RecentGames.Add(detailedMatch);
                   // Keep only the 10 most recent games
-                  if (player.MatchStats.RecentGames.Count > 10)
+                  while (player.MatchStats.RecentGames.Count > 10)
                   {
-                     player.MatchStats.RecentGames.RemoveAt(0);
+                     player.MatchStats.RecentGames = player.MatchStats.RecentGames
+                        .OrderByDescending(g => g.GameCreation)
+                        .Take(10)
+                        .ToList();
                   }
                }
 
-               // Update player properties
+               // Update other player properties
                player.Pdl = newPdl;
                player.MatchStats.LastProcessedMatchId = lastMatchId;
                player.LastUpdate = DateTime.UtcNow;
                player.MatchStats.Win = win;
                player.MatchStats.Loss = loss;
                player.LastPlacement = placement;
+               player.ProfileIconId = profileIcon;
 
-               // Convert the list of dictionaries to ChampionPlayed objects
+               // Update champions played
                player.MatchStats.ChampionsPlayed = championsPlayed.Select(dict =>
                {
                   var entry = dict.First();
@@ -391,25 +423,18 @@ namespace ArenaBackend.Services
                   };
                }).ToList();
 
-               player.ProfileIconId = profileIcon;
-
-               // Calculate new average placement
+               // Update average placement
                int totalGames = player.MatchStats.Win + player.MatchStats.Loss;
-
-               // Update average placement calculation
-               // If this is the first game or we're starting fresh
                if (player.MatchStats.AveragePlacement == 0)
                {
                   player.MatchStats.AveragePlacement = placement;
                }
                else
                {
-                  // Calculate weighted average
                   player.MatchStats.AveragePlacement =
                      ((player.MatchStats.AveragePlacement * (totalGames - 1)) + placement) / totalGames;
                }
 
-               // Update player using repository
                await _playerRepository.UpdatePlayerAsync(player);
                return true;
             }
@@ -439,7 +464,7 @@ namespace ArenaBackend.Services
          {
             await ProcessPlayerPdlAsync(player);
          }
-         
+
          // Atualizar posições de ranking após processar o PDL de todos os jogadores
          await _playerRepository.UpdateAllPlayerRankingsAsync();
 
@@ -464,7 +489,7 @@ namespace ArenaBackend.Services
          };
       }
 
-      private async Task<bool> AddPlayerAsync(string puuid, string gameName, string tagLine, bool trackingEnabled, int pdl)
+      private async Task<bool> AddPlayerAsync(string puuid, string gameName, string tagLine, bool trackingEnabled, int pdl, string region, string server)
       {
          try
          {
@@ -475,7 +500,10 @@ namespace ArenaBackend.Services
                TagLine = tagLine,
                Pdl = pdl,
                TrackingEnabled = trackingEnabled,
-               DateAdded = DateTime.UtcNow
+               DateAdded = DateTime.UtcNow,
+               Region = region,
+               Server = server,
+               MatchStats = new MatchStats() // Initialize with default values
             };
 
             await _playerRepository.CreatePlayerAsync(player);
@@ -486,6 +514,18 @@ namespace ArenaBackend.Services
             _logger.LogError(ex, $"Error adding new player {gameName}#{tagLine}: {ex.Message}");
             return false;
          }
+      }
+
+      private string GetBaseRegion(string serverRegion)
+      {
+         return serverRegion.ToLower() switch
+         {
+            "br1" or "la1" or "la2" or "na1" => "americas",
+            "eun1" or "euw1" or "tr1" or "ru" => "europe",
+            "kr" or "jp1" => "asia",
+            "oc1" or "ph2" or "sg2" or "th2" or "tw2" or "vn2" => "sea",
+            _ => "americas"
+         };
       }
    }
 }

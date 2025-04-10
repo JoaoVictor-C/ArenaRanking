@@ -2034,19 +2034,19 @@
     ]
   },
   "packageFolders": {
-    "/home/codespace/.nuget/packages/": {}
+    "C:\\Users\\fabio\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/workspaces/ArenaRanking/api/api.csproj",
+      "projectUniqueName": "D:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "/workspaces/ArenaRanking/api/api.csproj",
-      "packagesPath": "/home/codespace/.nuget/packages/",
-      "outputPath": "/workspaces/ArenaRanking/api/obj/",
+      "projectPath": "D:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\api.csproj",
+      "packagesPath": "C:\\Users\\fabio\\.nuget\\packages\\",
+      "outputPath": "D:\\JoaoVictor\\Meus Projetos\\Outros\\arena-ranking\\backend\\api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/codespace/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\fabio\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -2112,7 +2112,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.407/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

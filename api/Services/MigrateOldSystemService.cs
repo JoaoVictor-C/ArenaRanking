@@ -51,7 +51,7 @@ public class MigrateOldSystemService : IMigrateOldSystemService
 
       await _playerRepository.CreatePlayersAsync(newPlayers);
       
-      // Verify if all players were migrated successfully
+      // Verificar se todos os jogadores foram migrados com sucesso
       var players = await _playerRepository.GetAllPlayersAsync();
       if (players.Count() == oldPlayers.Count() - errors)
       {

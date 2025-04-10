@@ -13,7 +13,7 @@ public class MatchStats
    public string LastProcessedMatchId { get; set; } = string.Empty;
    
    [BsonElement("recentGames")]
-   public List<string> RecentGames { get; set; } = new List<string>();
+   public List<DetailedMatch> RecentGames { get; set; } = new List<DetailedMatch>();
 
    [BsonElement("averagePlacement")]
    public double AveragePlacement { get; set; } = 0;

@@ -15,6 +15,6 @@ namespace ArenaBackend.Services
 
       int CalculatePdlChange(int playerPdl, int averagePdl, int placement, int matchesPlayed = 0);
 
-      Task<bool> UpdatePlayerPdlAsync(string puuid, int newPdl, string lastMatchId, int wins, int losses, List<Dictionary<string, string>> matchParticipants, int placement, int profileIconId);
+      Task<bool> UpdatePlayerPdlAsync(string puuid, int newPdl, string lastMatchId, int win, int loss, List<Dictionary<string, string>> championsPlayed, int placement, int profileIcon, GetMatchDataModel.Info matchInfo, List<PlayerDTO> playerDTO = null);
    }
 }

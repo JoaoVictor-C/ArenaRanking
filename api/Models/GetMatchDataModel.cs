@@ -24,6 +24,12 @@ public class GetMatchDataModel
             public string championName { get; set; }
             public string puuid { get; set; }
             public int profileIcon { get; set; }
+            public List<string> augments { get; set; }
+            public List<int> items { get; set; }
+            public int kills { get; set; }
+            public int deaths { get; set; }
+            public int assists { get; set; }
+            public int totalDamageDealt { get; set; }
         }
     }
 }
