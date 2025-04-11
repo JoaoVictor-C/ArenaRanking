@@ -2,7 +2,9 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ArenaBackend.Models;
+using ArenaBackend.Configs;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace ArenaBackend.Repositories
 {
@@ -11,13 +13,20 @@ namespace ArenaBackend.Repositories
         private readonly IMongoCollection<Player> _players;
         private readonly ILogger<PlayerRepository> _logger;
 
-        public PlayerRepository(IMongoClient client, ILogger<PlayerRepository> logger)
+        public PlayerRepository(
+            IMongoClient client, 
+            ILogger<PlayerRepository> logger,
+            IOptions<MongoDbSettings> settings)
         {
-            var database = client.GetDatabase("arena_rank");
-            //d rop
-            // database.DropCollection("player");
+            var dbSettings = settings.Value;
+            var databaseName = dbSettings.IsDevelopment 
+                ? $"{dbSettings.DatabaseName}{dbSettings.TestDatabaseSuffix}"
+                : dbSettings.DatabaseName;
+
+            var database = client.GetDatabase(databaseName);
             _players = database.GetCollection<Player>("player");
             _logger = logger;
+            _logger.LogInformation($"Using database: {databaseName}");
         }
 
         public async Task<IEnumerable<Player>> GetAllPlayersAsync()

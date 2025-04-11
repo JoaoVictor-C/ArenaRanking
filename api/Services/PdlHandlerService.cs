@@ -64,7 +64,7 @@ namespace ArenaBackend.Services
          var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 5, "NORMAL");
          if (matchIds == null || matchIds.Count == 0)
          {
-            _logger.LogWarning("Could not retrieve match history for player {GameName}#{TagLine}", gameName, tagLine);
+            //_logger.LogWarning("Could not retrieve match history for player {GameName}#{TagLine}", gameName, tagLine);
             return false;
          }
 

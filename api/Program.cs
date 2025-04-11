@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Hosting;
 using System;
+using Microsoft.Extensions.Hosting;
 
 System.TimeZoneInfo.TryConvertIanaIdToWindowsId("America/Sao_Paulo", out var windowsTimeZoneId);
 Environment.SetEnvironmentVariable("TZ", "America/Sao_Paulo");
@@ -53,22 +54,22 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 });
 
 builder.Services.AddSingleton<IRiotApiKeyManager, RiotApiKeyManager>();
+builder.Services.AddSingleton<IRankingCacheService, RankingCacheService>();
+builder.Services.AddSingleton<IScheduleService, ScheduleService>();
+
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IOldPlayerRepository, OldPlayerRepository>();
-builder.Services.AddScoped<IMigrateOldSystemService, MigrateOldSystemService>();
 builder.Services.AddScoped<IRiotApiService, RiotApiService>();
 builder.Services.AddScoped<IPdlHandlerService, PdlHandlerService>();
 builder.Services.AddScoped<IRiotIdUpdateService, RiotIdUpdateService>();
 builder.Services.AddScoped<IPdlRecalculationService, PdlRecalculationService>();
 builder.Services.AddScoped<ISetRegionService, SetRegionService>();
 builder.Services.AddScoped<DatabaseMigrationService>();
+builder.Services.AddScoped<DatabaseCloneService>();
 
-builder.Services.AddSingleton<IRankingCacheService, RankingCacheService>();
-builder.Services.AddSingleton<IScheduleService, ScheduleService>();
-
-builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
-builder.Services.AddHostedService<RiotIdUpdateHostedService>();
-builder.Services.AddHostedService<PdlUpdateHostedService>();
+// builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
+// builder.Services.AddHostedService<RiotIdUpdateHostedService>();
+// builder.Services.AddHostedService<PdlUpdateHostedService>();
 
 // Add CORS
 builder.Services.AddCors(options =>
@@ -113,6 +114,17 @@ using (var scope = app.Services.CreateScope())
 {
     var migrationService = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
     await migrationService.MigrateRegionFields();
+    await migrationService.MigrateRecentGamesFields();
+}
+
+// Get from configuration file
+if (builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>().IsDevelopment)
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbCloneService = scope.ServiceProvider.GetRequiredService<DatabaseCloneService>();
+        await dbCloneService.CloneProductionToTest();
+    }
 }
 
 app.Run();

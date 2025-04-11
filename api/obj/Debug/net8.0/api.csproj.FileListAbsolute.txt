@@ -169,12 +169,3 @@ D:/JoaoVictor/Meus Projetos/Outros/arena-ranking/backend/api/obj/Debug/net8.0/re
 /workspaces/ArenaRanking/api/obj/Debug/net8.0/api.csproj.Up2Date
 /workspaces/ArenaRanking/api/obj/Debug/net8.0/api.genruntimeconfig.cache
 /workspaces/ArenaRanking/api/obj/Debug/net8.0/ref/api.dll
-d:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.csproj.AssemblyReference.cache
-d:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.GeneratedMSBuildEditorConfig.editorconfig
-d:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.AssemblyInfoInputs.cache
-d:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.AssemblyInfo.cs
-d:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.csproj.CoreCompileInputs.cache
-d:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.sourcelink.json
-d:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.dll
-d:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\refint\api.dll
-d:\JoaoVictor\Meus Projetos\Outros\arena-ranking\backend\api\obj\Debug\net8.0\api.pdb
