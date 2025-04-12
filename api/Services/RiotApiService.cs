@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using ArenaBackend.Configs;
 using ArenaBackend.Models;
 using ArenaBackend.Repositories;
+using ArenaBackend.Factories;
 
 namespace ArenaBackend.Services
 {
@@ -13,32 +14,35 @@ namespace ArenaBackend.Services
     {
         private readonly IRiotApiKeyManager _apiKeyManager;
         private readonly ILogger<RiotApiService> _logger;
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IRepositoryFactory _repositoryFactory;
+        private readonly IHttpClientFactory _httpClientFactory;
         private const int RATE_LIMIT_DELAY_MS = 121000; // 2 minutes 1 second
 
         public RiotApiService(
             IRiotApiKeyManager apiKeyManager, 
             ILogger<RiotApiService> logger,
-            IPlayerRepository playerRepository)
+            IRepositoryFactory repositoryFactory,
+            IHttpClientFactory httpClientFactory)
         {
             _apiKeyManager = apiKeyManager;
             _logger = logger;
-            _playerRepository = playerRepository;
+            _repositoryFactory = repositoryFactory;
+            _httpClientFactory = httpClientFactory;
         }
         
-        private HttpClient ConfigureHttpClient()
+        private HttpClient GetConfiguredHttpClient()
         {
-            var _httpClient = new HttpClient();
-
-            _httpClient.DefaultRequestHeaders.Accept.Clear();
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", _apiKeyManager.GetApiKey());
-            return _httpClient;
+            var client = _httpClientFactory.CreateClient("RiotApi");
+            client.DefaultRequestHeaders.Add("X-Riot-Token", _apiKeyManager.GetApiKey());
+            return client;
         }
 
         public async Task<GetRiotIdDataModel?> GetRiotIdByPuuid(string puuid, string region = "americas")
         {
-            string url = $"https://{region}.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}";
+            // Escape de componentes individuais antes de montar a URL
+            string escapedPuuid = Uri.EscapeDataString(puuid);
+            string baseUrl = $"https://{region}.api.riotgames.com/riot/account/v1/accounts/by-puuid/";
+            string url = baseUrl + escapedPuuid;
             
             var responseJson = await MakeApiRequest<Dictionary<string, object>>(url, $"Riot ID by puuid {puuid}");
             if (responseJson == null) return null;
@@ -57,7 +61,8 @@ namespace ArenaBackend.Services
 
         public async Task<string?> GetTier(string puuid)
         {
-            var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            var player = await playerRepository.GetPlayerByPuuidAsync(puuid);
             if (player == null) return null;
 
             string url = $"https://{player.Server}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
@@ -87,7 +92,8 @@ namespace ArenaBackend.Services
 
         public async Task<List<string>?> GetMatchHistoryPuuid(string puuid, int quantity, string type)
         {
-            var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            var player = await playerRepository.GetPlayerByPuuidAsync(puuid);
             if (player == null) return null;
 
             string url = $"https://{player.Region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?type={type}&start=0&count={quantity}";
@@ -123,7 +129,8 @@ namespace ArenaBackend.Services
                 return null;
             }
             // Search for the user to get the region
-            Player player = await _playerRepository.GetPlayerByRiotIdAsync(name, tagline);
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            Player player = await playerRepository.GetPlayerByRiotIdAsync(name, tagline);
             if (player != null)
             {
                 return player.Puuid;
@@ -173,8 +180,21 @@ namespace ArenaBackend.Services
         {
             try
             {
-                var _httpClient = ConfigureHttpClient();
-                HttpResponseMessage response = await _httpClient.GetAsync(url);
+                // Escapar corretamente os componentes da URL
+                Uri uri = new Uri(url);
+                string scheme = uri.Scheme;
+                string host = uri.Host;
+                string path = uri.AbsolutePath;
+                string query = uri.Query;
+                
+                // Recompor a URL com componentes escapados corretamente
+                string[] pathSegments = path.Split('/').Skip(1).ToArray();
+                string escapedPath = "/" + string.Join("/", pathSegments.Select(segment => Uri.EscapeDataString(segment)));
+                
+                string escapedUrl = $"{scheme}://{host}{escapedPath}{query}";
+                
+                var httpClient = GetConfiguredHttpClient();
+                HttpResponseMessage response = await httpClient.GetAsync(escapedUrl);
                 
                 if (response.IsSuccessStatusCode)
                 {

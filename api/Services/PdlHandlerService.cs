@@ -61,7 +61,7 @@ namespace ArenaBackend.Services
          string lastMatchId = playerData.MatchStats.LastProcessedMatchId;
 
          // Get match history for the player
-         var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 5, "NORMAL");
+         var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 5, "normal");
          if (matchIds == null || matchIds.Count == 0)
          {
             //_logger.LogWarning("Could not retrieve match history for player {GameName}#{TagLine}", gameName, tagLine);

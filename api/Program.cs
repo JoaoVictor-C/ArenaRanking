@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using Microsoft.Extensions.Hosting;
+using System.Net.Http.Headers;
+using ArenaBackend.Factories;
 
 System.TimeZoneInfo.TryConvertIanaIdToWindowsId("America/Sao_Paulo", out var windowsTimeZoneId);
 Environment.SetEnvironmentVariable("TZ", "America/Sao_Paulo");
@@ -70,6 +72,17 @@ builder.Services.AddScoped<DatabaseCloneService>();
 builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
 builder.Services.AddHostedService<RiotIdUpdateHostedService>();
 builder.Services.AddHostedService<PdlUpdateHostedService>();
+
+// Adicione após as outras configurações de serviços
+builder.Services.AddHttpClient("RiotApi", client =>
+{
+    client.DefaultRequestHeaders.Accept.Clear();
+    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    // Não adicionamos o token aqui porque ele pode mudar dinamicamente
+});
+
+// Adicione após as outras configurações de serviços
+builder.Services.AddSingleton<IRepositoryFactory, RepositoryFactory>();
 
 // Add CORS
 builder.Services.AddCors(options =>
