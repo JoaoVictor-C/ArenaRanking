@@ -12,7 +12,8 @@ public class GetMatchDataModel
     public class Info
     {
         public string gameMode { get; set; }
-        public string gameCreation { get; set; }
+        public string gameCreation { get; set; }    
+        public long gameDuration { get; set; }
         public List<ParticipantesInfo> participants { get; set; }
 
         public class ParticipantesInfo

@@ -441,7 +441,8 @@ namespace ArenaBackend.Services
                {
                   MatchId = lastMatchId,
                   Players = playerDTO ?? new List<PlayerDTO>(),
-                  GameCreation = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchInfo.gameCreation)).UtcDateTime
+                  GameCreation = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchInfo.gameCreation)).UtcDateTime,
+                  GameDuration = matchInfo.gameDuration,
                };
 
                // Update recent games

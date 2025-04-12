@@ -21,4 +21,5 @@ public class DetailedMatch
    public string MatchId { get; set; } = string.Empty;
    public List<PlayerDTO> Players { get; set; } = new List<PlayerDTO>();
    public DateTime GameCreation { get; set; }
+   public long GameDuration { get; set; }
 }
