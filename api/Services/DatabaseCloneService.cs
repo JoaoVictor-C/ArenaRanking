@@ -42,9 +42,10 @@ public class DatabaseCloneService
             {
                 // Obtém os documentos da coleção de origem
                 var sourceCollection = sourceDb.GetCollection<BsonDocument>(collectionName);
-                var filter = collectionName == "player" 
-                    ? Builders<BsonDocument>.Filter.Eq("trackingEnabled", true)
-                    : new BsonDocument();
+                //var filter = collectionName == "player" 
+                    //? Builders<BsonDocument>.Filter.Eq("trackingEnabled", true)
+                    //: new BsonDocument();
+                var filter = Builders<BsonDocument>.Filter.Empty; // Para clonar todos os documentos
                 
                 var documents = await sourceCollection.Find(filter).ToListAsync();
 

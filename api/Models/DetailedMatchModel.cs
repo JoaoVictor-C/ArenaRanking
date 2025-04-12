@@ -13,6 +13,7 @@ public class PlayerDTO
    public int Deaths { get; set; }
    public int Assists { get; set; }
    public int TotalDamageDealt { get; set; }
+   public bool IsCurrentPlayer { get; set; } = false;
 }
 
 public class DetailedMatch

@@ -263,6 +263,60 @@ namespace ArenaBackend.Services
                await AddPlayerAsync(participant.puuid, participant.riotIdGameName, participant.riotIdTagline, false, pdl, region, server);
             }
 
+            // Get items and augments             public int playerAugment1 { get; set; }
+            /*public int playerAugment2 { get; set; }
+            public int playerAugment3 { get; set; }
+
+            public int playerAugment4 { get; set; }
+            public int playerAugment5 { get; set; }
+            public int playerAugment6 { get; set; }
+
+            public int item0 { get; set; }
+            public int item1 { get; set; }
+            public int item2 { get; set; }
+            public int item3 { get; set; }
+            public int item4 { get; set; }
+            public int item5 { get; set; }
+            public int item6 { get; set; }*/
+
+            var augments = new List<string>();
+            var items = new List<int>();
+            // Go through augment properties in a for loop
+            for (int i = 1; i <= 6; i++)
+            {
+               var augmentProperty = typeof(GetMatchDataModel.Info.ParticipantesInfo).GetProperty($"playerAugment{i}");
+               if (augmentProperty != null)
+               {
+                  var augmentValue = (int)augmentProperty.GetValue(participant);
+                  if (augmentValue > 0)
+                  {
+                     augments.Add(augmentValue.ToString());
+                  }
+               }
+            }
+            // Go through item properties in a for loop
+            for (int i = 0; i <= 6; i++)
+            {
+               var itemProperty = typeof(GetMatchDataModel.Info.ParticipantesInfo).GetProperty($"item{i}");
+               if (itemProperty != null)
+               {
+                  var itemValue = (int)itemProperty.GetValue(participant);
+                  if (itemValue > 0)
+                  {
+                     items.Add(itemValue);
+                  }
+               }
+            }
+            // Check if augments and items are empty
+            if (augments.Count == 0)
+            {
+               augments = null;
+            }
+            if (items.Count == 0)
+            {
+               items = null;
+            }
+
             // Create PlayerDTO for the match
             var playerDTO = new PlayerDTO
             {
@@ -271,12 +325,13 @@ namespace ArenaBackend.Services
                ChampionId = participant.championId,
                ChampionName = participant.championName,
                Placement = participant.placement,
-               Augments = participant.augments ?? new List<string>(),
-               Items = participant.items ?? new List<int>(),
+               Augments = augments ?? new List<string>(),
+               Items = items ?? new List<int>(),
                Kills = participant.kills,
                Deaths = participant.deaths,
                Assists = participant.assists,
                TotalDamageDealt = participant.totalDamageDealt,
+               IsCurrentPlayer = participant.puuid == puuid
             };
 
             playerDTOs.Add(playerDTO);

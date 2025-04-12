@@ -3,104 +3,84 @@ using ArenaBackend.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ArenaBackend.Configs;
+using MongoDB.Bson;
 
-namespace ArenaBackend.Services
+namespace ArenaBackend.Services;
+
+public class DatabaseMigrationService
 {
-    public class DatabaseMigrationService
+    private readonly IMongoCollection<Player> _players;
+    private readonly ILogger<DatabaseMigrationService> _logger;
+    private readonly string _databaseName;
+
+    public DatabaseMigrationService(
+        IMongoClient client,
+        ILogger<DatabaseMigrationService> logger,
+        IOptions<MongoDbSettings> settings)
     {
-        private readonly IMongoCollection<Player> _players;
-        private readonly ILogger<DatabaseMigrationService> _logger;
+        ArgumentNullException.ThrowIfNull(client);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(settings);
 
-        public DatabaseMigrationService(IMongoClient client, 
-            ILogger<DatabaseMigrationService> logger,
-            IOptions<MongoDbSettings> settings)
+        var dbSettings = settings.Value;
+        _databaseName = dbSettings.IsDevelopment 
+            ? $"{dbSettings.DatabaseName}{dbSettings.TestDatabaseSuffix}"
+            : dbSettings.DatabaseName;
+
+        var database = client.GetDatabase(_databaseName);
+        _players = database.GetCollection<Player>("player");
+        _logger = logger;
+        
+        _logger.LogInformation("Initialized DatabaseMigrationService using database: {DatabaseName}", _databaseName);
+    }
+
+    public async Task MigrateRegionFields()
+    {
+        try
         {
-            var dbSettings = settings.Value;
-            var databaseName = dbSettings.IsDevelopment 
-                ? $"{dbSettings.DatabaseName}{dbSettings.TestDatabaseSuffix}"
-                : dbSettings.DatabaseName;
+            var filter = Builders<Player>.Filter.Or(
+                Builders<Player>.Filter.Exists(p => p.Region, false),
+                Builders<Player>.Filter.Exists(p => p.Server, false)
+            );
 
-            var database = client.GetDatabase(databaseName);
-            _players = database.GetCollection<Player>("player");
-            _logger = logger;
-            _logger.LogInformation($"Using database: {databaseName}");
+            var update = Builders<Player>.Update
+                .SetOnInsert(p => p.Region, "americas")
+                .SetOnInsert(p => p.Server, "br1");
+
+            var result = await _players.UpdateManyAsync(filter, update);
+
+            _logger.LogInformation("Region fields migration completed. Modified {Count} documents", 
+                result.ModifiedCount);
         }
-        public async Task MigrateRegionFields()
+        catch (Exception ex)
         {
-            try
-            {
-                var update = Builders<Player>.Update
-                    .SetOnInsert(p => p.Region, "americas")
-                    .SetOnInsert(p => p.Server, "br1");
-
-                var result = await _players.UpdateManyAsync(
-                    filter: Builders<Player>.Filter.Or(
-                        Builders<Player>.Filter.Exists(p => p.Region, false),
-                        Builders<Player>.Filter.Exists(p => p.Server, false)
-                    ),
-                    update: update
-                );
-
-                _logger.LogInformation($"Migration completed. Modified {result.ModifiedCount} documents.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error during migration");
-                throw;
-            }
+            _logger.LogError(ex, "Failed to migrate region fields");
+            throw;
         }
+    }
 
-        public async Task MigrateRecentGamesFields()
+    public async Task MigrateRecentGamesField()
+    {
+        try
         {
-            try
-            {
-                var filter = Builders<Player>.Filter.Where(p => 
-                    p.MatchStats != null && 
-                    p.MatchStats.RecentGames != null && 
-                    p.MatchStats.RecentGames.Any(g => g.Players == null || !g.Players.Any()));
+            _logger.LogInformation("Starting recentGames field migration");
 
-                var players = await _players.Find(filter).ToListAsync();
+            // Get all players
+            var filterReset = Builders<Player>.Filter.Empty;
 
-                foreach (var player in players)
-                {
-                    var updatedRecentGames = new List<DetailedMatch>();
-                    foreach (var game in player.MatchStats.RecentGames)
-                    {
-                        // Converter jogos antigos para o novo formato
-                        if (game.Players == null || !game.Players.Any())
-                        {
-                            var newDetailedMatch = new DetailedMatch
-                            {
-                                MatchId = game.MatchId,
-                                GameCreation = game.GameCreation,
-                                Players = new List<PlayerDTO>()
-                            };
-                            updatedRecentGames.Add(newDetailedMatch);
-                        }
-                        else
-                        {
-                            updatedRecentGames.Add(game);
-                        }
-                    }
+            var updateReset = Builders<Player>.Update
+                .Set("matchStats.recentGames", new List<DetailedMatch>());
 
-                    player.MatchStats.RecentGames = updatedRecentGames;
-
-                    var updateDefinition = Builders<Player>.Update
-                        .Set(p => p.MatchStats.RecentGames, updatedRecentGames);
-
-                    await _players.UpdateOneAsync(
-                        Builders<Player>.Filter.Eq(p => p.Id, player.Id),
-                        updateDefinition
-                    );
-                }
-
-                _logger.LogInformation($"Recent games migration completed. Updated {players.Count} players.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error during recent games migration");
-                throw;
-            }
+            // Atualiza os documentos que não possuem o campo recentGames
+            var result = await _players.UpdateManyAsync(filterReset, updateReset);
+            _logger.LogInformation("Updated {Count} documents to initialize recentGames field", 
+                result.ModifiedCount);
+            _logger.LogInformation("RecentGames field migration completed successfully");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to migrate recentGames field");
+            throw;
         }
     }
 }

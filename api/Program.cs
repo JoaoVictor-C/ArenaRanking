@@ -67,9 +67,9 @@ builder.Services.AddScoped<ISetRegionService, SetRegionService>();
 builder.Services.AddScoped<DatabaseMigrationService>();
 builder.Services.AddScoped<DatabaseCloneService>();
 
-// builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
-// builder.Services.AddHostedService<RiotIdUpdateHostedService>();
-// builder.Services.AddHostedService<PdlUpdateHostedService>();
+builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
+builder.Services.AddHostedService<RiotIdUpdateHostedService>();
+builder.Services.AddHostedService<PdlUpdateHostedService>();
 
 // Add CORS
 builder.Services.AddCors(options =>
@@ -110,14 +110,7 @@ app.Lifetime.ApplicationStarted.Register(async () =>
     }
 });
 
-using (var scope = app.Services.CreateScope())
-{
-    var migrationService = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
-    await migrationService.MigrateRegionFields();
-    await migrationService.MigrateRecentGamesFields();
-}
 
-// Get from configuration file
 if (builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>().IsDevelopment)
 {
     using (var scope = app.Services.CreateScope())
@@ -125,6 +118,13 @@ if (builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>().I
         var dbCloneService = scope.ServiceProvider.GetRequiredService<DatabaseCloneService>();
         await dbCloneService.CloneProductionToTest();
     }
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var migrationService = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
+    await migrationService.MigrateRegionFields();
+    await migrationService.MigrateRecentGamesField(); // Adicione esta linha
 }
 
 app.Run();

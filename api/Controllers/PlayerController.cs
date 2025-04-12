@@ -45,6 +45,11 @@ public class PlayerController : ControllerBase
     public async Task<ActionResult<IEnumerable<Player>>> GetRanking([FromQuery] int page = 1, [FromQuery] int pageSize = 100)
     {
         var players = await _rankingCacheService.GetCachedRankingAsync(page, pageSize);
+        // Remove recent games before returning
+        foreach (var player in players)
+        {
+            player.MatchStats.RecentGames = [];
+        }
         return Ok(players);
     }
 
@@ -56,13 +61,42 @@ public class PlayerController : ControllerBase
     }
 
     [HttpGet("search")]
-    public async Task<ActionResult<IEnumerable<Player>>> SearchPlayers()
+    public async Task<ActionResult<IEnumerable<Player>>> SearchPlayers([FromQuery] string? gameName, [FromQuery] string? tagLine, [FromQuery] int? limit, [FromQuery] string server)
     {
-        // Similar to ranking but return some of data
-        var players = await _playerRepository.GetAllPlayersAsync();
-        players = players.Where(p => p.TrackingEnabled == true).ToList();
-        var ranking = players.OrderByDescending(p => p.Pdl).ToList();
-        return Ok(ranking.Select(p => new { p.GameName, p.TagLine, p.ProfileIconId }));
+        if (string.IsNullOrEmpty(gameName) && string.IsNullOrEmpty(tagLine))
+        {
+            return BadRequest("At least one search parameter (gameName, tagLine) must be provided");
+        }
+
+        if (limit <= 0)
+        {
+            return BadRequest("Limit must be greater than 0");
+        }
+
+        if (!string.IsNullOrEmpty(server) && !new[] { "br1", "na1", "euw1", "kr", "jp1", "eun1", "tr1", "la1", "la2", "oc1", "ph2", "sg2", "th2", "tw2", "vn2" }.Contains(server.ToLower()))
+        {
+            return BadRequest("Invalid server region specified");
+        }
+
+        var players = await _rankingCacheService.GetCachedRankingAsync(1, 99999);
+        if (!string.IsNullOrEmpty(gameName))
+        {
+            players = players.Where(p => p.GameName.Contains(gameName, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        if (!string.IsNullOrEmpty(tagLine))
+        {
+            players = players.Where(p => p.TagLine.Contains(tagLine, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        if (!string.IsNullOrEmpty(server))
+        {
+            players = players.Where(p => p.Server.Equals(server, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        if (limit.HasValue)
+        {
+            players = players.Take(limit.Value).ToList();
+        }
+
+        return Ok(players);
     }
 
     [HttpGet("{id}")]
