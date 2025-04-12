@@ -90,7 +90,7 @@ namespace ArenaBackend.Services
             var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
             if (player == null) return null;
 
-            string url = $"https://{player.Region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?{type}=normal&start=0&count={quantity}";
+            string url = $"https://{player.Region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?type={type}&start=0&count={quantity}";
             return await MakeApiRequest<List<string>>(url, $"match history for puuid {puuid}");
         }
 
