@@ -19,9 +19,9 @@ public class PlayerController : ControllerBase
     private readonly ISetRegionService _setRegionService;
 
     public PlayerController(
-        IPlayerRepository playerRepository, 
-        IRiotApiService riotApiService, 
-        IPdlHandlerService pdlHandlerService, 
+        IPlayerRepository playerRepository,
+        IRiotApiService riotApiService,
+        IPdlHandlerService pdlHandlerService,
         IPdlRecalculationService pdlRecalculationService,
         IRankingCacheService rankingCacheService,
         ISetRegionService setRegionService)
@@ -95,6 +95,50 @@ public class PlayerController : ControllerBase
         {
             players = players.Take(limit.Value).ToList();
         }
+        
+        // Create a mask to return only the GameName, TagLine, ProfileIconId
+        var maskedPlayers = players.Select(p => new Player
+        {
+            GameName = p.GameName,
+            TagLine = p.TagLine,
+            ProfileIconId = p.ProfileIconId,
+            Server = p.Server,
+            Pdl = p.Pdl,
+            LastUpdate = p.LastUpdate,
+            DateAdded = p.DateAdded
+        }).ToList();
+
+        return Ok(maskedPlayers);
+    }
+
+    [HttpGet("get/player")]
+    public async Task<ActionResult<IEnumerable<Player>>> GetPlayer([FromQuery] string? gameName, [FromQuery] string? tagLine, [FromQuery] string server)
+    {
+        if (string.IsNullOrEmpty(gameName) && string.IsNullOrEmpty(tagLine))
+        {
+            return BadRequest("At least one search parameter (gameName, tagLine) must be provided");
+        }
+
+        if (!string.IsNullOrEmpty(server) && !new[] { "br1", "na1", "euw1", "kr", "jp1", "eun1", "tr1", "la1", "la2", "oc1", "ph2", "sg2", "th2", "tw2", "vn2" }.Contains(server.ToLower()))
+        {
+            return BadRequest("Invalid server region specified");
+        }
+
+        var players = await _rankingCacheService.GetCachedRankingAsync(1, 99999);
+        if (!string.IsNullOrEmpty(gameName))
+        {
+            players = players.Where(p => p.GameName.Contains(gameName, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        if (!string.IsNullOrEmpty(tagLine))
+        {
+            players = players.Where(p => p.TagLine.Contains(tagLine, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+        if (!string.IsNullOrEmpty(server))
+        {
+            players = players.Where(p => p.Server.Equals(server, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        players = players.Take(1).ToList();
 
         return Ok(players);
     }
