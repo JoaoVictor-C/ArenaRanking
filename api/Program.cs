@@ -123,7 +123,7 @@ app.Lifetime.ApplicationStarted.Register(async () =>
     }
 });
 
-
+/*
 if (builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>().IsDevelopment)
 {
     using (var scope = app.Services.CreateScope())
@@ -132,11 +132,11 @@ if (builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>().I
         await dbCloneService.CloneProductionToTest();
     }
 }
-
+*/
 using (var scope = app.Services.CreateScope())
 {
     var migrationService = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
-    await migrationService.MigrateRegionFields();
+    //await migrationService.MigrateRegionFields();
     //await migrationService.MigrateRecentGamesField(); // Adicione esta linha
 }
 

@@ -59,16 +59,12 @@ namespace ArenaBackend.Services
             return null;
         }
 
-        public async Task<string?> GetTier(string puuid)
+        public async Task<string?> GetTier(string puuid, string server)
         {
-            var playerRepository = _repositoryFactory.GetPlayerRepository();
-            var player = await playerRepository.GetPlayerByPuuidAsync(puuid);
-            if (player == null) return null;
-
-            string url = $"https://{player.Server}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
+            string url = $"https://{server}.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
             
             var data = await MakeApiRequest<List<Dictionary<string, object>>>(url, $"Ranked data for puuid {puuid}");
-            if (data == null) return null;
+            if (data == null) return "UNRANKED";
             
             foreach (var entry in data)
             {

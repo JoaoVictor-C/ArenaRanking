@@ -1,21 +1,22 @@
 using ArenaBackend.Models;
 using ArenaBackend.Repositories;
+using ArenaBackend.Factories;
 using Microsoft.Extensions.Logging;
 
 namespace ArenaBackend.Services
 {
     public class RiotIdUpdateService : IRiotIdUpdateService
     {
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IRepositoryFactory _repositoryFactory;
         private readonly IRiotApiService _riotApiService;
         private readonly ILogger<RiotIdUpdateService> _logger;
 
         public RiotIdUpdateService(
-            IPlayerRepository playerRepository,
+            IRepositoryFactory repositoryFactory,
             IRiotApiService riotApiService,
             ILogger<RiotIdUpdateService> logger)
         {
-            _playerRepository = playerRepository;
+            _repositoryFactory = repositoryFactory;
             _riotApiService = riotApiService;
             _logger = logger;
         }
@@ -26,7 +27,8 @@ namespace ArenaBackend.Services
             {
                 _logger.LogInformation("Iniciando atualização diária de Riot IDs");
 
-                var allPlayers = await _playerRepository.GetAllPlayersAsync();
+                var playerRepository = _repositoryFactory.GetPlayerRepository();
+                var allPlayers = await playerRepository.GetAllPlayersAsync();
                 
                 if (allPlayers.Count() == 0)
                 {
@@ -56,7 +58,7 @@ namespace ArenaBackend.Services
 
                             player.GameName = riotIdInfo.GameName;
                             player.TagLine = riotIdInfo.TagLine;
-                            await _playerRepository.UpdatePlayerAsync(player);
+                            await playerRepository.UpdatePlayerAsync(player);
                             updatedCount++;
 
                             _logger.LogInformation($"Riot ID atualizado de {oldGameName}#{oldTagLine} para {player.GameName}#{player.TagLine} (PUUID: {player.Puuid})");

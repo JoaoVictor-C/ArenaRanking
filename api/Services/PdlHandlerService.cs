@@ -1,14 +1,15 @@
 using ArenaBackend.Models;
 using ArenaBackend.Repositories;
 using Microsoft.Extensions.Logging;
+using ArenaBackend.Factories;
 
 namespace ArenaBackend.Services
 {
    public class PdlHandlerService : IPdlHandlerService
    {
-      private readonly IPlayerRepository _playerRepository;
       private readonly ILogger<PdlHandlerService> _logger;
       private readonly IRiotApiService _riotApiService;
+      private readonly IRepositoryFactory _repositoryFactory;
 
       // Constants
       private const int K_FACTOR_BASE = 50;
@@ -31,11 +32,11 @@ namespace ArenaBackend.Services
       };
 
       public PdlHandlerService(
-         IPlayerRepository playerRepository,
+         IRepositoryFactory repositoryFactory,
          ILogger<PdlHandlerService> logger,
          IRiotApiService riotApiService)
       {
-         _playerRepository = playerRepository;
+         _repositoryFactory = repositoryFactory;
          _logger = logger;
          _riotApiService = riotApiService;
       }
@@ -64,7 +65,7 @@ namespace ArenaBackend.Services
          var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 5, "normal");
          if (matchIds == null || matchIds.Count == 0)
          {
-            //_logger.LogWarning("Could not retrieve match history for player {GameName}#{TagLine}", gameName, tagLine);
+            _logger.LogWarning("Could not retrieve match history for player {GameName}#{TagLine}", gameName, tagLine);
             return false;
          }
 
@@ -119,12 +120,13 @@ namespace ArenaBackend.Services
          if (matchDetails.info.gameMode != "CHERRY")
          {
             // Set last game processed to the current one
-            var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            var player = await playerRepository.GetPlayerByPuuidAsync(puuid);
             if (player != null)
             {
                player.MatchStats.LastProcessedMatchId = matchId;
                player.LastUpdate = DateTime.UtcNow;
-               await _playerRepository.UpdatePlayerAsync(player);
+               await playerRepository.UpdatePlayerAsync(player);
             }
             return false;
          }
@@ -135,20 +137,22 @@ namespace ArenaBackend.Services
          long gameCreation = gameCreationDate.Ticks;
          if (dateAdded.HasValue && gameCreation < dateAdded.Value.ToUniversalTime().Ticks)
          {
-            var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            var player = await playerRepository.GetPlayerByPuuidAsync(puuid);
             player.MatchStats.LastProcessedMatchId = matchId;
             player.LastUpdate = DateTime.UtcNow;
-            await _playerRepository.UpdatePlayerAsync(player);
+            await playerRepository.UpdatePlayerAsync(player);
             return false;
          }
 
          var participantsPuuids = matchDetails.info.participants.Select(p => p.puuid).ToList();
          var existingPlayers = new List<Player>();
+         var playerRepositoryInstance = _repositoryFactory.GetPlayerRepository();
 
          // Get all existing players individually using the repository
          foreach (var participantPuuid in participantsPuuids)
          {
-            var player = await _playerRepository.GetPlayerByPuuidAsync(participantPuuid);
+            var player = await playerRepositoryInstance.GetPlayerByPuuidAsync(participantPuuid);
             if (player != null)
             {
                existingPlayers.Add(player);
@@ -236,7 +240,7 @@ namespace ArenaBackend.Services
                // When adding a new player, determine region and server from matchId
                string server = matchId.Split('_')[0];
                string region = GetBaseRegion(server);
-               string? tier = await _riotApiService.GetTier(participant.puuid);
+               string? tier = await _riotApiService.GetTier(participant.puuid, server);
                if (string.IsNullOrEmpty(tier))
                {
                   _logger.LogWarning($"Could not retrieve tier for {participant.riotIdGameName}#{participant.riotIdTagline}");
@@ -262,22 +266,6 @@ namespace ArenaBackend.Services
                // Add new player to the database with region and server
                await AddPlayerAsync(participant.puuid, participant.riotIdGameName, participant.riotIdTagline, false, pdl, region, server);
             }
-
-            // Get items and augments             public int playerAugment1 { get; set; }
-            /*public int playerAugment2 { get; set; }
-            public int playerAugment3 { get; set; }
-
-            public int playerAugment4 { get; set; }
-            public int playerAugment5 { get; set; }
-            public int playerAugment6 { get; set; }
-
-            public int item0 { get; set; }
-            public int item1 { get; set; }
-            public int item2 { get; set; }
-            public int item3 { get; set; }
-            public int item4 { get; set; }
-            public int item5 { get; set; }
-            public int item6 { get; set; }*/
 
             var augments = new List<string>();
             var items = new List<int>();
@@ -365,7 +353,8 @@ namespace ArenaBackend.Services
             );
 
             // Log PDL changes for auto-checked players
-            var playerData = await _playerRepository.GetPlayerByPuuidAsync(playerPuuid);
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            var playerData = await playerRepository.GetPlayerByPuuidAsync(playerPuuid);
             if (playerData != null && playerData.TrackingEnabled)
             {
                _logger.LogInformation($"Player {gameNames[playerPuuid]}#{tagLines[playerPuuid]}: Placement {placements[playerPuuid]}, " +
@@ -432,7 +421,8 @@ namespace ArenaBackend.Services
       {
          try
          {
-            var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            var player = await playerRepository.GetPlayerByPuuidAsync(puuid);
 
             if (player != null)
             {
@@ -491,7 +481,7 @@ namespace ArenaBackend.Services
                      ((player.MatchStats.AveragePlacement * (totalGames - 1)) + placement) / totalGames;
                }
 
-               await _playerRepository.UpdatePlayerAsync(player);
+               await playerRepository.UpdatePlayerAsync(player);
                return true;
             }
 
@@ -508,7 +498,8 @@ namespace ArenaBackend.Services
       {
          _logger.LogInformation("Starting PDL processing for all players...");
 
-         var allPlayers = await _playerRepository.GetAllPlayersAsync();
+         var playerRepository = _repositoryFactory.GetPlayerRepository();
+         var allPlayers = await playerRepository.GetAllPlayersAsync();
 
          if (!allPlayers.Any())
          {
@@ -522,7 +513,7 @@ namespace ArenaBackend.Services
          }
 
          // Atualizar posições de ranking após processar o PDL de todos os jogadores
-         await _playerRepository.UpdateAllPlayerRankingsAsync();
+         await playerRepository.UpdateAllPlayerRankingsAsync();
 
          _logger.LogInformation("PDL processing for all players completed.");
       }
@@ -549,6 +540,7 @@ namespace ArenaBackend.Services
       {
          try
          {
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
             var player = new Player
             {
                Puuid = puuid,
@@ -562,7 +554,7 @@ namespace ArenaBackend.Services
                MatchStats = new MatchStats() // Initialize with default values
             };
 
-            await _playerRepository.CreatePlayerAsync(player);
+            await playerRepository.CreatePlayerAsync(player);
             return true;
          }
          catch (Exception ex)

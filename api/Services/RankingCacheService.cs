@@ -1,12 +1,13 @@
 using ArenaBackend.Models;
 using ArenaBackend.Repositories;
+using ArenaBackend.Factories;
 using Microsoft.Extensions.Logging;
 
 namespace ArenaBackend.Services
 {
     public class RankingCacheService : IRankingCacheService
     {
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IRepositoryFactory _repositoryFactory;
         private readonly ILogger<RankingCacheService> _logger;
         private readonly object _cacheLock = new object();
         
@@ -14,9 +15,9 @@ namespace ArenaBackend.Services
         private DateTime _lastCacheUpdate = DateTime.MinValue;
         private readonly TimeSpan _cacheValidityDuration = TimeSpan.FromMinutes(5);
 
-        public RankingCacheService(IPlayerRepository playerRepository, ILogger<RankingCacheService> logger)
+        public RankingCacheService(IRepositoryFactory repositoryFactory, ILogger<RankingCacheService> logger)
         {
-            _playerRepository = playerRepository;
+            _repositoryFactory = repositoryFactory;
             _logger = logger;
         }
 
@@ -51,7 +52,8 @@ namespace ArenaBackend.Services
                 _logger.LogInformation("Atualizando cache de ranking...");
                 
                 // Obter o ranking completo do repositório
-                var players = await _playerRepository.GetRanking(page: 1, pageSize: 10000);
+                var playerRepository = _repositoryFactory.GetPlayerRepository();
+                var players = await playerRepository.GetRanking(page: 1, pageSize: 10000);
                 
                 // Atualizar o cache atomicamente
                 lock (_cacheLock)

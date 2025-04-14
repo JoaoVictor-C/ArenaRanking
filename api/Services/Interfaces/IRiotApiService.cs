@@ -4,7 +4,7 @@ namespace ArenaBackend.Services
 {
     public interface IRiotApiService
     {
-        Task<string?> GetTier(string puuid);
+        Task<string?> GetTier(string puuid, string server);
         Task<GetRiotIdDataModel?> GetRiotIdByPuuid(string puuid, string region = "americas");
         Task<List<string>?> GetMatchHistoryPuuid(string puuid, int quantity, string type);
         Task<GetMatchDataModel?> GetMatchDetails(string matchId);

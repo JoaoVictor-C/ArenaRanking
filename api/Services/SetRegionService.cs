@@ -1,19 +1,19 @@
 using ArenaBackend.Repositories;
-using Microsoft.AspNetCore.Http.HttpResults;
+using ArenaBackend.Factories;
 using Microsoft.Extensions.Logging;
 
 namespace ArenaBackend.Services;
 
 public class SetRegionService : ISetRegionService
 {
-   private readonly IPlayerRepository _playerRepository;
+   private readonly IRepositoryFactory _repositoryFactory;
    private readonly ILogger<PdlRecalculationService> _logger;
 
    public SetRegionService(
-       IPlayerRepository playerRepository,
+       IRepositoryFactory repositoryFactory,
        ILogger<PdlRecalculationService> logger)
    {
-       _playerRepository = playerRepository;
+       _repositoryFactory = repositoryFactory;
        _logger = logger;
    }
 
@@ -39,7 +39,8 @@ public class SetRegionService : ISetRegionService
          { "VN2", ("sea", "vn2") }
       };
 
-      var players = _playerRepository.GetAllPlayersAsync().Result;
+      var playerRepository = _repositoryFactory.GetPlayerRepository();
+      var players = playerRepository.GetAllPlayersAsync().Result;
       if (players == null)
       {
          _logger.LogWarning("No players found in the database.");
@@ -64,7 +65,7 @@ public class SetRegionService : ISetRegionService
          {
             player.Region = regionInfo.region;
             player.Server = regionInfo.server;
-            // _playerRepository.UpdatePlayerAsync(player);
+            // playerRepository.UpdatePlayerAsync(player);
             _logger.LogInformation($"Updated player {player.GameName}#{player.TagLine} - Region: {player.Region}, Server: {player.Server}");
          }
          else
