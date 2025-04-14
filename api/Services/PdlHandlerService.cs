@@ -62,7 +62,7 @@ namespace ArenaBackend.Services
          string lastMatchId = playerData.MatchStats.LastProcessedMatchId;
 
          // Get match history for the player
-         var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 5, "normal");
+         var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 10, "normal");
          if (matchIds == null || matchIds.Count == 0)
          {
             _logger.LogWarning("Could not retrieve match history for player {GameName}#{TagLine}", gameName, tagLine);
@@ -70,9 +70,13 @@ namespace ArenaBackend.Services
          }
 
          // Determine which matches need to be processed
+         var playerRepository = _repositoryFactory.GetPlayerRepository();
+         var player = await playerRepository.GetPlayerByPuuidAsync(puuid);
          var newMatchIds = GetNewMatches(matchIds, lastMatchId);
          if (newMatchIds.Count == 0)
          {
+            player.LastUpdate = DateTime.UtcNow;
+            await playerRepository.UpdatePlayerAsync(player);
             return true;
          }
 

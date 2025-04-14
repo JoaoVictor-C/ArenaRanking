@@ -11,7 +11,7 @@ namespace ArenaBackend.Services
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<RankingCacheUpdateHostedService> _logger;
-        private readonly TimeSpan _updateInterval = TimeSpan.FromMinutes(1);
+        private readonly TimeSpan _updateInterval = TimeSpan.FromMinutes(3);
         private int _consecutiveErrors = 0;
         private const int _maxConsecutiveErrors = 3;
         private bool _isProcessing = false;
