@@ -71,7 +71,8 @@ namespace ArenaBackend.Services
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var cacheService = scope.ServiceProvider.GetRequiredService<IRankingCacheService>();
-                    await cacheService.RefreshCacheAsync();
+                    await cacheService.RefreshCacheAsync(); 
+                    await cacheService.RefreshAllTrackedPlayersAsync();
                 }
 
                 _logger.LogInformation("Atualização do cache de ranking finalizada");

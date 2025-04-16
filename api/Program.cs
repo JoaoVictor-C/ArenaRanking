@@ -136,8 +136,9 @@ if (builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>().I
 using (var scope = app.Services.CreateScope())
 {
     var migrationService = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
-    //await migrationService.MigrateRegionFields();
+    await migrationService.MigrateRegionFields();
     //await migrationService.MigrateRecentGamesField(); // Adicione esta linha
 }
+
 
 app.Run();

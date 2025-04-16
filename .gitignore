@@ -113,3 +113,14 @@ api/obj/project.assets.json
 api/obj/api.csproj.nuget.g.targets
 api/obj/api.csproj.nuget.dgspec.json
 api/bin/Debug/net8.0/api.dll
+.vscode/launch.json
+.vscode/tasks.json
+api/bin/Debug/net8.0/api.dll
+api/bin/Debug/net8.0/api.pdb
+api/obj/Debug/net8.0/api.dll
+api/obj/Debug/net8.0/api.AssemblyInfoInputs.cache
+api/obj/Debug/net8.0/api.pdb
+api/obj/Debug/net8.0/api.sourcelink.json
+api/obj/Debug/net8.0/ref/api.dll
+api/obj/Debug/net8.0/refint/api.dll
+api/obj/Debug/net8.0/api.AssemblyInfo.cs

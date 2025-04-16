@@ -12,7 +12,9 @@ namespace ArenaBackend.Services
         private readonly object _cacheLock = new object();
         
         private List<Player> _cachedRanking = new List<Player>();
+        private List<Player> _cachedAllTrackedPlayers = new List<Player>();
         private DateTime _lastCacheUpdate = DateTime.MinValue;
+        private DateTime _lastAllTrackedUpdate = DateTime.MinValue;
         private readonly TimeSpan _cacheValidityDuration = TimeSpan.FromMinutes(5);
 
         public RankingCacheService(IRepositoryFactory repositoryFactory, ILogger<RankingCacheService> logger)
@@ -34,6 +36,19 @@ namespace ArenaBackend.Services
                     .ToList();
             }
         }
+        
+        public async Task<IEnumerable<Player>> GetAllTrackedPlayersAsync(int page, int pageSize)
+        {
+            await EnsureAllTrackedPlayersAreUpdatedAsync();
+            
+            lock (_cacheLock)
+            {
+                return _cachedAllTrackedPlayers
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            }
+        }
 
         public async Task<int> GetTotalPlayersAsync()
         {
@@ -42,6 +57,16 @@ namespace ArenaBackend.Services
             lock (_cacheLock)
             {
                 return _cachedRanking.Count;
+            }
+        }
+        
+        public async Task<int> GetTotalTrackedPlayersAsync()
+        {
+            await EnsureAllTrackedPlayersAreUpdatedAsync();
+            
+            lock (_cacheLock)
+            {
+                return _cachedAllTrackedPlayers.Count;
             }
         }
 
@@ -69,6 +94,29 @@ namespace ArenaBackend.Services
                 _logger.LogError(ex, "Erro ao atualizar o cache de ranking");
             }
         }
+        
+        public async Task RefreshAllTrackedPlayersAsync()
+        {
+            try
+            {
+                _logger.LogInformation("Atualizando cache de todos os jogadores com tracking ativado...");
+                
+                var playerRepository = _repositoryFactory.GetPlayerRepository();
+                var players = await playerRepository.GetAllTrackedPlayersAsync(page: 1, pageSize: 10000);
+                
+                lock (_cacheLock)
+                {
+                    _cachedAllTrackedPlayers = players.ToList();
+                    _lastAllTrackedUpdate = DateTime.UtcNow;
+                }
+                
+                _logger.LogInformation($"Cache de todos os jogadores com tracking atualizado com {_cachedAllTrackedPlayers.Count} jogadores");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao atualizar o cache de todos os jogadores com tracking");
+            }
+        }
 
         private async Task EnsureCacheIsUpdatedAsync()
         {
@@ -76,6 +124,15 @@ namespace ArenaBackend.Services
             if (_cachedRanking.Count == 0 || DateTime.UtcNow - _lastCacheUpdate > _cacheValidityDuration)
             {
                 await RefreshCacheAsync();
+            }
+        }
+        
+        private async Task EnsureAllTrackedPlayersAreUpdatedAsync()
+        {
+            // Se o cache estiver vazio ou expirado, atualize-o
+            if (_cachedAllTrackedPlayers.Count == 0 || DateTime.UtcNow - _lastAllTrackedUpdate > _cacheValidityDuration)
+            {
+                await RefreshAllTrackedPlayersAsync();
             }
         }
     }
