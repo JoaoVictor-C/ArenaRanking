@@ -45,7 +45,7 @@ public class DatabaseCloneService
                 var filter = collectionName == "player" 
                     ? Builders<BsonDocument>.Filter.Eq("trackingEnabled", true)
                     : new BsonDocument();
-                //var filter = Builders<BsonDocument>.Filter.Empty; // Para clonar todos os documentos
+                // var filter = Builders<BsonDocument>.Filter.Empty; // Para clonar todos os documentos
                 
                 var documents = await sourceCollection.Find(filter).ToListAsync();
 

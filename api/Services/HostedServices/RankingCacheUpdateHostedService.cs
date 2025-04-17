@@ -71,8 +71,12 @@ namespace ArenaBackend.Services
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var cacheService = scope.ServiceProvider.GetRequiredService<IRankingCacheService>();
-                    await cacheService.RefreshCacheAsync(); 
-                    await cacheService.RefreshAllTrackedPlayersAsync();
+                    
+                    // Execute both refresh operations in parallel
+                    var refreshCacheTask = cacheService.RefreshCacheAsync();
+                    var refreshPlayersTask = cacheService.RefreshAllTrackedPlayersAsync();
+                    
+                    await Task.WhenAll(refreshCacheTask, refreshPlayersTask);
                 }
 
                 _logger.LogInformation("Atualização do cache de ranking finalizada");

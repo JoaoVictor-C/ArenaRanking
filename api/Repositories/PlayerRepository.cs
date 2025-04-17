@@ -26,7 +26,6 @@ namespace ArenaBackend.Repositories
             var database = client.GetDatabase(databaseName);
             _players = database.GetCollection<Player>("player");
             _logger = logger;
-            _logger.LogInformation($"Using database: {databaseName}");
         }
 
         public async Task<IEnumerable<Player>> GetAllPlayersAsync()

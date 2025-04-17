@@ -15,11 +15,13 @@ namespace ArenaBackend.Services
 
         public RiotApiKeyManager(IOptions<RiotApiSettings> settings)
         {
+            Console.WriteLine($"RiotApiKeyManager: {Environment.NewLine}Settings: {settings.Value.ApiKey}");
             _apiKey = settings.Value.ApiKey;
         }
 
         public string GetApiKey()
         {
+            Console.WriteLine($"RiotApiKeyManager: {Environment.NewLine}ApiKey: {_apiKey}");
             return _apiKey;
         }
 

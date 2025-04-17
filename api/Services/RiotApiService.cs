@@ -127,10 +127,7 @@ namespace ArenaBackend.Services
             // Search for the user to get the region
             var playerRepository = _repositoryFactory.GetPlayerRepository();
             Player player = await playerRepository.GetPlayerByRiotIdAsync(name, tagline);
-            if (player != null)
-            {
-                return player.Puuid;
-            }
+
 
             string region = player?.Region ?? "americas";
             if (string.IsNullOrEmpty(region))

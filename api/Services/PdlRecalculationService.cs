@@ -32,20 +32,40 @@ namespace ArenaBackend.Services
             _logger.LogInformation("Iniciando recálculo de PDL para todos os jogadores...");
 
             var allPlayers = await _playerRepository.GetAllPlayersAsync();
-            var trackingPlayers = allPlayers.Where(p => p.TrackingEnabled).ToList();
+            //var trackingPlayers = allPlayers.Where(p => p.TrackingEnabled).ToList();
 
-            _logger.LogInformation($"Total de {trackingPlayers.Count} jogadores com rastreamento ativo para recalcular");
+            _logger.LogInformation($"Total de {allPlayers.Count()} jogadores com rastreamento ativo para recalcular");
 
-            foreach (var player in trackingPlayers)
+            foreach (var player in allPlayers)
             {
-                await RecalculatePlayerPdlAsync(player.Puuid);
-                await Task.Delay(500); // Pequena pausa para evitar sobrecarga
+                await ResetPuuid(player);
             }
 
             // Atualizar posições de ranking após recalcular o PDL de todos os jogadores
             await _playerRepository.UpdateAllPlayerRankingsAsync();
 
             _logger.LogInformation("Recálculo de PDL para todos os jogadores concluído.");
+        }
+
+        private async Task ResetPuuid(Player player)
+        {
+            var puuid = await _riotApiService.VerifyRiotId(player.TagLine, player.GameName);
+            if (puuid == null)
+            {
+                _logger.LogWarning($"PUUID não encontrado para o jogador {player.GameName}#{player.TagLine}");
+                return;
+            }
+            var playerToUpdate = await _playerRepository.GetPlayerByPuuidAsync(puuid);
+            if (playerToUpdate == null)
+            {
+                _logger.LogWarning($"Jogador com PUUID {puuid} não encontrado.");
+                return;
+            }
+
+            playerToUpdate.Puuid = puuid;
+
+            await _playerRepository.UpdatePlayerAsync(playerToUpdate);
+            _logger.LogInformation($"PUUID atualizado para o jogador {player.GameName}#{player.TagLine}: {puuid}");
         }
 
         public async Task RecalculatePlayerPdlAsync(string puuid)

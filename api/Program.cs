@@ -24,7 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Kestrel para usar HTTPS com certificados PEM
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.Listen(System.Net.IPAddress.Any, 3002, listenOptions =>
+    serverOptions.Listen(System.Net.IPAddress.Any, 3003, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
         
@@ -69,9 +69,9 @@ builder.Services.AddScoped<ISetRegionService, SetRegionService>();
 builder.Services.AddScoped<DatabaseMigrationService>();
 builder.Services.AddScoped<DatabaseCloneService>();
 
-builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
-builder.Services.AddHostedService<RiotIdUpdateHostedService>();
-builder.Services.AddHostedService<PdlUpdateHostedService>();
+//builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
+//builder.Services.AddHostedService<RiotIdUpdateHostedService>();
+//builder.Services.AddHostedService<PdlUpdateHostedService>();
 
 // Adicione após as outras configurações de serviços
 builder.Services.AddHttpClient("RiotApi", client =>
@@ -136,7 +136,7 @@ if (builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>().I
 using (var scope = app.Services.CreateScope())
 {
     var migrationService = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
-    await migrationService.MigrateRegionFields();
+    //await migrationService.MigrateRegionFields();
     //await migrationService.MigrateRecentGamesField(); // Adicione esta linha
 }
 

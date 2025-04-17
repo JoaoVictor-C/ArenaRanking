@@ -288,5 +288,10 @@ public class PlayerController : ControllerBase
         }
     }
 
-    
+    [HttpPost("recalculate-all")]
+    public async Task<IActionResult> RecalculateAllPlayers()
+    {
+        await _pdlRecalculationService.RecalculateAllPlayersPdlAsync();
+        return Ok("Recálculo de PDL para todos os jogadores foi iniciado.");
+    }
 }
