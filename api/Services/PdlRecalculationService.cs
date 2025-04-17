@@ -34,15 +34,31 @@ namespace ArenaBackend.Services
             var allPlayers = await _playerRepository.GetAllPlayersAsync();
             //var trackingPlayers = allPlayers.Where(p => p.TrackingEnabled).ToList();
 
-            _logger.LogInformation($"Total de {allPlayers.Count()} jogadores com rastreamento ativo para recalcular");
+            // _logger.LogInformation($"Total de {allPlayers.Count()} jogadores com rastreamento ativo para recalcular");
 
-            foreach (var player in allPlayers)
-            {
-                await ResetPuuid(player);
-            }
+            // foreach (var player in allPlayers)
+            // {
+            //     await ResetPuuid(player);
+            //     await Task.Delay(250);
+            // }
 
             // Atualizar posições de ranking após recalcular o PDL de todos os jogadores
-            await _playerRepository.UpdateAllPlayerRankingsAsync();
+            //await _playerRepository.UpdateAllPlayerRankingsAsync();
+
+            // Get the players again
+            // allPlayers = await _playerRepository.GetAllPlayersAsync();
+            // After resetting PUUIDs, let's check each one to se if they are valid, by calling the method GetTier if it doesn't return a string send an error
+            foreach (var player in allPlayers)
+            {
+                var tier = await _riotApiService.GetTier(player.Puuid, player.Region);
+                if (string.IsNullOrEmpty(tier))
+                {
+                    _logger.LogWarning($"PUUID inválido para o jogador {player.GameName}#{player.TagLine}");
+                    continue;
+                }
+                _logger.LogInformation($"PUUID válido para o jogador {player.GameName}#{player.TagLine}: {tier}");
+                await Task.Delay(250);
+            }
 
             _logger.LogInformation("Recálculo de PDL para todos os jogadores concluído.");
         }
@@ -55,16 +71,10 @@ namespace ArenaBackend.Services
                 _logger.LogWarning($"PUUID não encontrado para o jogador {player.GameName}#{player.TagLine}");
                 return;
             }
-            var playerToUpdate = await _playerRepository.GetPlayerByPuuidAsync(puuid);
-            if (playerToUpdate == null)
-            {
-                _logger.LogWarning($"Jogador com PUUID {puuid} não encontrado.");
-                return;
-            }
 
-            playerToUpdate.Puuid = puuid;
+            player.Puuid = puuid;
 
-            await _playerRepository.UpdatePlayerAsync(playerToUpdate);
+            await _playerRepository.UpdatePlayerAsync(player);
             _logger.LogInformation($"PUUID atualizado para o jogador {player.GameName}#{player.TagLine}: {puuid}");
         }
 

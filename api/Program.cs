@@ -24,7 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Kestrel para usar HTTPS com certificados PEM
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.Listen(System.Net.IPAddress.Any, 3003, listenOptions =>
+    serverOptions.Listen(System.Net.IPAddress.Any, 3002, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
         
@@ -139,6 +139,5 @@ using (var scope = app.Services.CreateScope())
     //await migrationService.MigrateRegionFields();
     //await migrationService.MigrateRecentGamesField(); // Adicione esta linha
 }
-
 
 app.Run();
