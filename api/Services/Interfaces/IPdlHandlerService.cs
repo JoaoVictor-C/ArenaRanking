@@ -5,7 +5,7 @@ using ArenaBackend.Models;
 
 namespace ArenaBackend.Services
 {
-   public interface IPdlHandlerService
+   public interface IPdlHandlerService : IDisposable
    {
       Task<bool> ProcessPlayerPdlAsync(Player playerData);
 

@@ -31,13 +31,13 @@ public class RiotApiController : ControllerBase
             return NotFound(ResultMessage);
          }
 
-          var puuid = ResultMessage;
-          return Ok(new { puuid });
+         var puuid = ResultMessage;
+         return Ok(new { puuid });
       }
-      catch (System.Exception)
+      catch (System.Exception ex)
       {
-         Console.WriteLine("Erro ao consultar a API da Riot - VerifyRiotId");
-         throw;
+         Console.WriteLine($"Erro ao consultar a API da Riot - VerifyRiotId: {ex.Message}");
+         return StatusCode(500, "Ocorreu um erro ao processar sua solicitação");
       }
    }
 

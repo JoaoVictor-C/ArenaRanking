@@ -37,6 +37,28 @@ namespace ArenaBackend.Services
             return client;
         }
 
+        public async Task<GetRiotIdDataModel?> GetPuuidByRiotId(string gameName, string tagLine, string region = "americas")
+        {
+            // Escape de componentes individuais antes de montar a URL
+            string escapedGameName = Uri.EscapeDataString(gameName);
+            string escapedTagLine = Uri.EscapeDataString(tagLine);
+            string baseUrl = $"https://{region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/";
+            string url = baseUrl + $"{escapedGameName}/{escapedTagLine}";
+            
+            var responseJson = await MakeApiRequest<Dictionary<string, object>>(url, $"Riot ID {gameName}#{tagLine}");
+            if (responseJson == null) return null;
+            if (responseJson.TryGetValue("puuid", out var puuid))
+            {
+                return new GetRiotIdDataModel
+                {
+                    GameName = gameName,
+                    TagLine = tagLine,
+                    Puuid = puuid.ToString()
+                };
+            }
+            return null;
+        }
+
         public async Task<GetRiotIdDataModel?> GetRiotIdByPuuid(string puuid, string region = "americas")
         {
             // Escape de componentes individuais antes de montar a URL
@@ -173,21 +195,11 @@ namespace ArenaBackend.Services
         {
             try
             {
-                // Escapar corretamente os componentes da URL
-                Uri uri = new Uri(url);
-                string scheme = uri.Scheme;
-                string host = uri.Host;
-                string path = uri.AbsolutePath;
-                string query = uri.Query;
-                
-                // Recompor a URL com componentes escapados corretamente
-                string[] pathSegments = path.Split('/').Skip(1).ToArray();
-                string escapedPath = "/" + string.Join("/", pathSegments.Select(segment => Uri.EscapeDataString(segment)));
-                
-                string escapedUrl = $"{scheme}://{host}{escapedPath}{query}";
+                // Change " " to "%20" in the URL
+                url = url.Replace(" ", "%20");
                 
                 var httpClient = GetConfiguredHttpClient();
-                HttpResponseMessage response = await httpClient.GetAsync(escapedUrl);
+                HttpResponseMessage response = await httpClient.GetAsync(url);
                 
                 if (response.IsSuccessStatusCode)
                 {

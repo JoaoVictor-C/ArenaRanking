@@ -26,7 +26,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.Listen(System.Net.IPAddress.Any, 3002, listenOptions =>
     {
-        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+        listenOptions.Protocols = HttpProtocols.Http1;
         
         // Caminho para os certificados
         var certPath = Path.Combine(builder.Environment.ContentRootPath, "certificado", "fullchain.pem");
@@ -38,6 +38,8 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
             // Carrega os certificados PEM
             var certificate = X509Certificate2.CreateFromPemFile(certPath, keyPath);
             listenOptions.UseHttps(certificate);
+            // Se TLS estiver habilitado, podemos usar HTTP/2
+            listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
         }
     });
 });
@@ -69,9 +71,9 @@ builder.Services.AddScoped<ISetRegionService, SetRegionService>();
 builder.Services.AddScoped<DatabaseMigrationService>();
 builder.Services.AddScoped<DatabaseCloneService>();
 
-//builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
-//builder.Services.AddHostedService<RiotIdUpdateHostedService>();
-//builder.Services.AddHostedService<PdlUpdateHostedService>();
+builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
+builder.Services.AddHostedService<RiotIdUpdateHostedService>();
+builder.Services.AddHostedService<PdlUpdateHostedService>();
 
 // Adicione após as outras configurações de serviços
 builder.Services.AddHttpClient("RiotApi", client =>
@@ -123,16 +125,20 @@ app.Lifetime.ApplicationStarted.Register(async () =>
     }
 });
 
-/*
+
 if (builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>().IsDevelopment)
 {
     using (var scope = app.Services.CreateScope())
     {
         var dbCloneService = scope.ServiceProvider.GetRequiredService<DatabaseCloneService>();
-        await dbCloneService.CloneProductionToTest();
+        //await dbCloneService.CloneProductionToTest();
+        //DEBUG:
+        var PdlRecalculationService = scope.ServiceProvider.GetRequiredService<IPdlRecalculationService>();
+        await PdlRecalculationService.RecalculateAllPlayersPdlAsync();
     }
 }
-*/
+
+
 using (var scope = app.Services.CreateScope())
 {
     var migrationService = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
