@@ -2,10 +2,11 @@ using ArenaBackend.Models;
 using ArenaBackend.Repositories;
 using Microsoft.Extensions.Logging;
 using ArenaBackend.Factories;
+using System.Collections.Concurrent;
 
 namespace ArenaBackend.Services
 {
-   public class PdlHandlerService : IPdlHandlerService
+   public class PdlHandlerService : IPdlHandlerService, IDisposable
    {
       private readonly ILogger<PdlHandlerService> _logger;
       private readonly IRiotApiService _riotApiService;
@@ -32,6 +33,12 @@ namespace ArenaBackend.Services
          { 8, -1.7f }
       };
 
+      // Local caches
+      private readonly ConcurrentDictionary<string, GetMatchDataModel> _matchCache = new ConcurrentDictionary<string, GetMatchDataModel>();
+      private readonly ConcurrentDictionary<string, DateTime> _lastProcessedTimeByPuuid = new ConcurrentDictionary<string, DateTime>();
+      private readonly TimeSpan _minTimeBetweenProcessing = TimeSpan.FromMinutes(15);
+      private readonly SemaphoreSlim _throttler;
+
       public PdlHandlerService(
          IRepositoryFactory repositoryFactory,
          ILogger<PdlHandlerService> logger,
@@ -42,6 +49,7 @@ namespace ArenaBackend.Services
          _logger = logger;
          _riotApiService = riotApiService;
          _rankingCacheService = rankingCacheService;
+         _throttler = new SemaphoreSlim(Environment.ProcessorCount, Environment.ProcessorCount);
       }
 
       public async Task<bool> ProcessPlayerPdlAsync(Player playerData)
@@ -57,14 +65,21 @@ namespace ArenaBackend.Services
          DateTime? dateAdded = playerData.DateAdded;
          DateTime? lastUpdate = playerData.LastUpdate;
 
-         if (DateTime.UtcNow - lastUpdate < TimeSpan.FromMinutes(15))
+         if (_lastProcessedTimeByPuuid.TryGetValue(puuid, out DateTime lastProcessed))
+         {
+            if (DateTime.UtcNow - lastProcessed < _minTimeBetweenProcessing)
+            {
+               return false;
+            }
+         }
+
+         if (DateTime.UtcNow - lastUpdate < _minTimeBetweenProcessing)
          {
             return false;
          }
 
          string lastMatchId = playerData.MatchStats.LastProcessedMatchId;
 
-         // Get match history for the player
          var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 10, "normal");
          if (matchIds == null || matchIds.Count == 0)
          {
@@ -72,31 +87,46 @@ namespace ArenaBackend.Services
             return false;
          }
 
-         // Determine which matches need to be processed
-         // Try to get player from cache first
          var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
-         
+
          var newMatchIds = GetNewMatches(matchIds, lastMatchId);
          if (newMatchIds.Count == 0)
          {
             player.LastUpdate = DateTime.UtcNow;
             await UpdatePlayerAsync(player);
+            _lastProcessedTimeByPuuid[puuid] = DateTime.UtcNow;
             return true;
          }
 
-         // Process each match
          newMatchIds.Reverse();
          foreach (var matchId in newMatchIds)
          {
             await ProcessMatchAsync(matchId, puuid, dateAdded);
          }
 
+         _lastProcessedTimeByPuuid[puuid] = DateTime.UtcNow;
          return true;
+      }
+
+      private async Task<Player> GetPlayerFromCacheOrRepositoryByPuuidAsync(string puuid)
+      {
+         try
+         {
+            // Primeiro, tente buscar diretamente do serviço de cache
+            return await _rankingCacheService.GetPlayerByPuuidAsync(puuid);
+         }
+         catch (Exception ex)
+         {
+            _logger.LogWarning($"Erro acessando cache para jogador {puuid}: {ex.Message}");
+            
+            // Se falhar, busque diretamente do repositório
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            return await playerRepository.GetPlayerByPuuidAsync(puuid);
+         }
       }
 
       private static List<string> GetNewMatches(List<string> allMatches, string lastProcessedMatchId)
       {
-         // If no last processed match, process all matches
          if (string.IsNullOrEmpty(lastProcessedMatchId))
          {
             return allMatches;
@@ -107,7 +137,7 @@ namespace ArenaBackend.Services
          {
             if (matchId == lastProcessedMatchId)
             {
-               break;  // Already processed up to here
+               break;
             }
             newMatchIds.Add(matchId);
          }
@@ -117,17 +147,24 @@ namespace ArenaBackend.Services
 
       public async Task<bool> ProcessMatchAsync(string matchId, string puuid, DateTime? dateAdded)
       {
-         GetMatchDataModel? matchDetails = await _riotApiService.GetMatchDetails(matchId);
+         GetMatchDataModel? matchDetails;
+         if (!_matchCache.TryGetValue(matchId, out matchDetails))
+         {
+            matchDetails = await _riotApiService.GetMatchDetails(matchId);
+            if (matchDetails != null)
+            {
+               _matchCache[matchId] = matchDetails;
+            }
+         }
+
          if (matchDetails == null)
          {
             _logger.LogWarning($"Could not retrieve details for match {matchId}");
             return false;
          }
 
-         // Skip if the match is not arena mode
          if (matchDetails.info.gameMode != "CHERRY")
          {
-            // Set last game processed to the current one
             var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
             if (player != null)
             {
@@ -138,7 +175,6 @@ namespace ArenaBackend.Services
             return false;
          }
 
-         // Skip if match is older than when the player was added
          DateTime gameCreationDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchDetails.info.gameCreation)).UtcDateTime;
 
          long gameCreation = gameCreationDate.Ticks;
@@ -154,11 +190,9 @@ namespace ArenaBackend.Services
          var participantsPuuids = matchDetails.info.participants.Select(p => p.puuid).ToList();
          var existingPlayers = new List<Player>();
 
-         // Try to get all players from cache first
          var cachedPlayers = await GetPlayersFromCacheByPuuidsAsync(participantsPuuids);
          existingPlayers.AddRange(cachedPlayers);
 
-         // For any players not found in cache, get them from repository
          var missingPuuids = participantsPuuids.Except(existingPlayers.Select(p => p.Puuid)).ToList();
          if (missingPuuids.Any())
          {
@@ -175,7 +209,6 @@ namespace ArenaBackend.Services
 
          var existingPlayerDict = existingPlayers.ToDictionary(p => p.Puuid);
 
-         // Calculate average PDL
          int totalPdl = 0;
          int totalPlayers = participantsPuuids.Count;
          var puuidsToProcess = new List<string>();
@@ -200,7 +233,6 @@ namespace ArenaBackend.Services
                int playerWin = player.MatchStats.Win;
                int playerLoss = player.MatchStats.Loss;
 
-               // Skip if already processed
                if (player.MatchStats.LastProcessedMatchId == matchId || (player.TrackingEnabled && participant.puuid != puuid))
                {
                   totalPdl += pdl;
@@ -216,42 +248,35 @@ namespace ArenaBackend.Services
                loss[participant.puuid] = playerLoss + (isWin ? 0 : 1);
                profileIcon[participant.puuid] = participant.profileIcon;
 
-               // Update champion data in the list of dictionaries format
                var championEntry = new ChampionPlayed
                {
                   ChampionId = participant.championId.ToString(),
                   ChampionName = participant.championName
                };
 
-               // Check if player already has champion data
                if (player.MatchStats.ChampionsPlayed == null)
                {
                   player.MatchStats.ChampionsPlayed = new List<ChampionPlayed>();
                }
 
-               // Add new champion to the tracking list
                if (player.MatchStats.ChampionsPlayed.Count < 4)
                {
                   player.MatchStats.ChampionsPlayed.Add(championEntry);
                }
                else
                {
-                  // Remove oldest champion and add new one
                   player.MatchStats.ChampionsPlayed.RemoveAt(0);
                   player.MatchStats.ChampionsPlayed.Add(championEntry);
                }
 
-               // Store in the temporary dictionary for this match processing
                championsPlayed[participant.puuid] = player.MatchStats.ChampionsPlayed
                   .Select(c => new Dictionary<string, string> { { c.ChampionId, c.ChampionName } })
                   .ToList();
-               // Update player properties
 
                totalPdl += pdl;
             }
             else
             {
-               // When adding a new player, determine region and server from matchId
                string server = matchId.Split('_')[0];
                string region = GetBaseRegion(server);
                string? tier = await _riotApiService.GetTier(participant.puuid, server);
@@ -277,13 +302,11 @@ namespace ArenaBackend.Services
 
                totalPdl += pdl;
 
-               // Add new player to the database with region and server
                await AddPlayerAsync(participant.puuid, participant.riotIdGameName, participant.riotIdTagline, false, pdl, region, server);
             }
 
             var augments = new List<string>();
             var items = new List<int>();
-            // Go through augment properties in a for loop
             for (int i = 1; i <= 6; i++)
             {
                var augmentProperty = typeof(GetMatchDataModel.Info.ParticipantesInfo).GetProperty($"playerAugment{i}");
@@ -296,7 +319,6 @@ namespace ArenaBackend.Services
                   }
                }
             }
-            // Go through item properties in a for loop
             for (int i = 0; i <= 6; i++)
             {
                var itemProperty = typeof(GetMatchDataModel.Info.ParticipantesInfo).GetProperty($"item{i}");
@@ -309,7 +331,6 @@ namespace ArenaBackend.Services
                   }
                }
             }
-            // Check if augments and items are empty
             if (augments.Count == 0)
             {
                augments = null;
@@ -319,7 +340,6 @@ namespace ArenaBackend.Services
                items = null;
             }
 
-            // Create PlayerDTO for the match
             var playerDTO = new PlayerDTO
             {
                GameName = participant.riotIdGameName,
@@ -339,10 +359,8 @@ namespace ArenaBackend.Services
             playerDTOs.Add(playerDTO);
          }
 
-         // Calculate average PDL
          int averagePdl = totalPlayers > 0 ? totalPdl / totalPlayers : DEFAULT_PDL;
 
-         // Process PDL updates in batch
          foreach (var playerPuuid in puuidsToProcess)
          {
             int pdlChange = CalculatePdlChange(
@@ -366,7 +384,6 @@ namespace ArenaBackend.Services
                playerDTOs
             );
 
-            // Log PDL changes for auto-checked players
             var playerData = await GetPlayerFromCacheOrRepositoryByPuuidAsync(playerPuuid);
             if (playerData != null && playerData.TrackingEnabled)
             {
@@ -380,8 +397,6 @@ namespace ArenaBackend.Services
 
       public int CalculatePdlChange(int playerPdl, int averagePdl, int placement, int matchesPlayed)
       {
-         // k = valor bruto de ganho de pdl
-         // Determine appropriate K-factor
          float k;
          if (matchesPlayed < MIN_MATCHES_STABLE)
          {
@@ -389,7 +404,6 @@ namespace ArenaBackend.Services
          }
          else
          {
-            // Dynamic factor based on difference between player PDL and average PDL
             if (averagePdl == 0)
             {
                k = K_FACTOR_BASE;
@@ -397,18 +411,16 @@ namespace ArenaBackend.Services
             else
             {
                int pdlDiff = Math.Abs(playerPdl - averagePdl);
-               // The larger the difference, the more adjustment is needed
                k = (float)(K_FACTOR_BASE + Math.Min(K_MAX - K_FACTOR_BASE,
                      (10 / (1 + Math.Log10(1 + Math.Abs(pdlDiff)))) * Math.Abs(Math.Tanh(pdlDiff / 4.0f))));
 
-               // Additional adjustment for players with significantly higher/lower PDL
                if (playerPdl > averagePdl && placement > 6)
                {
-                  k *= 1.1f; // Higher penalty for strong players doing poorly
+                  k *= 1.1f;
                }
                else if (playerPdl < averagePdl && placement <= 2)
                {
-                  k *= 1.15f; // Higher bonus for weaker players doing well
+                  k *= 1.15f;
                }
             }
          }
@@ -418,14 +430,11 @@ namespace ArenaBackend.Services
             k = Math.Max(40, k - (placement - 4) * 10);
          }
 
-         // Get multiplier for placement
          float multiplier = PLACEMENT_MULTIPLIERS.ContainsKey(placement) ?
             PLACEMENT_MULTIPLIERS[placement] : 0;
 
-         // Calculate final PDL adjustment
          int pdlChange = (int)(k * multiplier);
 
-         // Limit extreme changes
          return Math.Max(-100, Math.Min(100, pdlChange));
       }
 
@@ -438,7 +447,6 @@ namespace ArenaBackend.Services
 
             if (player != null)
             {
-               // Create detailed match 
                var detailedMatch = new DetailedMatch
                {
                   MatchId = lastMatchId,
@@ -447,11 +455,9 @@ namespace ArenaBackend.Services
                   GameDuration = matchInfo.gameDuration,
                };
 
-               // Update recent games
                if (!player.MatchStats.RecentGames.Any(g => g.MatchId == lastMatchId))
                {
                   player.MatchStats.RecentGames.Add(detailedMatch);
-                  // Keep only the 10 most recent games
                   while (player.MatchStats.RecentGames.Count > 10)
                   {
                      player.MatchStats.RecentGames = player.MatchStats.RecentGames
@@ -461,7 +467,6 @@ namespace ArenaBackend.Services
                   }
                }
 
-               // Update other player properties
                player.Pdl = newPdl;
                player.MatchStats.LastProcessedMatchId = lastMatchId;
                player.LastUpdate = DateTime.UtcNow;
@@ -470,7 +475,6 @@ namespace ArenaBackend.Services
                player.LastPlacement = placement;
                player.ProfileIconId = profileIcon;
 
-               // Update champions played
                player.MatchStats.ChampionsPlayed = championsPlayed.Select(dict =>
                {
                   var entry = dict.First();
@@ -481,7 +485,6 @@ namespace ArenaBackend.Services
                   };
                }).ToList();
 
-               // Update average placement
                int totalGames = player.MatchStats.Win + player.MatchStats.Loss;
                if (player.MatchStats.AveragePlacement == 0)
                {
@@ -510,19 +513,17 @@ namespace ArenaBackend.Services
       {
          _logger.LogInformation("Starting PDL processing for all players...");
 
-         // Use cached tracked players if available, otherwise fall back to repository
          IEnumerable<Player> allPlayers;
          try 
          {
-            // Try to get all tracked players from cache
             allPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
             _logger.LogInformation("Using cached players for PDL processing");
          }
          catch (Exception ex)
          {
             _logger.LogWarning($"Failed to get players from cache: {ex.Message}. Falling back to repository.");
-            var playerRepository2 = _repositoryFactory.GetPlayerRepository();
-            allPlayers = await playerRepository2.GetAllPlayersAsync();
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            allPlayers = await playerRepository.GetAllPlayersAsync();
          }
 
          if (!allPlayers.Any())
@@ -531,20 +532,245 @@ namespace ArenaBackend.Services
             return;
          }
 
-         foreach (var player in allPlayers)
+         var activePlayers = allPlayers.Where(p => p.TrackingEnabled).ToList();
+         _logger.LogInformation($"Processing PDL for {activePlayers.Count} active players");
+
+         var playerBatches = SplitIntoBatches(activePlayers, 20);
+         var updatedPlayers = new ConcurrentBag<Player>();
+         
+         foreach (var batch in playerBatches)
          {
-            await ProcessPlayerPdlAsync(player);
+            var tasks = new List<Task<Player>>();
+            
+            foreach (var player in batch)
+            {
+               tasks.Add(ProcessPlayerWithThrottlingAndGetUpdatedAsync(player));
+            }
+            
+            var processedPlayers = await Task.WhenAll(tasks);
+            
+            // Coleta jogadores atualizados para atualização em lote
+            foreach (var player in processedPlayers)
+            {
+               if (player != null)
+               {
+                  updatedPlayers.Add(player);
+               }
+            }
+            
+            // A cada 100 jogadores processados, faz atualização em lote no banco
+            if (updatedPlayers.Count >= 5)
+            {
+               var playersToUpdate = updatedPlayers.ToList();
+               updatedPlayers = new ConcurrentBag<Player>();
+               
+               try
+               {
+                  var playerRepository = _repositoryFactory.GetPlayerRepository();
+                  await playerRepository.UpdatePlayersAsync(playersToUpdate);
+                  _logger.LogInformation($"Atualizados {playersToUpdate.Count} jogadores em lote");
+               }
+               catch (Exception ex)
+               {
+                  _logger.LogError(ex, $"Erro ao atualizar jogadores em lote: {ex.Message}");
+               }
+            }
+            
+            await Task.Delay(500);
+         }
+         
+         // Atualiza os jogadores restantes
+         if (updatedPlayers.Count > 0)
+         {
+            try
+            {
+               var playerRepository = _repositoryFactory.GetPlayerRepository();
+               await playerRepository.UpdatePlayersAsync(updatedPlayers);
+               _logger.LogInformation($"Atualizados {updatedPlayers.Count} jogadores restantes em lote");
+            }
+            catch (Exception ex)
+            {
+               _logger.LogError(ex, $"Erro ao atualizar jogadores restantes em lote: {ex.Message}");
+            }
          }
 
-         // Update ranking positions after processing all players' PDL
-         var playerRepository = _repositoryFactory.GetPlayerRepository();
-         await playerRepository.UpdateAllPlayerRankingsAsync();
+         var playerRepository2 = _repositoryFactory.GetPlayerRepository();
+         await playerRepository2.UpdateAllPlayerRankingsAsync();
          
-         // Refresh cache after updating all players
          await _rankingCacheService.RefreshCacheAsync();
          await _rankingCacheService.RefreshAllTrackedPlayersAsync();
 
          _logger.LogInformation("PDL processing for all players completed.");
+      }
+      
+      private async Task<Player> ProcessPlayerWithThrottlingAndGetUpdatedAsync(Player player)
+      {
+         await _throttler.WaitAsync();
+         try
+         {
+            bool processed = await ProcessPlayerWithoutUpdateAsync(player);
+            return processed ? player : null;
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex, $"Error processing player {player.GameName}#{player.TagLine}: {ex.Message}");
+            return null;
+         }
+         finally
+         {
+            _throttler.Release();
+         }
+      }
+      
+      private async Task<bool> ProcessPlayerWithoutUpdateAsync(Player playerData)
+      {
+         if (!playerData.TrackingEnabled)
+         {
+            return false;
+         }
+
+         string puuid = playerData.Puuid;
+         string lastMatchId = playerData.MatchStats.LastProcessedMatchId;
+
+         if (_lastProcessedTimeByPuuid.TryGetValue(puuid, out DateTime lastProcessed))
+         {
+            if (DateTime.UtcNow - lastProcessed < _minTimeBetweenProcessing)
+            {
+               return false;
+            }
+         }
+
+         if (DateTime.UtcNow - playerData.LastUpdate < _minTimeBetweenProcessing)
+         {
+            return false;
+         }
+
+         var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 10, "normal");
+         if (matchIds == null || matchIds.Count == 0)
+         {
+            _logger.LogWarning($"Could not retrieve match history for player {playerData.GameName}#{playerData.TagLine}");
+            return false;
+         }
+
+         var newMatchIds = GetNewMatches(matchIds, lastMatchId);
+         if (newMatchIds.Count == 0)
+         {
+            playerData.LastUpdate = DateTime.UtcNow;
+            _lastProcessedTimeByPuuid[puuid] = DateTime.UtcNow;
+            return true;
+         }
+
+         newMatchIds.Reverse();
+         foreach (var matchId in newMatchIds)
+         {
+            await ProcessMatchAsync(matchId, puuid, playerData.DateAdded);
+         }
+
+         _lastProcessedTimeByPuuid[puuid] = DateTime.UtcNow;
+         return true;
+      }
+
+      private IEnumerable<List<T>> SplitIntoBatches<T>(List<T> source, int batchSize)
+      {
+         for (int i = 0; i < source.Count; i += batchSize)
+         {
+            yield return source.Skip(i).Take(batchSize).ToList();
+         }
+      }
+
+      private async Task<Dictionary<string, Player>> PreloadPlayersAsync(List<string> puuids)
+      {
+         var result = new Dictionary<string, Player>();
+         
+         try
+         {
+            var cachedPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
+            
+            foreach (var player in cachedPlayers)
+            {
+               if (puuids.Contains(player.Puuid))
+               {
+                  result[player.Puuid] = player;
+               }
+            }
+            
+            var missingPuuids = puuids.Except(result.Keys).ToList();
+            if (missingPuuids.Any())
+            {
+               var playerRepository = _repositoryFactory.GetPlayerRepository();
+               foreach (var puuid in missingPuuids)
+               {
+                  var player = await playerRepository.GetPlayerByPuuidAsync(puuid);
+                  if (player != null)
+                  {
+                     result[puuid] = player;
+                  }
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            _logger.LogError(ex, "Error preloading players");
+         }
+         
+         return result;
+      }
+
+      private async Task<List<Player>> GetPlayersFromCacheByPuuidsAsync(List<string> puuids)
+      {
+         var result = new List<Player>();
+         
+         try
+         {
+            var cachedPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
+            
+            var playerDict = cachedPlayers
+                .Where(p => puuids.Contains(p.Puuid))
+                .ToDictionary(p => p.Puuid);
+            
+            foreach (var puuid in puuids)
+            {
+                if (playerDict.TryGetValue(puuid, out Player player))
+                {
+                    result.Add(player);
+                }
+            }
+            
+            var missingPuuids = puuids.Except(result.Select(p => p.Puuid)).ToList();
+            if (missingPuuids.Any())
+            {
+                var playerRepository = _repositoryFactory.GetPlayerRepository();
+                var dbPlayers = await playerRepository.GetPlayersByPuuidsAsync(missingPuuids);
+                result.AddRange(dbPlayers);
+            }
+            
+            _logger.LogDebug($"Found {result.Count} of {puuids.Count} players (cache: {playerDict.Count}, db: {result.Count - playerDict.Count})");
+         }
+         catch (Exception ex)
+         {
+            _logger.LogWarning($"Error accessing players: {ex.Message}");
+         }
+         
+         return result;
+      }
+
+      private async Task UpdatePlayerAsync(Player player)
+      {
+         var playerRepository = _repositoryFactory.GetPlayerRepository();
+         await playerRepository.UpdatePlayerAsync(player);
+         
+         if (player.TrackingEnabled)
+         {
+            try 
+            {
+               await _rankingCacheService.RefreshCacheAsync();
+               await _rankingCacheService.RefreshAllTrackedPlayersAsync();
+            }
+            catch (Exception ex)
+            {
+               _logger.LogWarning($"Failed to refresh cache after player update: {ex.Message}");
+            }
+         }
       }
 
       private int GetDefaultPdlForTier(string tier)
@@ -580,7 +806,7 @@ namespace ArenaBackend.Services
                DateAdded = DateTime.UtcNow,
                Region = region,
                Server = server,
-               MatchStats = new MatchStats() // Initialize with default values
+               MatchStats = new MatchStats()
             };
 
             await playerRepository.CreatePlayerAsync(player);
@@ -604,80 +830,10 @@ namespace ArenaBackend.Services
             _ => "americas"
          };
       }
-      
-      // Helper methods for cache access
-      
-      private async Task<Player> GetPlayerFromCacheOrRepositoryByPuuidAsync(string puuid)
+
+      public void Dispose()
       {
-         try
-         {
-            // Try to get all players from cache
-            var cachedPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
-            var player = cachedPlayers.FirstOrDefault(p => p.Puuid == puuid);
-            
-            if (player != null)
-            {
-               _logger.LogDebug($"Player {puuid} found in cache");
-               return player;
-            }
-         }
-         catch (Exception ex)
-         {
-            _logger.LogWarning($"Error accessing cache: {ex.Message}");
-         }
-         
-         // Fall back to repository if not in cache or cache access failed
-         var playerRepository = _repositoryFactory.GetPlayerRepository();
-         return await playerRepository.GetPlayerByPuuidAsync(puuid);
-      }
-      
-      private async Task<List<Player>> GetPlayersFromCacheByPuuidsAsync(List<string> puuids)
-      {
-         var result = new List<Player>();
-         
-         try
-         {
-            // Try to get all players from cache
-            var cachedPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
-            
-            // Filter players by PUUIDs
-            foreach (var player in cachedPlayers)
-            {
-               if (puuids.Contains(player.Puuid))
-               {
-                  result.Add(player);
-               }
-            }
-            
-            _logger.LogDebug($"Found {result.Count} of {puuids.Count} players in cache");
-         }
-         catch (Exception ex)
-         {
-            _logger.LogWarning($"Error accessing cache for multiple players: {ex.Message}");
-         }
-         
-         return result;
-      }
-      
-      private async Task UpdatePlayerAsync(Player player)
-      {
-         var playerRepository = _repositoryFactory.GetPlayerRepository();
-         await playerRepository.UpdatePlayerAsync(player);
-         
-         // If this is a tracked player, refresh the cache after updating
-         if (player.TrackingEnabled)
-         {
-            // Refresh both caches as the player might be in either or both
-            try 
-            {
-               await _rankingCacheService.RefreshCacheAsync();
-               await _rankingCacheService.RefreshAllTrackedPlayersAsync();
-            }
-            catch (Exception ex)
-            {
-               _logger.LogWarning($"Failed to refresh cache after player update: {ex.Message}");
-            }
-         }
+         _throttler?.Dispose();
       }
    }
 }

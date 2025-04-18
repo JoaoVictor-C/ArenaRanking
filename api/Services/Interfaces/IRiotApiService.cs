@@ -6,6 +6,7 @@ namespace ArenaBackend.Services
     {
         Task<string?> GetTier(string puuid, string server);
         Task<GetRiotIdDataModel?> GetRiotIdByPuuid(string puuid, string region = "americas");
+        Task<GetRiotIdDataModel?> GetPuuidByRiotId(string gameName, string tagLine, string region = "americas");
         Task<List<string>?> GetMatchHistoryPuuid(string puuid, int quantity, string type);
         Task<GetMatchDataModel?> GetMatchDetails(string matchId);
         Task<string?> VerifyRiotId(string tagline, string name);
