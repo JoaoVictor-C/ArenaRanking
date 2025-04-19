@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|c:\\users\\yago aguiar\\desktop\\arenaranking\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|solutionrelative:api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|c:\\users\\yago aguiar\\desktop\\arenaranking\\api\\services\\riotapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|solutionrelative:api\\services\\riotapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -14,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -23,6 +27,10 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Bookmark",
@@ -39,12 +47,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\Program.cs",
+              "RelativeDocumentMoniker": "api\\Program.cs",
+              "ToolTip": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\Program.cs",
+              "RelativeToolTip": "api\\Program.cs",
+              "ViewState": "AQIAADAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T23:27:56.89Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "RiotApiService.cs",
               "DocumentMoniker": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\Services\\RiotApiService.cs",
               "RelativeDocumentMoniker": "api\\Services\\RiotApiService.cs",
               "ToolTip": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\Services\\RiotApiService.cs",
               "RelativeToolTip": "api\\Services\\RiotApiService.cs",
-              "ViewState": "AQIAAAcAAAAAAAAAAIAwwB0AAAByAAAA",
+              "ViewState": "AQIAAAcAAAAAAAAAAIAwwB0AAAAzAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-23T05:30:23.095Z",
               "EditorCaption": ""
