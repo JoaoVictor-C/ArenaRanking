@@ -1,4 +1,4 @@
-using ArenaBackend.Models;
+deusing ArenaBackend.Models;
 using ArenaBackend.Repositories;
 using Microsoft.Extensions.Logging;
 using ArenaBackend.Factories;
@@ -514,7 +514,7 @@ namespace ArenaBackend.Services
             IEnumerable<Player> allPlayers;
 
             var playerRepository2 = _repositoryFactory.GetPlayerRepository();
-            allPlayers = await playerRepository2.GetAllPlayersAsync();
+            allPlayers = await playerRepository2.GetAllTrackedPlayersAsync();
 
             if (!allPlayers.Any())
             {
@@ -600,22 +600,6 @@ namespace ArenaBackend.Services
 
         private async Task<Player> GetPlayerFromCacheOrRepositoryByPuuidAsync(string puuid)
         {
-            try
-            {
-                // Try to get all players from cache
-                var cachedPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
-                var player = cachedPlayers.FirstOrDefault(p => p.Puuid == puuid);
-
-                if (player != null)
-                {
-                    _logger.LogDebug($"Player {puuid} found in cache");
-                    return player;
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning($"Error accessing cache: {ex.Message}");
-            }
 
             // Fall back to repository if not in cache or cache access failed
             var playerRepository = _repositoryFactory.GetPlayerRepository();
@@ -629,7 +613,8 @@ namespace ArenaBackend.Services
             try
             {
                 // Try to get all players from cache
-                var cachedPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
+                var playerRepository2 = _repositoryFactory.GetPlayerRepository();
+                cachedPlayers = await playerRepository2.GetAllTrackedPlayersAsync();
 
                 // Filter players by PUUIDs
                 foreach (var player in cachedPlayers)
