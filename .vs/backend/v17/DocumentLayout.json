@@ -59,7 +59,7 @@
               "RelativeDocumentMoniker": "api\\appsettings.json",
               "ToolTip": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\appsettings.json",
               "RelativeToolTip": "api\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAdAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-04-20T00:18:32.658Z",
               "EditorCaption": ""
@@ -74,8 +74,7 @@
               "RelativeToolTip": "..\\..\\..\\..\\Program Files\\dotnet\\sdk\\8.0.200\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.PackageDependencyResolution.targets",
               "ViewState": "AQIAALoAAAAAAAAAAAAcwMoAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
-              "WhenOpened": "2025-04-20T00:03:53.396Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-20T00:03:53.396Z"
             },
             {
               "$type": "Document",
@@ -87,8 +86,7 @@
               "RelativeToolTip": "api\\Services\\PdlHandlerService.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T00:03:36.557Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-20T00:03:36.557Z"
             },
             {
               "$type": "Document",
@@ -100,8 +98,7 @@
               "RelativeToolTip": "api\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAwAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T00:01:37.31Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-20T00:01:37.31Z"
             }
           ]
         },
