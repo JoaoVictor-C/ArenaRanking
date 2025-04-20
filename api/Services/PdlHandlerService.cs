@@ -508,7 +508,7 @@ namespace ArenaBackend.Services
 
         public async Task ProcessAllPlayersPdlAsync()
         {
-            _logger.LogInformation("Starting PDL processing for all players...");
+            _logger.LogInformation("Iniciando processo de PDL para todos os jogadores...");
 
             // Use cached tracked players if available, otherwise fall back to repository
             IEnumerable<Player> allPlayers;
