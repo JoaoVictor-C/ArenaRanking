@@ -44,7 +44,8 @@ public class PlayerController : ControllerBase
     [HttpGet("ranking")]
     public async Task<ActionResult<IEnumerable<Player>>> GetRanking([FromQuery] int page = 1, [FromQuery] int pageSize = 100)
     {
-        var players = await _rankingCacheService.GetCachedRankingAsync(page, pageSize);
+        //var players = await _rankingCacheService.GetCachedRankingAsync(page, pageSize);
+        var players = await _playerRepository.GetRanking(page, pageSize);
         // Remove recent games before returning
         foreach (var player in players)
         {
