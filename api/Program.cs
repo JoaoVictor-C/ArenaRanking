@@ -69,9 +69,9 @@ builder.Services.AddScoped<ISetRegionService, SetRegionService>();
 builder.Services.AddScoped<DatabaseMigrationService>();
 builder.Services.AddScoped<DatabaseCloneService>();
 
-//builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
-//builder.Services.AddHostedService<RiotIdUpdateHostedService>();
-//builder.Services.AddHostedService<PdlUpdateHostedService>();
+builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
+builder.Services.AddHostedService<RiotIdUpdateHostedService>();
+builder.Services.AddHostedService<PdlUpdateHostedService>();
 
 // Adicione após as outras configurações de serviços
 builder.Services.AddHttpClient("RiotApi", client =>
@@ -123,7 +123,7 @@ app.Lifetime.ApplicationStarted.Register(async () =>
     }
 });
 
-/*
+
 if (builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>().IsDevelopment)
 {
     using (var scope = app.Services.CreateScope())
@@ -132,7 +132,7 @@ if (builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>().I
         await dbCloneService.CloneProductionToTest();
     }
 }
-*/
+
 using (var scope = app.Services.CreateScope())
 {
     var migrationService = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();

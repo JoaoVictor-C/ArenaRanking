@@ -5,22 +5,22 @@ using ArenaBackend.Factories;
 
 namespace ArenaBackend.Services
 {
-   public class PdlHandlerService : IPdlHandlerService
-   {
-      private readonly ILogger<PdlHandlerService> _logger;
-      private readonly IRiotApiService _riotApiService;
-      private readonly IRepositoryFactory _repositoryFactory;
-      private readonly IRankingCacheService _rankingCacheService;
+    public class PdlHandlerService : IPdlHandlerService
+    {
+        private readonly ILogger<PdlHandlerService> _logger;
+        private readonly IRiotApiService _riotApiService;
+        private readonly IRepositoryFactory _repositoryFactory;
+        private readonly IRankingCacheService _rankingCacheService;
 
-      // Constants
-      private const int K_FACTOR_BASE = 50;
-      private const int K_FACTOR_NEW_PLAYER = 80;
-      private const int K_MAX = 140;
-      private const int MIN_MATCHES_STABLE = 10;
-      private const int DEFAULT_PDL = 1000;
+        // Constants
+        private const int K_FACTOR_BASE = 50;
+        private const int K_FACTOR_NEW_PLAYER = 80;
+        private const int K_MAX = 140;
+        private const int MIN_MATCHES_STABLE = 10;
+        private const int DEFAULT_PDL = 1000;
 
-      // Placement multipliers
-      private readonly Dictionary<int, float> PLACEMENT_MULTIPLIERS = new Dictionary<int, float>
+        // Placement multipliers
+        private readonly Dictionary<int, float> PLACEMENT_MULTIPLIERS = new Dictionary<int, float>
       {
          { 1, 1.3f },
          { 2, 1.1f },
@@ -32,652 +32,643 @@ namespace ArenaBackend.Services
          { 8, -1.7f }
       };
 
-      public PdlHandlerService(
-         IRepositoryFactory repositoryFactory,
-         ILogger<PdlHandlerService> logger,
-         IRiotApiService riotApiService,
-         IRankingCacheService rankingCacheService)
-      {
-         _repositoryFactory = repositoryFactory;
-         _logger = logger;
-         _riotApiService = riotApiService;
-         _rankingCacheService = rankingCacheService;
-      }
+        public PdlHandlerService(
+           IRepositoryFactory repositoryFactory,
+           ILogger<PdlHandlerService> logger,
+           IRiotApiService riotApiService,
+           IRankingCacheService rankingCacheService)
+        {
+            _repositoryFactory = repositoryFactory;
+            _logger = logger;
+            _riotApiService = riotApiService;
+            _rankingCacheService = rankingCacheService;
+        }
 
-      public async Task<bool> ProcessPlayerPdlAsync(Player playerData)
-      {
-         if (!playerData.TrackingEnabled)
-         {
-            return false;
-         }
+        public async Task<bool> ProcessPlayerPdlAsync(Player playerData)
+        {
+            if (!playerData.TrackingEnabled)
+            {
+                return false;
+            }
 
-         string puuid = playerData.Puuid;
-         string gameName = playerData.GameName;
-         string tagLine = playerData.TagLine;
-         DateTime? dateAdded = playerData.DateAdded;
-         DateTime? lastUpdate = playerData.LastUpdate;
+            string puuid = playerData.Puuid;
+            string gameName = playerData.GameName;
+            string tagLine = playerData.TagLine;
+            DateTime? dateAdded = playerData.DateAdded;
+            DateTime? lastUpdate = playerData.LastUpdate;
 
-         if (DateTime.UtcNow - lastUpdate < TimeSpan.FromMinutes(15))
-         {
-            return false;
-         }
+            if (DateTime.UtcNow - lastUpdate < TimeSpan.FromMinutes(15))
+            {
+                return false;
+            }
 
-         string lastMatchId = playerData.MatchStats.LastProcessedMatchId;
+            string lastMatchId = playerData.MatchStats.LastProcessedMatchId;
 
-         // Get match history for the player
-         var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 10, "normal");
-         if (matchIds == null || matchIds.Count == 0)
-         {
-            _logger.LogWarning("Could not retrieve match history for player {GameName}#{TagLine}", gameName, tagLine);
-            return false;
-         }
+            // Get match history for the player
+            var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 10, "normal");
+            if (matchIds == null || matchIds.Count == 0)
+            {
+                _logger.LogWarning("Could not retrieve match history for player {GameName}#{TagLine}", gameName, tagLine);
+                return false;
+            }
 
-         // Determine which matches need to be processed
-         // Try to get player from cache first
-         var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
-         
-         var newMatchIds = GetNewMatches(matchIds, lastMatchId);
-         if (newMatchIds.Count == 0)
-         {
-            player.LastUpdate = DateTime.UtcNow;
-            await UpdatePlayerAsync(player);
+            // Determine which matches need to be processed
+            // Try to get player from cache first
+            var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
+
+            var newMatchIds = GetNewMatches(matchIds, lastMatchId);
+            if (newMatchIds.Count == 0)
+            {
+                player.LastUpdate = DateTime.UtcNow;
+                await UpdatePlayerAsync(player);
+                return true;
+            }
+
+            // Process each match
+            newMatchIds.Reverse();
+            foreach (var matchId in newMatchIds)
+            {
+                await ProcessMatchAsync(matchId, puuid, dateAdded);
+            }
+
             return true;
-         }
+        }
 
-         // Process each match
-         newMatchIds.Reverse();
-         foreach (var matchId in newMatchIds)
-         {
-            await ProcessMatchAsync(matchId, puuid, dateAdded);
-         }
-
-         return true;
-      }
-
-      private static List<string> GetNewMatches(List<string> allMatches, string lastProcessedMatchId)
-      {
-         // If no last processed match, process all matches
-         if (string.IsNullOrEmpty(lastProcessedMatchId))
-         {
-            return allMatches;
-         }
-
-         var newMatchIds = new List<string>();
-         foreach (var matchId in allMatches)
-         {
-            if (matchId == lastProcessedMatchId)
+        private static List<string> GetNewMatches(List<string> allMatches, string lastProcessedMatchId)
+        {
+            // If no last processed match, process all matches
+            if (string.IsNullOrEmpty(lastProcessedMatchId))
             {
-               break;  // Already processed up to here
+                return allMatches;
             }
-            newMatchIds.Add(matchId);
-         }
 
-         return newMatchIds;
-      }
-
-      public async Task<bool> ProcessMatchAsync(string matchId, string puuid, DateTime? dateAdded)
-      {
-         GetMatchDataModel? matchDetails = await _riotApiService.GetMatchDetails(matchId);
-         if (matchDetails == null)
-         {
-            _logger.LogWarning($"Could not retrieve details for match {matchId}");
-            return false;
-         }
-
-         // Skip if the match is not arena mode
-         if (matchDetails.info.gameMode != "CHERRY")
-         {
-            // Set last game processed to the current one
-            var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
-            if (player != null)
+            var newMatchIds = new List<string>();
+            foreach (var matchId in allMatches)
             {
-               player.MatchStats.LastProcessedMatchId = matchId;
-               player.LastUpdate = DateTime.UtcNow;
-               await UpdatePlayerAsync(player);
+                if (matchId == lastProcessedMatchId)
+                {
+                    break;  // Already processed up to here
+                }
+                newMatchIds.Add(matchId);
             }
-            return false;
-         }
 
-         // Skip if match is older than when the player was added
-         DateTime gameCreationDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchDetails.info.gameCreation)).UtcDateTime;
+            return newMatchIds;
+        }
 
-         long gameCreation = gameCreationDate.Ticks;
-         if (dateAdded.HasValue && gameCreation < dateAdded.Value.ToUniversalTime().Ticks)
-         {
-            var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
-            player.MatchStats.LastProcessedMatchId = matchId;
-            player.LastUpdate = DateTime.UtcNow;
-            await UpdatePlayerAsync(player);
-            return false;
-         }
-
-         var participantsPuuids = matchDetails.info.participants.Select(p => p.puuid).ToList();
-         var existingPlayers = new List<Player>();
-
-         // Try to get all players from cache first
-         var cachedPlayers = await GetPlayersFromCacheByPuuidsAsync(participantsPuuids);
-         existingPlayers.AddRange(cachedPlayers);
-
-         // For any players not found in cache, get them from repository
-         var missingPuuids = participantsPuuids.Except(existingPlayers.Select(p => p.Puuid)).ToList();
-         if (missingPuuids.Any())
-         {
-            var playerRepositoryInstance = _repositoryFactory.GetPlayerRepository();
-            foreach (var participantPuuid in missingPuuids)
+        public async Task<bool> ProcessMatchAsync(string matchId, string puuid, DateTime? dateAdded)
+        {
+            GetMatchDataModel? matchDetails = await _riotApiService.GetMatchDetails(matchId);
+            if (matchDetails == null)
             {
-               var player = await playerRepositoryInstance.GetPlayerByPuuidAsync(participantPuuid);
-               if (player != null)
-               {
-                  existingPlayers.Add(player);
-               }
+                _logger.LogWarning($"Could not retrieve details for match {matchId}");
+                return false;
             }
-         }
 
-         var existingPlayerDict = existingPlayers.ToDictionary(p => p.Puuid);
-
-         // Calculate average PDL
-         int totalPdl = 0;
-         int totalPlayers = participantsPuuids.Count;
-         var puuidsToProcess = new List<string>();
-         var gameNames = new Dictionary<string, string>();
-         var tagLines = new Dictionary<string, string>();
-         var placements = new Dictionary<string, int>();
-         var currentPdls = new Dictionary<string, int>();
-         var win = new Dictionary<string, int>();
-         var loss = new Dictionary<string, int>();
-         var championsPlayed = new Dictionary<string, List<Dictionary<string, string>>>();
-         var profileIcon = new Dictionary<string, int>();
-         var playerDTOs = new List<PlayerDTO>();
-
-         foreach (var participant in matchDetails.info.participants)
-         {
-            int placement = participant.placement;
-            bool isWin = placement <= 4;
-
-            if (existingPlayerDict.TryGetValue(participant.puuid, out var player))
+            // Skip if the match is not arena mode
+            if (matchDetails.info.gameMode != "CHERRY")
             {
-               int pdl = player.Pdl;
-               int playerWin = player.MatchStats.Win;
-               int playerLoss = player.MatchStats.Loss;
-
-               // Skip if already processed
-               if (player.MatchStats.LastProcessedMatchId == matchId || (player.TrackingEnabled && participant.puuid != puuid))
-               {
-                  totalPdl += pdl;
-                  continue;
-               }
-
-               puuidsToProcess.Add(participant.puuid);
-               gameNames[participant.puuid] = player.GameName;
-               tagLines[participant.puuid] = player.TagLine;
-               placements[participant.puuid] = placement;
-               currentPdls[participant.puuid] = pdl;
-               win[participant.puuid] = playerWin + (isWin ? 1 : 0);
-               loss[participant.puuid] = playerLoss + (isWin ? 0 : 1);
-               profileIcon[participant.puuid] = participant.profileIcon;
-
-               // Update champion data in the list of dictionaries format
-               var championEntry = new ChampionPlayed
-               {
-                  ChampionId = participant.championId.ToString(),
-                  ChampionName = participant.championName
-               };
-
-               // Check if player already has champion data
-               if (player.MatchStats.ChampionsPlayed == null)
-               {
-                  player.MatchStats.ChampionsPlayed = new List<ChampionPlayed>();
-               }
-
-               // Add new champion to the tracking list
-               if (player.MatchStats.ChampionsPlayed.Count < 4)
-               {
-                  player.MatchStats.ChampionsPlayed.Add(championEntry);
-               }
-               else
-               {
-                  // Remove oldest champion and add new one
-                  player.MatchStats.ChampionsPlayed.RemoveAt(0);
-                  player.MatchStats.ChampionsPlayed.Add(championEntry);
-               }
-
-               // Store in the temporary dictionary for this match processing
-               championsPlayed[participant.puuid] = player.MatchStats.ChampionsPlayed
-                  .Select(c => new Dictionary<string, string> { { c.ChampionId, c.ChampionName } })
-                  .ToList();
-               // Update player properties
-
-               totalPdl += pdl;
+                // Set last game processed to the current one
+                var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
+                if (player != null)
+                {
+                    player.MatchStats.LastProcessedMatchId = matchId;
+                    player.LastUpdate = DateTime.UtcNow;
+                    await UpdatePlayerAsync(player);
+                }
+                return false;
             }
-            else
-            {
-               // When adding a new player, determine region and server from matchId
-               string server = matchId.Split('_')[0];
-               string region = GetBaseRegion(server);
-               string? tier = await _riotApiService.GetTier(participant.puuid, server);
-               if (string.IsNullOrEmpty(tier))
-               {
-                  _logger.LogWarning($"Could not retrieve tier for {participant.riotIdGameName}#{participant.riotIdTagline}");
-                  tier = "UNRANKED";
-               }
-               int pdl = GetDefaultPdlForTier(tier);
 
-               puuidsToProcess.Add(participant.puuid);
-               gameNames[participant.puuid] = participant.riotIdGameName;
-               tagLines[participant.puuid] = participant.riotIdTagline;
-               placements[participant.puuid] = placement;
-               currentPdls[participant.puuid] = pdl;
-               win[participant.puuid] = isWin ? 1 : 0;
-               loss[participant.puuid] = isWin ? 0 : 1;
-               profileIcon[participant.puuid] = participant.profileIcon;
-               championsPlayed[participant.puuid] = new List<Dictionary<string, string>>
+            // Skip if match is older than when the player was added
+            DateTime gameCreationDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchDetails.info.gameCreation)).UtcDateTime;
+
+            long gameCreation = gameCreationDate.Ticks;
+            if (dateAdded.HasValue && gameCreation < dateAdded.Value.ToUniversalTime().Ticks)
+            {
+                var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
+                player.MatchStats.LastProcessedMatchId = matchId;
+                player.LastUpdate = DateTime.UtcNow;
+                await UpdatePlayerAsync(player);
+                return false;
+            }
+
+            var participantsPuuids = matchDetails.info.participants.Select(p => p.puuid).ToList();
+            var existingPlayers = new List<Player>();
+
+            // Try to get all players from cache first
+            var cachedPlayers = await GetPlayersFromCacheByPuuidsAsync(participantsPuuids);
+            existingPlayers.AddRange(cachedPlayers);
+
+            // For any players not found in cache, get them from repository
+            var missingPuuids = participantsPuuids.Except(existingPlayers.Select(p => p.Puuid)).ToList();
+            if (missingPuuids.Any())
+            {
+                var playerRepositoryInstance = _repositoryFactory.GetPlayerRepository();
+                foreach (var participantPuuid in missingPuuids)
+                {
+                    var player = await playerRepositoryInstance.GetPlayerByPuuidAsync(participantPuuid);
+                    if (player != null)
+                    {
+                        existingPlayers.Add(player);
+                    }
+                }
+            }
+
+            var existingPlayerDict = existingPlayers.ToDictionary(p => p.Puuid);
+
+            // Calculate average PDL
+            int totalPdl = 0;
+            int totalPlayers = participantsPuuids.Count;
+            var puuidsToProcess = new List<string>();
+            var gameNames = new Dictionary<string, string>();
+            var tagLines = new Dictionary<string, string>();
+            var placements = new Dictionary<string, int>();
+            var currentPdls = new Dictionary<string, int>();
+            var win = new Dictionary<string, int>();
+            var loss = new Dictionary<string, int>();
+            var championsPlayed = new Dictionary<string, List<Dictionary<string, string>>>();
+            var profileIcon = new Dictionary<string, int>();
+            var playerDTOs = new List<PlayerDTO>();
+
+            foreach (var participant in matchDetails.info.participants)
+            {
+                int placement = participant.placement;
+                bool isWin = placement <= 4;
+
+                if (existingPlayerDict.TryGetValue(participant.puuid, out var player))
+                {
+                    int pdl = player.Pdl;
+                    int playerWin = player.MatchStats.Win;
+                    int playerLoss = player.MatchStats.Loss;
+
+                    // Skip if already processed
+                    if (player.MatchStats.LastProcessedMatchId == matchId || (player.TrackingEnabled && participant.puuid != puuid))
+                    {
+                        totalPdl += pdl;
+                        continue;
+                    }
+
+                    puuidsToProcess.Add(participant.puuid);
+                    gameNames[participant.puuid] = player.GameName;
+                    tagLines[participant.puuid] = player.TagLine;
+                    placements[participant.puuid] = placement;
+                    currentPdls[participant.puuid] = pdl;
+                    win[participant.puuid] = playerWin + (isWin ? 1 : 0);
+                    loss[participant.puuid] = playerLoss + (isWin ? 0 : 1);
+                    profileIcon[participant.puuid] = participant.profileIcon;
+
+                    // Update champion data in the list of dictionaries format
+                    var championEntry = new ChampionPlayed
+                    {
+                        ChampionId = participant.championId.ToString(),
+                        ChampionName = participant.championName
+                    };
+
+                    // Check if player already has champion data
+                    if (player.MatchStats.ChampionsPlayed == null)
+                    {
+                        player.MatchStats.ChampionsPlayed = new List<ChampionPlayed>();
+                    }
+
+                    // Add new champion to the tracking list
+                    if (player.MatchStats.ChampionsPlayed.Count < 4)
+                    {
+                        player.MatchStats.ChampionsPlayed.Add(championEntry);
+                    }
+                    else
+                    {
+                        // Remove oldest champion and add new one
+                        player.MatchStats.ChampionsPlayed.RemoveAt(0);
+                        player.MatchStats.ChampionsPlayed.Add(championEntry);
+                    }
+
+                    // Store in the temporary dictionary for this match processing
+                    championsPlayed[participant.puuid] = player.MatchStats.ChampionsPlayed
+                       .Select(c => new Dictionary<string, string> { { c.ChampionId, c.ChampionName } })
+                       .ToList();
+                    // Update player properties
+
+                    totalPdl += pdl;
+                }
+                else
+                {
+                    // When adding a new player, determine region and server from matchId
+                    string server = matchId.Split('_')[0];
+                    string region = GetBaseRegion(server);
+                    string? tier = await _riotApiService.GetTier(participant.puuid, server);
+                    if (string.IsNullOrEmpty(tier))
+                    {
+                        _logger.LogWarning($"Could not retrieve tier for {participant.riotIdGameName}#{participant.riotIdTagline}");
+                        tier = "UNRANKED";
+                    }
+                    int pdl = GetDefaultPdlForTier(tier);
+
+                    puuidsToProcess.Add(participant.puuid);
+                    gameNames[participant.puuid] = participant.riotIdGameName;
+                    tagLines[participant.puuid] = participant.riotIdTagline;
+                    placements[participant.puuid] = placement;
+                    currentPdls[participant.puuid] = pdl;
+                    win[participant.puuid] = isWin ? 1 : 0;
+                    loss[participant.puuid] = isWin ? 0 : 1;
+                    profileIcon[participant.puuid] = participant.profileIcon;
+                    championsPlayed[participant.puuid] = new List<Dictionary<string, string>>
                {
                   new Dictionary<string, string> { { $"{participant.championId}", participant.championName  } }
                };
 
-               totalPdl += pdl;
+                    totalPdl += pdl;
 
-               // Add new player to the database with region and server
-               await AddPlayerAsync(participant.puuid, participant.riotIdGameName, participant.riotIdTagline, false, pdl, region, server);
+                    // Add new player to the database with region and server
+                    await AddPlayerAsync(participant.puuid, participant.riotIdGameName, participant.riotIdTagline, false, pdl, region, server);
+                }
+
+                var augments = new List<string>();
+                var items = new List<int>();
+                // Go through augment properties in a for loop
+                for (int i = 1; i <= 6; i++)
+                {
+                    var augmentProperty = typeof(GetMatchDataModel.Info.ParticipantesInfo).GetProperty($"playerAugment{i}");
+                    if (augmentProperty != null)
+                    {
+                        var augmentValue = (int)augmentProperty.GetValue(participant);
+                        if (augmentValue > 0)
+                        {
+                            augments.Add(augmentValue.ToString());
+                        }
+                    }
+                }
+                // Go through item properties in a for loop
+                for (int i = 0; i <= 6; i++)
+                {
+                    var itemProperty = typeof(GetMatchDataModel.Info.ParticipantesInfo).GetProperty($"item{i}");
+                    if (itemProperty != null)
+                    {
+                        var itemValue = (int)itemProperty.GetValue(participant);
+                        if (itemValue > 0)
+                        {
+                            items.Add(itemValue);
+                        }
+                    }
+                }
+                // Check if augments and items are empty
+                if (augments.Count == 0)
+                {
+                    augments = null;
+                }
+                if (items.Count == 0)
+                {
+                    items = null;
+                }
+
+                // Create PlayerDTO for the match
+                var playerDTO = new PlayerDTO
+                {
+                    GameName = participant.riotIdGameName,
+                    TagLine = participant.riotIdTagline,
+                    ChampionId = participant.championId,
+                    ChampionName = participant.championName,
+                    Placement = participant.placement,
+                    Augments = augments ?? new List<string>(),
+                    Items = items ?? new List<int>(),
+                    Kills = participant.kills,
+                    Deaths = participant.deaths,
+                    Assists = participant.assists,
+                    TotalDamageDealt = participant.totalDamageDealt,
+                    IsCurrentPlayer = participant.puuid == puuid
+                };
+
+                playerDTOs.Add(playerDTO);
             }
 
-            var augments = new List<string>();
-            var items = new List<int>();
-            // Go through augment properties in a for loop
-            for (int i = 1; i <= 6; i++)
+            // Calculate average PDL
+            int averagePdl = totalPlayers > 0 ? totalPdl / totalPlayers : DEFAULT_PDL;
+
+            // Process PDL updates in batch
+            foreach (var playerPuuid in puuidsToProcess)
             {
-               var augmentProperty = typeof(GetMatchDataModel.Info.ParticipantesInfo).GetProperty($"playerAugment{i}");
-               if (augmentProperty != null)
-               {
-                  var augmentValue = (int)augmentProperty.GetValue(participant);
-                  if (augmentValue > 0)
-                  {
-                     augments.Add(augmentValue.ToString());
-                  }
-               }
-            }
-            // Go through item properties in a for loop
-            for (int i = 0; i <= 6; i++)
-            {
-               var itemProperty = typeof(GetMatchDataModel.Info.ParticipantesInfo).GetProperty($"item{i}");
-               if (itemProperty != null)
-               {
-                  var itemValue = (int)itemProperty.GetValue(participant);
-                  if (itemValue > 0)
-                  {
-                     items.Add(itemValue);
-                  }
-               }
-            }
-            // Check if augments and items are empty
-            if (augments.Count == 0)
-            {
-               augments = null;
-            }
-            if (items.Count == 0)
-            {
-               items = null;
+                int pdlChange = CalculatePdlChange(
+                   currentPdls[playerPuuid],
+                   averagePdl,
+                   placements[playerPuuid],
+                   win[playerPuuid] + loss[playerPuuid]);
+
+                int finalPdl = currentPdls[playerPuuid] + pdlChange;
+
+                await UpdatePlayerPdlAsync(
+                   playerPuuid,
+                   finalPdl,
+                   matchId,
+                   win.TryGetValue(playerPuuid, out var playerWin) ? playerWin : 0,
+                   loss.TryGetValue(playerPuuid, out var playerLoss) ? playerLoss : 0,
+                   championsPlayed.TryGetValue(playerPuuid, out var playerChampions) ? playerChampions : new List<Dictionary<string, string>>(),
+                   placements.TryGetValue(playerPuuid, out var playerPlacement) ? playerPlacement : 0,
+                   profileIcon.TryGetValue(playerPuuid, out var playerProfileIcon) ? playerProfileIcon : 0,
+                   matchDetails.info,
+                   playerDTOs
+                );
+
+                // Log PDL changes for auto-checked players
+                var playerData = await GetPlayerFromCacheOrRepositoryByPuuidAsync(playerPuuid);
+                if (playerData != null && playerData.TrackingEnabled)
+                {
+                    _logger.LogInformation($"Player {gameNames[playerPuuid]}#{tagLines[playerPuuid]}: Placement {placements[playerPuuid]}, " +
+                                     $"PDL {currentPdls[playerPuuid]} -> {finalPdl} (Δ{pdlChange})");
+                }
             }
 
-            // Create PlayerDTO for the match
-            var playerDTO = new PlayerDTO
+            return true;
+        }
+
+        public int CalculatePdlChange(int playerPdl, int averagePdl, int placement, int matchesPlayed)
+        {
+            // k = valor bruto de ganho de pdl
+            // Determine appropriate K-factor
+            float k;
+            if (matchesPlayed < MIN_MATCHES_STABLE)
             {
-               GameName = participant.riotIdGameName,
-               TagLine = participant.riotIdTagline,
-               ChampionId = participant.championId,
-               ChampionName = participant.championName,
-               Placement = participant.placement,
-               Augments = augments ?? new List<string>(),
-               Items = items ?? new List<int>(),
-               Kills = participant.kills,
-               Deaths = participant.deaths,
-               Assists = participant.assists,
-               TotalDamageDealt = participant.totalDamageDealt,
-               IsCurrentPlayer = participant.puuid == puuid
-            };
-
-            playerDTOs.Add(playerDTO);
-         }
-
-         // Calculate average PDL
-         int averagePdl = totalPlayers > 0 ? totalPdl / totalPlayers : DEFAULT_PDL;
-
-         // Process PDL updates in batch
-         foreach (var playerPuuid in puuidsToProcess)
-         {
-            int pdlChange = CalculatePdlChange(
-               currentPdls[playerPuuid],
-               averagePdl,
-               placements[playerPuuid],
-               win[playerPuuid] + loss[playerPuuid]);
-
-            int finalPdl = currentPdls[playerPuuid] + pdlChange;
-
-            await UpdatePlayerPdlAsync(
-               playerPuuid,
-               finalPdl,
-               matchId,
-               win.TryGetValue(playerPuuid, out var playerWin) ? playerWin : 0,
-               loss.TryGetValue(playerPuuid, out var playerLoss) ? playerLoss : 0,
-               championsPlayed.TryGetValue(playerPuuid, out var playerChampions) ? playerChampions : new List<Dictionary<string, string>>(),
-               placements.TryGetValue(playerPuuid, out var playerPlacement) ? playerPlacement : 0,
-               profileIcon.TryGetValue(playerPuuid, out var playerProfileIcon) ? playerProfileIcon : 0,
-               matchDetails.info,
-               playerDTOs
-            );
-
-            // Log PDL changes for auto-checked players
-            var playerData = await GetPlayerFromCacheOrRepositoryByPuuidAsync(playerPuuid);
-            if (playerData != null && playerData.TrackingEnabled)
-            {
-               _logger.LogInformation($"Player {gameNames[playerPuuid]}#{tagLines[playerPuuid]}: Placement {placements[playerPuuid]}, " +
-                                $"PDL {currentPdls[playerPuuid]} -> {finalPdl} (Δ{pdlChange})");
-            }
-         }
-
-         return true;
-      }
-
-      public int CalculatePdlChange(int playerPdl, int averagePdl, int placement, int matchesPlayed)
-      {
-         // k = valor bruto de ganho de pdl
-         // Determine appropriate K-factor
-         float k;
-         if (matchesPlayed < MIN_MATCHES_STABLE)
-         {
-            k = K_FACTOR_NEW_PLAYER;
-         }
-         else
-         {
-            // Dynamic factor based on difference between player PDL and average PDL
-            if (averagePdl == 0)
-            {
-               k = K_FACTOR_BASE;
+                k = K_FACTOR_NEW_PLAYER;
             }
             else
             {
-               int pdlDiff = Math.Abs(playerPdl - averagePdl);
-               // The larger the difference, the more adjustment is needed
-               k = (float)(K_FACTOR_BASE + Math.Min(K_MAX - K_FACTOR_BASE,
-                     (10 / (1 + Math.Log10(1 + Math.Abs(pdlDiff)))) * Math.Abs(Math.Tanh(pdlDiff / 4.0f))));
+                // Dynamic factor based on difference between player PDL and average PDL
+                if (averagePdl == 0)
+                {
+                    k = K_FACTOR_BASE;
+                }
+                else
+                {
+                    int pdlDiff = Math.Abs(playerPdl - averagePdl);
+                    // The larger the difference, the more adjustment is needed
+                    k = (float)(K_FACTOR_BASE + Math.Min(K_MAX - K_FACTOR_BASE,
+                          (10 / (1 + Math.Log10(1 + Math.Abs(pdlDiff)))) * Math.Abs(Math.Tanh(pdlDiff / 4.0f))));
 
-               // Additional adjustment for players with significantly higher/lower PDL
-               if (playerPdl > averagePdl && placement > 6)
-               {
-                  k *= 1.1f; // Higher penalty for strong players doing poorly
-               }
-               else if (playerPdl < averagePdl && placement <= 2)
-               {
-                  k *= 1.15f; // Higher bonus for weaker players doing well
-               }
-            }
-         }
-
-         if (placement > 4 && playerPdl <= 3000)
-         {
-            k = Math.Max(40, k - (placement - 4) * 10);
-         }
-
-         // Get multiplier for placement
-         float multiplier = PLACEMENT_MULTIPLIERS.ContainsKey(placement) ?
-            PLACEMENT_MULTIPLIERS[placement] : 0;
-
-         // Calculate final PDL adjustment
-         int pdlChange = (int)(k * multiplier);
-
-         // Limit extreme changes
-         return Math.Max(-100, Math.Min(100, pdlChange));
-      }
-
-      public async Task<bool> UpdatePlayerPdlAsync(string puuid, int newPdl, string lastMatchId, int win, int loss,
-         List<Dictionary<string, string>> championsPlayed, int placement, int profileIcon, GetMatchDataModel.Info matchInfo, List<PlayerDTO> playerDTO = null)
-      {
-         try
-         {
-            var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
-
-            if (player != null)
-            {
-               // Create detailed match 
-               var detailedMatch = new DetailedMatch
-               {
-                  MatchId = lastMatchId,
-                  Players = playerDTO ?? new List<PlayerDTO>(),
-                  GameCreation = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchInfo.gameCreation)).UtcDateTime,
-                  GameDuration = matchInfo.gameDuration,
-               };
-
-               // Update recent games
-               if (!player.MatchStats.RecentGames.Any(g => g.MatchId == lastMatchId))
-               {
-                  player.MatchStats.RecentGames.Add(detailedMatch);
-                  // Keep only the 10 most recent games
-                  while (player.MatchStats.RecentGames.Count > 10)
-                  {
-                     player.MatchStats.RecentGames = player.MatchStats.RecentGames
-                        .OrderByDescending(g => g.GameCreation)
-                        .Take(10)
-                        .ToList();
-                  }
-               }
-
-               // Update other player properties
-               player.Pdl = newPdl;
-               player.MatchStats.LastProcessedMatchId = lastMatchId;
-               player.LastUpdate = DateTime.UtcNow;
-               player.MatchStats.Win = win;
-               player.MatchStats.Loss = loss;
-               player.LastPlacement = placement;
-               player.ProfileIconId = profileIcon;
-
-               // Update champions played
-               player.MatchStats.ChampionsPlayed = championsPlayed.Select(dict =>
-               {
-                  var entry = dict.First();
-                  return new ChampionPlayed
-                  {
-                     ChampionId = entry.Key,
-                     ChampionName = entry.Value
-                  };
-               }).ToList();
-
-               // Update average placement
-               int totalGames = player.MatchStats.Win + player.MatchStats.Loss;
-               if (player.MatchStats.AveragePlacement == 0)
-               {
-                  player.MatchStats.AveragePlacement = placement;
-               }
-               else
-               {
-                  player.MatchStats.AveragePlacement =
-                     ((player.MatchStats.AveragePlacement * (totalGames - 1)) + placement) / totalGames;
-               }
-
-               await UpdatePlayerAsync(player);
-               return true;
+                    // Additional adjustment for players with significantly higher/lower PDL
+                    if (playerPdl > averagePdl && placement > 6)
+                    {
+                        k *= 1.1f; // Higher penalty for strong players doing poorly
+                    }
+                    else if (playerPdl < averagePdl && placement <= 2)
+                    {
+                        k *= 1.15f; // Higher bonus for weaker players doing well
+                    }
+                }
             }
 
-            return false;
-         }
-         catch (Exception ex)
-         {
-            _logger.LogError(ex, $"Error updating PDL for {puuid}: {ex.Message}");
-            return false;
-         }
-      }
-
-      public async Task ProcessAllPlayersPdlAsync()
-      {
-         _logger.LogInformation("Starting PDL processing for all players...");
-
-         // Use cached tracked players if available, otherwise fall back to repository
-         IEnumerable<Player> allPlayers;
-         try 
-         {
-            // Try to get all tracked players from cache
-            allPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
-            _logger.LogInformation("Using cached players for PDL processing");
-         }
-         catch (Exception ex)
-         {
-            _logger.LogWarning($"Failed to get players from cache: {ex.Message}. Falling back to repository.");
-            var playerRepository2 = _repositoryFactory.GetPlayerRepository();
-            allPlayers = await playerRepository2.GetAllPlayersAsync();
-         }
-
-         if (!allPlayers.Any())
-         {
-            _logger.LogInformation("No players found for PDL processing.");
-            return;
-         }
-
-         foreach (var player in allPlayers)
-         {
-            await ProcessPlayerPdlAsync(player);
-         }
-
-         // Update ranking positions after processing all players' PDL
-         var playerRepository = _repositoryFactory.GetPlayerRepository();
-         await playerRepository.UpdateAllPlayerRankingsAsync();
-         
-         // Refresh cache after updating all players
-         await _rankingCacheService.RefreshCacheAsync();
-         await _rankingCacheService.RefreshAllTrackedPlayersAsync();
-
-         _logger.LogInformation("PDL processing for all players completed.");
-      }
-
-      private int GetDefaultPdlForTier(string tier)
-      {
-         return tier switch
-         {
-            "IRON" => 800,
-            "BRONZE" => 900,
-            "SILVER" => 1000,
-            "GOLD" => 1200,
-            "PLATINUM" => 1500,
-            "EMERALD" => 2000,
-            "DIAMOND" => 2500,
-            "MASTER" => 3000,
-            "GRANDMASTER" => 3500,
-            "CHALLENGER" => 4000,
-            _ => 1500
-         };
-      }
-
-      private async Task<bool> AddPlayerAsync(string puuid, string gameName, string tagLine, bool trackingEnabled, int pdl, string region, string server)
-      {
-         try
-         {
-            var playerRepository = _repositoryFactory.GetPlayerRepository();
-            var player = new Player
+            if (placement > 4 && playerPdl <= 3000)
             {
-               Puuid = puuid,
-               GameName = gameName,
-               TagLine = tagLine,
-               Pdl = pdl,
-               TrackingEnabled = trackingEnabled,
-               DateAdded = DateTime.UtcNow,
-               Region = region,
-               Server = server,
-               MatchStats = new MatchStats() // Initialize with default values
-            };
-
-            await playerRepository.CreatePlayerAsync(player);
-            return true;
-         }
-         catch (Exception ex)
-         {
-            _logger.LogError(ex, $"Error adding new player {gameName}#{tagLine}: {ex.Message}");
-            return false;
-         }
-      }
-
-      private string GetBaseRegion(string serverRegion)
-      {
-         return serverRegion.ToLower() switch
-         {
-            "br1" or "la1" or "la2" or "na1" => "americas",
-            "eun1" or "euw1" or "tr1" or "ru" => "europe",
-            "kr" or "jp1" => "asia",
-            "oc1" or "ph2" or "sg2" or "th2" or "tw2" or "vn2" => "sea",
-            _ => "americas"
-         };
-      }
-      
-      // Helper methods for cache access
-      
-      private async Task<Player> GetPlayerFromCacheOrRepositoryByPuuidAsync(string puuid)
-      {
-         try
-         {
-            // Try to get all players from cache
-            var cachedPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
-            var player = cachedPlayers.FirstOrDefault(p => p.Puuid == puuid);
-            
-            if (player != null)
-            {
-               _logger.LogDebug($"Player {puuid} found in cache");
-               return player;
+                k = Math.Max(40, k - (placement - 4) * 10);
             }
-         }
-         catch (Exception ex)
-         {
-            _logger.LogWarning($"Error accessing cache: {ex.Message}");
-         }
-         
-         // Fall back to repository if not in cache or cache access failed
-         var playerRepository = _repositoryFactory.GetPlayerRepository();
-         return await playerRepository.GetPlayerByPuuidAsync(puuid);
-      }
-      
-      private async Task<List<Player>> GetPlayersFromCacheByPuuidsAsync(List<string> puuids)
-      {
-         var result = new List<Player>();
-         
-         try
-         {
-            // Try to get all players from cache
-            var cachedPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
-            
-            // Filter players by PUUIDs
-            foreach (var player in cachedPlayers)
+
+            // Get multiplier for placement
+            float multiplier = PLACEMENT_MULTIPLIERS.ContainsKey(placement) ?
+               PLACEMENT_MULTIPLIERS[placement] : 0;
+
+            // Calculate final PDL adjustment
+            int pdlChange = (int)(k * multiplier);
+
+            // Limit extreme changes
+            return Math.Max(-100, Math.Min(100, pdlChange));
+        }
+
+        public async Task<bool> UpdatePlayerPdlAsync(string puuid, int newPdl, string lastMatchId, int win, int loss,
+           List<Dictionary<string, string>> championsPlayed, int placement, int profileIcon, GetMatchDataModel.Info matchInfo, List<PlayerDTO> playerDTO = null)
+        {
+            try
             {
-               if (puuids.Contains(player.Puuid))
-               {
-                  result.Add(player);
-               }
-            }
-            
-            _logger.LogDebug($"Found {result.Count} of {puuids.Count} players in cache");
-         }
-         catch (Exception ex)
-         {
-            _logger.LogWarning($"Error accessing cache for multiple players: {ex.Message}");
-         }
-         
-         return result;
-      }
-      
-      private async Task UpdatePlayerAsync(Player player)
-      {
-         var playerRepository = _repositoryFactory.GetPlayerRepository();
-         await playerRepository.UpdatePlayerAsync(player);
-         
-         // If this is a tracked player, refresh the cache after updating
-         if (player.TrackingEnabled)
-         {
-            // Refresh both caches as the player might be in either or both
-            try 
-            {
-               await _rankingCacheService.RefreshCacheAsync();
-               await _rankingCacheService.RefreshAllTrackedPlayersAsync();
+                var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
+
+                if (player != null)
+                {
+                    // Create detailed match 
+                    var detailedMatch = new DetailedMatch
+                    {
+                        MatchId = lastMatchId,
+                        Players = playerDTO ?? new List<PlayerDTO>(),
+                        GameCreation = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchInfo.gameCreation)).UtcDateTime,
+                        GameDuration = matchInfo.gameDuration,
+                    };
+
+                    // Update recent games
+                    if (!player.MatchStats.RecentGames.Any(g => g.MatchId == lastMatchId))
+                    {
+                        player.MatchStats.RecentGames.Add(detailedMatch);
+                        // Keep only the 10 most recent games
+                        while (player.MatchStats.RecentGames.Count > 10)
+                        {
+                            player.MatchStats.RecentGames = player.MatchStats.RecentGames
+                               .OrderByDescending(g => g.GameCreation)
+                               .Take(10)
+                               .ToList();
+                        }
+                    }
+
+                    // Update other player properties
+                    player.Pdl = newPdl;
+                    player.MatchStats.LastProcessedMatchId = lastMatchId;
+                    player.LastUpdate = DateTime.UtcNow;
+                    player.MatchStats.Win = win;
+                    player.MatchStats.Loss = loss;
+                    player.LastPlacement = placement;
+                    player.ProfileIconId = profileIcon;
+
+                    // Update champions played
+                    player.MatchStats.ChampionsPlayed = championsPlayed.Select(dict =>
+                    {
+                        var entry = dict.First();
+                        return new ChampionPlayed
+                        {
+                            ChampionId = entry.Key,
+                            ChampionName = entry.Value
+                        };
+                    }).ToList();
+
+                    // Update average placement
+                    int totalGames = player.MatchStats.Win + player.MatchStats.Loss;
+                    if (player.MatchStats.AveragePlacement == 0)
+                    {
+                        player.MatchStats.AveragePlacement = placement;
+                    }
+                    else
+                    {
+                        player.MatchStats.AveragePlacement =
+                           ((player.MatchStats.AveragePlacement * (totalGames - 1)) + placement) / totalGames;
+                    }
+
+                    await UpdatePlayerAsync(player);
+                    return true;
+                }
+
+                return false;
             }
             catch (Exception ex)
             {
-               _logger.LogWarning($"Failed to refresh cache after player update: {ex.Message}");
+                _logger.LogError(ex, $"Error updating PDL for {puuid}: {ex.Message}");
+                return false;
             }
-         }
-      }
-   }
+        }
+
+        public async Task ProcessAllPlayersPdlAsync()
+        {
+            _logger.LogInformation("Starting PDL processing for all players...");
+
+            // Use cached tracked players if available, otherwise fall back to repository
+            IEnumerable<Player> allPlayers;
+
+            var playerRepository2 = _repositoryFactory.GetPlayerRepository();
+            allPlayers = await playerRepository2.GetAllPlayersAsync();
+
+            if (!allPlayers.Any())
+            {
+                _logger.LogInformation("No players found for PDL processing.");
+                return;
+            }
+
+            foreach (var player in allPlayers)
+            {
+                await ProcessPlayerPdlAsync(player);
+            }
+
+            // Update ranking positions after processing all players' PDL
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            await playerRepository.UpdateAllPlayerRankingsAsync();
+
+            // Refresh cache after updating all players
+            await _rankingCacheService.RefreshCacheAsync();
+            await _rankingCacheService.RefreshAllTrackedPlayersAsync();
+
+            _logger.LogInformation("PDL processing for all players completed.");
+        }
+
+        private int GetDefaultPdlForTier(string tier)
+        {
+            return tier switch
+            {
+                "IRON" => 800,
+                "BRONZE" => 900,
+                "SILVER" => 1000,
+                "GOLD" => 1200,
+                "PLATINUM" => 1500,
+                "EMERALD" => 2000,
+                "DIAMOND" => 2500,
+                "MASTER" => 3000,
+                "GRANDMASTER" => 3500,
+                "CHALLENGER" => 4000,
+                _ => 1500
+            };
+        }
+
+        private async Task<bool> AddPlayerAsync(string puuid, string gameName, string tagLine, bool trackingEnabled, int pdl, string region, string server)
+        {
+            try
+            {
+                var playerRepository = _repositoryFactory.GetPlayerRepository();
+                var player = new Player
+                {
+                    Puuid = puuid,
+                    GameName = gameName,
+                    TagLine = tagLine,
+                    Pdl = pdl,
+                    TrackingEnabled = trackingEnabled,
+                    DateAdded = DateTime.UtcNow,
+                    Region = region,
+                    Server = server,
+                    MatchStats = new MatchStats() // Initialize with default values
+                };
+
+                await playerRepository.CreatePlayerAsync(player);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error adding new player {gameName}#{tagLine}: {ex.Message}");
+                return false;
+            }
+        }
+
+        private string GetBaseRegion(string serverRegion)
+        {
+            return serverRegion.ToLower() switch
+            {
+                "br1" or "la1" or "la2" or "na1" => "americas",
+                "eun1" or "euw1" or "tr1" or "ru" => "europe",
+                "kr" or "jp1" => "asia",
+                "oc1" or "ph2" or "sg2" or "th2" or "tw2" or "vn2" => "sea",
+                _ => "americas"
+            };
+        }
+
+        // Helper methods for cache access
+
+        private async Task<Player> GetPlayerFromCacheOrRepositoryByPuuidAsync(string puuid)
+        {
+            try
+            {
+                // Try to get all players from cache
+                var cachedPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
+                var player = cachedPlayers.FirstOrDefault(p => p.Puuid == puuid);
+
+                if (player != null)
+                {
+                    _logger.LogDebug($"Player {puuid} found in cache");
+                    return player;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"Error accessing cache: {ex.Message}");
+            }
+
+            // Fall back to repository if not in cache or cache access failed
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            return await playerRepository.GetPlayerByPuuidAsync(puuid);
+        }
+
+        private async Task<List<Player>> GetPlayersFromCacheByPuuidsAsync(List<string> puuids)
+        {
+            var result = new List<Player>();
+
+            try
+            {
+                // Try to get all players from cache
+                var cachedPlayers = await _rankingCacheService.GetAllTrackedPlayersAsync(1, 10000);
+
+                // Filter players by PUUIDs
+                foreach (var player in cachedPlayers)
+                {
+                    if (puuids.Contains(player.Puuid))
+                    {
+                        result.Add(player);
+                    }
+                }
+
+                _logger.LogDebug($"Found {result.Count} of {puuids.Count} players in cache");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"Error accessing cache for multiple players: {ex.Message}");
+            }
+
+            return result;
+        }
+
+        private async Task UpdatePlayerAsync(Player player)
+        {
+            var playerRepository = _repositoryFactory.GetPlayerRepository();
+            await playerRepository.UpdatePlayerAsync(player);
+
+            // If this is a tracked player, refresh the cache after updating
+            if (player.TrackingEnabled)
+            {
+                // Refresh both caches as the player might be in either or both
+                try
+                {
+                    await _rankingCacheService.RefreshCacheAsync();
+                    await _rankingCacheService.RefreshAllTrackedPlayersAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning($"Failed to refresh cache after player update: {ex.Message}");
+                }
+            }
+        }
+    }
 }
