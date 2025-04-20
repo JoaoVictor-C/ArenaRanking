@@ -38,8 +38,8 @@ namespace ArenaBackend.Repositories
             try
             {
                 return await _players
-                    //.Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
-                    .Find(player => player.TrackingEnabled == true)
+                    .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
+                    //.Find(player => player.TrackingEnabled == true)
                     .SortBy(player => player.RankPosition)
                     .Skip((page - 1) * pageSize)
                     .Limit(pageSize)
