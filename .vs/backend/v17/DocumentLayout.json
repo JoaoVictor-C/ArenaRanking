@@ -3,19 +3,23 @@
   "WorkspaceRootPath": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|c:\\users\\yago aguiar\\desktop\\arenaranking\\api\\controllers\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|solutionrelative:api\\controllers\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|c:\\users\\yago aguiar\\desktop\\arenaranking\\api\\services\\rankingcacheservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|solutionrelative:api\\services\\rankingcacheservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|solutionrelative:api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|c:\\users\\yago aguiar\\desktop\\arenaranking\\api\\services\\pdlhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|c:\\users\\yago aguiar\\desktop\\arenaranking\\api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|solutionrelative:api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|c:\\users\\yago aguiar\\desktop\\arenaranking\\api\\controllers\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|solutionrelative:api\\controllers\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\services\\rankingcacheservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|solutionrelative:api\\services\\rankingcacheservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\services\\pdlhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|api\\api.csproj|solutionrelative:api\\services\\pdlhandlerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -33,7 +37,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -61,7 +65,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "api\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\appsettings.Development.json",
+              "RelativeToolTip": "api\\appsettings.Development.json",
+              "ViewState": "AQIAAAIAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-04-20T06:02:36.607Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "PlayerController.cs",
               "DocumentMoniker": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\Controllers\\PlayerController.cs",
               "RelativeDocumentMoniker": "api\\Controllers\\PlayerController.cs",
@@ -74,7 +91,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "RankingCacheService.cs",
               "DocumentMoniker": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\Services\\RankingCacheService.cs",
               "RelativeDocumentMoniker": "api\\Services\\RankingCacheService.cs",
@@ -82,25 +99,24 @@
               "RelativeToolTip": "api\\Services\\RankingCacheService.cs",
               "ViewState": "AQIAACEAAAAAAAAAAAAgwDQAAAAzAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T05:08:29.632Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-20T05:08:29.632Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\appsettings.json",
               "RelativeDocumentMoniker": "api\\appsettings.json",
               "ToolTip": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\appsettings.json",
               "RelativeToolTip": "api\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAA6AAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAWAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-04-20T00:18:32.658Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Microsoft.PackageDependencyResolution.targets",
               "DocumentMoniker": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.PackageDependencyResolution.targets",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\Program Files\\dotnet\\sdk\\8.0.200\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.PackageDependencyResolution.targets",
@@ -112,7 +128,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "PdlHandlerService.cs",
               "DocumentMoniker": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\Services\\PdlHandlerService.cs",
               "RelativeDocumentMoniker": "api\\Services\\PdlHandlerService.cs",
@@ -120,12 +136,11 @@
               "RelativeToolTip": "api\\Services\\PdlHandlerService.cs",
               "ViewState": "AQIAAN0BAAAAAAAAAAAmwPQBAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T00:03:36.557Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-20T00:03:36.557Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Yago Aguiar\\Desktop\\ArenaRanking\\api\\Program.cs",
               "RelativeDocumentMoniker": "api\\Program.cs",
