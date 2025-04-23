@@ -1,4 +1,4 @@
-deusing ArenaBackend.Models;
+using ArenaBackend.Models;
 using ArenaBackend.Repositories;
 using Microsoft.Extensions.Logging;
 using ArenaBackend.Factories;
@@ -10,38 +10,40 @@ namespace ArenaBackend.Services
         private readonly ILogger<PdlHandlerService> _logger;
         private readonly IRiotApiService _riotApiService;
         private readonly IRepositoryFactory _repositoryFactory;
-        private readonly IRankingCacheService _rankingCacheService;
+        private readonly IPlayerRepository _playerRepository;
 
-        // Constants
-        private const int K_FACTOR_BASE = 50;
-        private const int K_FACTOR_NEW_PLAYER = 80;
-        private const int K_MAX = 140;
-        private const int MIN_MATCHES_STABLE = 10;
-        private const int DEFAULT_PDL = 1000;
+        // Constants organizados em grupos lógicos
+        private static class PdlFactors
+        {
+            public const int BASE = 50;
+            public const int NEW_PLAYER = 80;
+            public const int MAX = 140;
+            public const int MIN_MATCHES_STABLE = 10;
+            public const int DEFAULT = 1000;
+        }
 
-        // Placement multipliers
-        private readonly Dictionary<int, float> PLACEMENT_MULTIPLIERS = new Dictionary<int, float>
-      {
-         { 1, 1.3f },
-         { 2, 1.1f },
-         { 3, 0.8f },
-         { 4, 0.6f },
-         { 5, -0.4f },
-         { 6, -0.6f },
-         { 7, -1.0f },
-         { 8, -1.7f }
-      };
+        // Placement multipliers usando ReadOnlyDictionary para garantir imutabilidade
+        private static readonly IReadOnlyDictionary<int, float> PLACEMENT_MULTIPLIERS = new Dictionary<int, float>
+        {
+            [1] = 1.3f,  // 1º lugar
+            [2] = 1.1f,  // 2º lugar
+            [3] = 0.8f,  // 3º lugar
+            [4] = 0.6f,  // 4º lugar
+            [5] = -0.4f, // 5º lugar
+            [6] = -0.6f, // 6º lugar
+            [7] = -1.0f, // 7º lugar
+            [8] = -1.7f  // 8º lugar
+        };
 
         public PdlHandlerService(
            IRepositoryFactory repositoryFactory,
            ILogger<PdlHandlerService> logger,
-           IRiotApiService riotApiService,
-           IRankingCacheService rankingCacheService)
+           IRiotApiService riotApiService)
         {
             _repositoryFactory = repositoryFactory;
             _logger = logger;
             _riotApiService = riotApiService;
-            _rankingCacheService = rankingCacheService;
+            _playerRepository = _repositoryFactory.GetPlayerRepository();
         }
 
         public async Task<bool> ProcessPlayerPdlAsync(Player playerData)
@@ -65,7 +67,7 @@ namespace ArenaBackend.Services
             string lastMatchId = playerData.MatchStats.LastProcessedMatchId;
 
             // Get match history for the player
-            var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 10, "normal");
+            var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 30, "normal");
             if (matchIds == null || matchIds.Count == 0)
             {
                 _logger.LogWarning("Could not retrieve match history for player {GameName}#{TagLine}", gameName, tagLine);
@@ -73,14 +75,12 @@ namespace ArenaBackend.Services
             }
 
             // Determine which matches need to be processed
-            // Try to get player from cache first
-            var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
-
+            var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
             var newMatchIds = GetNewMatches(matchIds, lastMatchId);
             if (newMatchIds.Count == 0)
             {
                 player.LastUpdate = DateTime.UtcNow;
-                await UpdatePlayerAsync(player);
+                await _playerRepository.UpdatePlayerAsync(player);
                 return true;
             }
 
@@ -128,12 +128,12 @@ namespace ArenaBackend.Services
             if (matchDetails.info.gameMode != "CHERRY")
             {
                 // Set last game processed to the current one
-                var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
+                var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
                 if (player != null)
                 {
                     player.MatchStats.LastProcessedMatchId = matchId;
                     player.LastUpdate = DateTime.UtcNow;
-                    await UpdatePlayerAsync(player);
+                    await _playerRepository.UpdatePlayerAsync(player);
                 }
                 return false;
             }
@@ -144,32 +144,23 @@ namespace ArenaBackend.Services
             long gameCreation = gameCreationDate.Ticks;
             if (dateAdded.HasValue && gameCreation < dateAdded.Value.ToUniversalTime().Ticks)
             {
-                var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
+                var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
                 player.MatchStats.LastProcessedMatchId = matchId;
                 player.LastUpdate = DateTime.UtcNow;
-                await UpdatePlayerAsync(player);
+                await _playerRepository.UpdatePlayerAsync(player);
                 return false;
             }
 
             var participantsPuuids = matchDetails.info.participants.Select(p => p.puuid).ToList();
             var existingPlayers = new List<Player>();
 
-            // Try to get all players from cache first
-            var cachedPlayers = await GetPlayersFromCacheByPuuidsAsync(participantsPuuids);
-            existingPlayers.AddRange(cachedPlayers);
-
-            // For any players not found in cache, get them from repository
-            var missingPuuids = participantsPuuids.Except(existingPlayers.Select(p => p.Puuid)).ToList();
-            if (missingPuuids.Any())
+            // Get all existing players individually using the repository
+            foreach (var participantPuuid in participantsPuuids)
             {
-                var playerRepositoryInstance = _repositoryFactory.GetPlayerRepository();
-                foreach (var participantPuuid in missingPuuids)
+                var player = await _playerRepository.GetPlayerByPuuidAsync(participantPuuid);
+                if (player != null)
                 {
-                    var player = await playerRepositoryInstance.GetPlayerByPuuidAsync(participantPuuid);
-                    if (player != null)
-                    {
-                        existingPlayers.Add(player);
-                    }
+                    existingPlayers.Add(player);
                 }
             }
 
@@ -340,7 +331,7 @@ namespace ArenaBackend.Services
             }
 
             // Calculate average PDL
-            int averagePdl = totalPlayers > 0 ? totalPdl / totalPlayers : DEFAULT_PDL;
+            int averagePdl = totalPlayers > 0 ? totalPdl / totalPlayers : PdlFactors.DEFAULT;
 
             // Process PDL updates in batch
             foreach (var playerPuuid in puuidsToProcess)
@@ -367,7 +358,7 @@ namespace ArenaBackend.Services
                 );
 
                 // Log PDL changes for auto-checked players
-                var playerData = await GetPlayerFromCacheOrRepositoryByPuuidAsync(playerPuuid);
+                var playerData = await _playerRepository.GetPlayerByPuuidAsync(playerPuuid);
                 if (playerData != null && playerData.TrackingEnabled)
                 {
                     _logger.LogInformation($"Player {gameNames[playerPuuid]}#{tagLines[playerPuuid]}: Placement {placements[playerPuuid]}, " +
@@ -383,22 +374,22 @@ namespace ArenaBackend.Services
             // k = valor bruto de ganho de pdl
             // Determine appropriate K-factor
             float k;
-            if (matchesPlayed < MIN_MATCHES_STABLE)
+            if (matchesPlayed < PdlFactors.MIN_MATCHES_STABLE)
             {
-                k = K_FACTOR_NEW_PLAYER;
+                k = PdlFactors.NEW_PLAYER;
             }
             else
             {
                 // Dynamic factor based on difference between player PDL and average PDL
                 if (averagePdl == 0)
                 {
-                    k = K_FACTOR_BASE;
+                    k = PdlFactors.BASE;
                 }
                 else
                 {
                     int pdlDiff = Math.Abs(playerPdl - averagePdl);
                     // The larger the difference, the more adjustment is needed
-                    k = (float)(K_FACTOR_BASE + Math.Min(K_MAX - K_FACTOR_BASE,
+                    k = (float)(PdlFactors.BASE + Math.Min(PdlFactors.MAX - PdlFactors.BASE,
                           (10 / (1 + Math.Log10(1 + Math.Abs(pdlDiff)))) * Math.Abs(Math.Tanh(pdlDiff / 4.0f))));
 
                     // Additional adjustment for players with significantly higher/lower PDL
@@ -434,7 +425,7 @@ namespace ArenaBackend.Services
         {
             try
             {
-                var player = await GetPlayerFromCacheOrRepositoryByPuuidAsync(puuid);
+                var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
 
                 if (player != null)
                 {
@@ -493,7 +484,7 @@ namespace ArenaBackend.Services
                            ((player.MatchStats.AveragePlacement * (totalGames - 1)) + placement) / totalGames;
                     }
 
-                    await UpdatePlayerAsync(player);
+                    await _playerRepository.UpdatePlayerAsync(player);
                     return true;
                 }
 
@@ -508,13 +499,9 @@ namespace ArenaBackend.Services
 
         public async Task ProcessAllPlayersPdlAsync()
         {
-            _logger.LogInformation("Iniciando processo de PDL para todos os jogadores...");
+            _logger.LogInformation("Starting PDL processing for all players...");
 
-            // Use cached tracked players if available, otherwise fall back to repository
-            IEnumerable<Player> allPlayers;
-
-            var playerRepository2 = _repositoryFactory.GetPlayerRepository();
-            allPlayers = await playerRepository2.GetAllTrackedPlayersAsync();
+            var allPlayers = await _playerRepository.GetAllTrackedPlayersAsync();
 
             if (!allPlayers.Any())
             {
@@ -522,20 +509,59 @@ namespace ArenaBackend.Services
                 return;
             }
 
+            // Define o número máximo de processamentos paralelos
+            int maxConcurrency = 8; // Ajuste este valor conforme a capacidade do servidor
+
+            // Para controlar o número de tarefas concorrentes
+            using var semaphore = new SemaphoreSlim(maxConcurrency);
+
+            // Lista para armazenar todas as tarefas
+            var tasks = new List<Task>();
+            int processedCount = 0;
+            int totalPlayers = allPlayers.Count();
+
+            // Para cada jogador na lista
             foreach (var player in allPlayers)
             {
-                await ProcessPlayerPdlAsync(player);
+                // Espera até que uma vaga esteja disponível no semáforo
+                await semaphore.WaitAsync();
+
+                // Processa o jogador de forma assíncrona
+                tasks.Add(Task.Run(async () =>
+                {
+                    try
+                    {
+                        await ProcessPlayerPdlAsync(player);
+
+                        // Incrementa o contador de processados de forma thread-safe
+                        int processed = Interlocked.Increment(ref processedCount);
+                        if (processed % 10 == 0 || processed == totalPlayers)
+                        {
+                            _logger.LogInformation("PDL processing progress: {Processed}/{Total} players",
+                               processed, totalPlayers);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error processing PDL for player {GameName}#{TagLine}",
+                           player.GameName, player.TagLine);
+                    }
+                    finally
+                    {
+                        // Libera uma vaga no semáforo
+                        semaphore.Release();
+                    }
+                }));
             }
 
-            // Update ranking positions after processing all players' PDL
-            var playerRepository = _repositoryFactory.GetPlayerRepository();
-            await playerRepository.UpdateAllPlayerRankingsAsync();
+            // Aguarda a conclusão de todas as tarefas
+            await Task.WhenAll(tasks);
 
-            // Refresh cache after updating all players
-            await _rankingCacheService.RefreshCacheAsync();
-            await _rankingCacheService.RefreshAllTrackedPlayersAsync();
+            // Atualizar posições de ranking após processar o PDL de todos os jogadores
+            _logger.LogInformation("Updating player rankings after processing all players...");
+            await _playerRepository.UpdateAllPlayerRankingsAsync();
 
-            _logger.LogInformation("PDL processing for all players completed.");
+            _logger.LogInformation("PDL processing for all players completed. Processed {Count} players.", processedCount);
         }
 
         private int GetDefaultPdlForTier(string tier)
@@ -560,7 +586,6 @@ namespace ArenaBackend.Services
         {
             try
             {
-                var playerRepository = _repositoryFactory.GetPlayerRepository();
                 var player = new Player
                 {
                     Puuid = puuid,
@@ -574,7 +599,7 @@ namespace ArenaBackend.Services
                     MatchStats = new MatchStats() // Initialize with default values
                 };
 
-                await playerRepository.CreatePlayerAsync(player);
+                await _playerRepository.CreatePlayerAsync(player);
                 return true;
             }
             catch (Exception ex)
@@ -594,66 +619,6 @@ namespace ArenaBackend.Services
                 "oc1" or "ph2" or "sg2" or "th2" or "tw2" or "vn2" => "sea",
                 _ => "americas"
             };
-        }
-
-        // Helper methods for cache access
-
-        private async Task<Player> GetPlayerFromCacheOrRepositoryByPuuidAsync(string puuid)
-        {
-
-            // Fall back to repository if not in cache or cache access failed
-            var playerRepository = _repositoryFactory.GetPlayerRepository();
-            return await playerRepository.GetPlayerByPuuidAsync(puuid);
-        }
-
-        private async Task<List<Player>> GetPlayersFromCacheByPuuidsAsync(List<string> puuids)
-        {
-            var result = new List<Player>();
-
-            try
-            {
-                // Try to get all players from cache
-                var playerRepository2 = _repositoryFactory.GetPlayerRepository();
-                cachedPlayers = await playerRepository2.GetAllTrackedPlayersAsync();
-
-                // Filter players by PUUIDs
-                foreach (var player in cachedPlayers)
-                {
-                    if (puuids.Contains(player.Puuid))
-                    {
-                        result.Add(player);
-                    }
-                }
-
-                _logger.LogDebug($"Found {result.Count} of {puuids.Count} players in cache");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning($"Error accessing cache for multiple players: {ex.Message}");
-            }
-
-            return result;
-        }
-
-        private async Task UpdatePlayerAsync(Player player)
-        {
-            var playerRepository = _repositoryFactory.GetPlayerRepository();
-            await playerRepository.UpdatePlayerAsync(player);
-
-            // If this is a tracked player, refresh the cache after updating
-            if (player.TrackingEnabled)
-            {
-                // Refresh both caches as the player might be in either or both
-                try
-                {
-                    await _rankingCacheService.RefreshCacheAsync();
-                    await _rankingCacheService.RefreshAllTrackedPlayersAsync();
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning($"Failed to refresh cache after player update: {ex.Message}");
-                }
-            }
         }
     }
 }

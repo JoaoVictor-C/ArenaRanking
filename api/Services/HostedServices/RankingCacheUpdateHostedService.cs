@@ -71,12 +71,7 @@ namespace ArenaBackend.Services
                 using (var scope = _serviceProvider.CreateScope())
                 {
                     var cacheService = scope.ServiceProvider.GetRequiredService<IRankingCacheService>();
-                    
-                    // Execute both refresh operations in parallel
-                    var refreshCacheTask = cacheService.RefreshCacheAsync();
-                    var refreshPlayersTask = cacheService.RefreshAllTrackedPlayersAsync();
-                    
-                    await Task.WhenAll(refreshCacheTask, refreshPlayersTask);
+                    await cacheService.RefreshCacheAsync();
                 }
 
                 _logger.LogInformation("Atualização do cache de ranking finalizada");
@@ -87,7 +82,7 @@ namespace ArenaBackend.Services
             catch (Exception ex)
             {
                 _consecutiveErrors++;
-                _logger.LogError(ex, "Erro durante a atualização do cache. Erro consecutivo: {Count}/{Max}", 
+                _logger.LogError(ex, "Erro durante a atualização do cache. Erro consecutivo: {Count}/{Max}",
                     _consecutiveErrors, _maxConsecutiveErrors);
 
                 if (_consecutiveErrors >= _maxConsecutiveErrors)

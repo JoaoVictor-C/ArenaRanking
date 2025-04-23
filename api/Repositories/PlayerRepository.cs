@@ -14,32 +14,37 @@ namespace ArenaBackend.Repositories
         private readonly ILogger<PlayerRepository> _logger;
 
         public PlayerRepository(
-            IMongoClient client, 
+            IMongoClient client,
             ILogger<PlayerRepository> logger,
             IOptions<MongoDbSettings> settings)
         {
             var dbSettings = settings.Value;
-            var databaseName = dbSettings.IsDevelopment 
+            var databaseName = dbSettings.IsDevelopment
                 ? $"{dbSettings.DatabaseName}{dbSettings.TestDatabaseSuffix}"
                 : dbSettings.DatabaseName;
 
             var database = client.GetDatabase(databaseName);
             _players = database.GetCollection<Player>("player");
             _logger = logger;
+            _logger.LogInformation($"Using database: {databaseName}");
         }
 
         public async Task<IEnumerable<Player>> GetAllPlayersAsync()
         {
-            return await _players.Find(player => true).ToListAsync();    
-        } 
+            return await _players.Find(player => true).ToListAsync();
+        }
 
-        public async Task<IEnumerable<Player>> GetRanking(int page = 1, int pageSize = 100)
+        public async Task<IEnumerable<Player>> GetAllTrackedPlayersAsync()
+        {
+            return await _players.Find(player => player.TrackingEnabled == true).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Player>> GetRanking(int page = 1, int pageSize = 200)
         {
             try
             {
                 return await _players
                     .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
-                    //.Find(player => player.TrackingEnabled == true)
                     .SortBy(player => player.RankPosition)
                     .Skip((page - 1) * pageSize)
                     .Limit(pageSize)
@@ -50,47 +55,6 @@ namespace ArenaBackend.Repositories
                 _logger.LogError(ex, "Error getting ranking");
                 throw;
             }
-        }
-
-        public async Task<IEnumerable<Player>> GetRankingByRegion(string region, int page = 1, int pageSize = 100)
-        {
-            try
-            {
-                return await _players
-                    .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0 && player.Region == region)
-                    .SortBy(player => player.RankPosition)
-                    .Skip((page - 1) * pageSize)
-                    .Limit(pageSize)
-                    .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error getting ranking by region");
-                throw;
-            }
-        }
-
-        public async Task<IEnumerable<Player>> GetAllTrackedPlayersAsync(int page = 1, int pageSize = 100)
-        {
-            try
-            {
-                return await _players
-                    .Find(player => player.TrackingEnabled == true)
-                    .SortByDescending(player => player.Pdl)
-                    .Skip((page - 1) * pageSize)
-                    .Limit(pageSize)
-                    .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error getting all tracked players");
-                throw;
-            }
-        }
-
-        public async Task<IEnumerable<Player>> GetPlayersByServerAsync(string server)
-        {
-            return await _players.Find(player => player.Server == server).ToListAsync();
         }
 
         public async Task<Player> GetPlayerByIdAsync(string id)

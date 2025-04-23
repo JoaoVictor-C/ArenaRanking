@@ -240,10 +240,12 @@ public class PlayerController : ControllerBase
     {
         try
         {
-            string? puuid = await _riotApiService.VerifyRiotId(tagLine, gameName);
-            if (puuid == null)
+            string riotId = $"{gameName}#{tagLine}";
+            // Verify if the player exists in the Riot API using the ConsultarRiotApi
+            var (puuid, success) = await _riotApiService.ConsultarRiotApi(riotId);
+            if (!success)
             {
-                return NotFound($"Player {gameName} not found in Riot API.");
+                return BadRequest($"Player {gameName}#{tagLine} not found in Riot API.");
             }
 
             // Check if player already exists

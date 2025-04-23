@@ -173,18 +173,7 @@ namespace ArenaBackend.Services
         {
             try
             {
-                // Escapar corretamente os componentes da URL
-                Uri uri = new Uri(url);
-                string scheme = uri.Scheme;
-                string host = uri.Host;
-                string path = uri.AbsolutePath;
-                string query = uri.Query;
-                
-                // Recompor a URL com componentes escapados corretamente
-                string[] pathSegments = path.Split('/').Skip(1).ToArray();
-                string escapedPath = "/" + string.Join("/", pathSegments.Select(segment => Uri.EscapeDataString(segment)));
-                
-                string escapedUrl = $"{scheme}://{host}{escapedPath}{query}";
+                string escapedUrl = url.Replace(" ", "%20");
                 
                 var httpClient = GetConfiguredHttpClient();
                 HttpResponseMessage response = await httpClient.GetAsync(escapedUrl);
