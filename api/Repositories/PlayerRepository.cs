@@ -34,25 +34,17 @@ namespace ArenaBackend.Repositories
             return await _players.Find(player => true).ToListAsync();    
         } 
 
+        public async Task<IEnumerable<Player>> GetAllTrackedPlayersAsync()
+        {
+            return await _players.Find(player => player.TrackingEnabled == true).ToListAsync();
+        }
+
         public async Task<IEnumerable<Player>> GetRanking(int page = 1, int pageSize = 200)
         {
             try
             {
                 return await _players
                     .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
-                    .Project<Player>(Builders<Player>.Projection.Include(p => p.Id)
-                        .Include(p => p.GameName)
-                        .Include(p => p.TagLine)
-                        .Include(p => p.Pdl)
-                        .Include(p => p.RankPosition)
-                        .Include(p => p.MatchStats)
-                        .Include(p => p.Region)
-                        .Include(p => p.Server)
-                        .Include(p => p.ProfileIconId)
-                        .Include(p => p.LastPlacement)
-                        .Include(p => p.LastUpdate)
-                        .Include(p => p.TrackingEnabled)
-                        .Include(p => p.DateAdded))
                     .SortBy(player => player.RankPosition)
                     .Skip((page - 1) * pageSize)
                     .Limit(pageSize)
@@ -63,14 +55,6 @@ namespace ArenaBackend.Repositories
                 _logger.LogError(ex, "Error getting ranking");
                 throw;
             }
-        }
-
-        public async Task<IEnumerable<Player>> GetRanking()
-        {
-            return await _players
-                .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
-                .SortByDescending(player => player.Pdl)
-                .ToListAsync();
         }
 
         public async Task<Player> GetPlayerByIdAsync(string id)

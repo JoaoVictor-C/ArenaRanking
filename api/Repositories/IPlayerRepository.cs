@@ -7,6 +7,7 @@ namespace ArenaBackend.Repositories
     public interface IPlayerRepository
     {
         Task<IEnumerable<Player>> GetAllPlayersAsync();
+        Task<IEnumerable<Player>> GetAllTrackedPlayersAsync();
         Task<IEnumerable<Player>> GetRanking(int page =1, int pageSize = 100);
         Task<Player> GetPlayerByIdAsync(string id);
         Task<Player> GetPlayerByPuuidAsync(string puuid);

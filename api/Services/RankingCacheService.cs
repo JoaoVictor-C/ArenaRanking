@@ -49,7 +49,6 @@ namespace ArenaBackend.Services
         {
             try
             {
-                _logger.LogInformation("Atualizando cache de ranking...");
                 
                 // Obter o ranking completo do repositório
                 var playerRepository = _repositoryFactory.GetPlayerRepository();
@@ -62,7 +61,6 @@ namespace ArenaBackend.Services
                     _lastCacheUpdate = DateTime.UtcNow;
                 }
                 
-                _logger.LogInformation($"Cache de ranking atualizado com {_cachedRanking.Count} jogadores");
             }
             catch (Exception ex)
             {
