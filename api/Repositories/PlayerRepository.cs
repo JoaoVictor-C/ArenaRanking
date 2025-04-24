@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using ArenaBackend.Models;
 using ArenaBackend.Configs;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using ArenaBackend.Services.Configuration;
 
 namespace ArenaBackend.Repositories
 {
@@ -16,9 +16,9 @@ namespace ArenaBackend.Repositories
         public PlayerRepository(
             IMongoClient client, 
             ILogger<PlayerRepository> logger,
-            IOptions<MongoDbSettings> settings)
+            IEnvironmentConfigProvider configProvider)
         {
-            var dbSettings = settings.Value;
+            var dbSettings = configProvider.GetMongoDbSettings();
             var databaseName = dbSettings.IsDevelopment 
                 ? $"{dbSettings.DatabaseName}{dbSettings.TestDatabaseSuffix}"
                 : dbSettings.DatabaseName;
@@ -39,21 +39,30 @@ namespace ArenaBackend.Repositories
             return await _players.Find(player => player.TrackingEnabled == true).ToListAsync();
         }
 
-        public async Task<IEnumerable<Player>> GetRanking(int page = 1, int pageSize = 200)
+        public async Task<IEnumerable<Player>> GetRanking(int page = 1, int pageSize = 100)
         {
             try
             {
-                return await _players
-                    .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
-                    .SortBy(player => player.RankPosition)
-                    .Skip((page - 1) * pageSize)
-                    .Limit(pageSize)
-                    .ToListAsync();
+            var projection = Builders<Player>.Projection
+                .Exclude(p => p.MatchStats.RecentGames)
+                .Exclude(p => p.Puuid)
+                .Exclude(p => p.Id)
+                .Exclude(p => p.MatchStats.LastProcessedMatchId)
+                .Exclude(p => p.DateAdded)
+                .Exclude(p => p.Region);
+            
+            return await _players
+                .Find(player => player.TrackingEnabled == true && player.MatchStats.Win + player.MatchStats.Loss > 0)
+                .Project<Player>(projection)
+                .SortBy(player => player.RankPosition)
+                .Skip((page - 1) * pageSize)
+                .Limit(pageSize)
+                .ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting ranking");
-                throw;
+            _logger.LogError(ex, "Error getting ranking");
+            throw;
             }
         }
 

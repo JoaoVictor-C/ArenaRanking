@@ -39,10 +39,9 @@ namespace ArenaBackend.Services
             foreach (var player in trackingPlayers)
             {
                 await RecalculatePlayerPdlAsync(player.Puuid);
-                await Task.Delay(500); // Pequena pausa para evitar sobrecarga
+                await Task.Delay(500);
             }
 
-            // Atualizar posições de ranking após recalcular o PDL de todos os jogadores
             await _playerRepository.UpdateAllPlayerRankingsAsync();
 
             _logger.LogInformation("Recálculo de PDL para todos os jogadores concluído.");
@@ -59,15 +58,12 @@ namespace ArenaBackend.Services
 
             _logger.LogInformation($"Recalculando PDL para o jogador {player.GameName}#{player.TagLine}...");
 
-            // Preservar a data de adição original e informações de identificação
             DateTime? originalDateAdded = player.DateAdded;
             string gameName = player.GameName;
             string tagLine = player.TagLine;
             int profileIconId = player.ProfileIconId;
             int matchesToProcess = player.MatchStats.Win + player.MatchStats.Loss;
-            // Resetar dados do jogador
 
-            // Obter histórico de partidas
             var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, matchesToProcess, "NORMAL");
             if (matchIds == null || matchIds.Count == 0)
             {
@@ -77,8 +73,7 @@ namespace ArenaBackend.Services
 
             await ResetPlayerDataAsync(player);
 
-            // Processar cada partida cronologicamente (da mais antiga para a mais recente)
-            matchIds.Reverse(); // API da Riot retorna as mais recentes primeiro
+            matchIds.Reverse();
             int processedCount = 0;
 
             foreach (var matchId in matchIds)
@@ -88,22 +83,18 @@ namespace ArenaBackend.Services
                     var matchDetails = await _riotApiService.GetMatchDetails(matchId);
                     if (matchDetails == null || matchDetails.info.gameMode != "CHERRY")
                     {
-                        continue; // Ignorar partidas que não são do modo arena
+                        continue;
                     }
 
-                    // Verificar se o jogador participou desta partida
                     bool participated = matchDetails.info.participants.Any(p => p.puuid == puuid);
                     if (!participated)
                     {
                         continue;
                     }
 
-                    // Forçar o processamento desta partida
                     player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
-                    player.MatchStats.LastProcessedMatchId = ""; // Resetar para forçar processamento
-                    //await _playerRepository.UpdatePlayerAsync(player);
+                    player.MatchStats.LastProcessedMatchId = "";
 
-                    // Processar a partida usando o serviço existente
                     await _pdlHandlerService.ProcessMatchAsync(matchId, player.Puuid, player.DateAdded);
 
                     processedCount++;
@@ -116,14 +107,12 @@ namespace ArenaBackend.Services
                 }
             }
 
-            // Recuperar o jogador atualizado
             player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
             _logger.LogInformation($"Recálculo de PDL concluído para {player.GameName}#{player.TagLine}. PDL atualizado: {player.Pdl}, Partidas processadas: {processedCount}. Vitórias: {player.MatchStats.Win}, Derrotas: {player.MatchStats.Loss}");
         }
 
         private async Task ResetPlayerDataAsync(Player player)
         {
-            // Preservar dados de identificação e tracking
             string id = player.Id;
             string puuid = player.Puuid;
             string gameName = player.GameName;
@@ -132,14 +121,12 @@ namespace ArenaBackend.Services
             DateTime? dateAdded = player.DateAdded;
             bool trackingEnabled = player.TrackingEnabled;
 
-            // Resetar estatísticas
-            player.Pdl = 1000; // PDL inicial padrão
+            player.Pdl = 1000;
             player.MatchStats = new MatchStats();
             player.LastPlacement = 0;
             player.RankPosition = 0;
             player.LastUpdate = DateTime.UtcNow;
 
-            // Atualizar o jogador no banco de dados
             await _playerRepository.UpdatePlayerAsync(player);
             _logger.LogInformation($"Dados resetados para o jogador {player.GameName}#{player.TagLine}");
         }

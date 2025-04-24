@@ -26,7 +26,7 @@ namespace ArenaBackend.Services
         {
             _logger.LogInformation("Serviço de atualização de Riot IDs iniciado");
             
-            await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -81,7 +81,6 @@ namespace ArenaBackend.Services
         {
             try
             {
-                // Linux usa o formato IANA
                 return TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
             }
             catch
@@ -92,7 +91,6 @@ namespace ArenaBackend.Services
                 }
                 catch
                 {
-                    // Fallback: use UTC-3 directly
                     return TimeZoneInfo.CreateCustomTimeZone(
                         "Brasilia Standard Time",
                         new TimeSpan(-3, 0, 0),

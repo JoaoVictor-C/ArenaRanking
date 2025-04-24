@@ -1,8 +1,8 @@
 using MongoDB.Driver;
-using Microsoft.Extensions.Options;
 using ArenaBackend.Configs;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
+using ArenaBackend.Services.Configuration;
 
 namespace ArenaBackend.Services;
 
@@ -14,11 +14,11 @@ public class DatabaseCloneService
 
     public DatabaseCloneService(
         IMongoClient client,
-        IOptions<MongoDbSettings> settings,
+        IEnvironmentConfigProvider configProvider,
         ILogger<DatabaseCloneService> logger)
     {
         _client = client;
-        _settings = settings.Value;
+        _settings = configProvider.GetMongoDbSettings();
         _logger = logger;
     }
 
@@ -29,10 +29,8 @@ public class DatabaseCloneService
             var sourceDbName = _settings.DatabaseName;
             var targetDbName = $"{sourceDbName}{_settings.TestDatabaseSuffix}";
 
-            // Dropa o banco de teste se já existir
             await _client.DropDatabaseAsync(targetDbName);
 
-            // Lista todas as coleções do banco de produção
             var sourceDb = _client.GetDatabase(sourceDbName);
             var collections = await (await sourceDb.ListCollectionNamesAsync()).ToListAsync();
 
@@ -40,16 +38,13 @@ public class DatabaseCloneService
 
             foreach (var collectionName in collections)
             {
-                // Obtém os documentos da coleção de origem
                 var sourceCollection = sourceDb.GetCollection<BsonDocument>(collectionName);
                 var filter = collectionName == "player" 
                     ? Builders<BsonDocument>.Filter.Eq("trackingEnabled", true)
                     : new BsonDocument();
-                //var filter = Builders<BsonDocument>.Filter.Empty; // Para clonar todos os documentos
                 
                 var documents = await sourceCollection.Find(filter).ToListAsync();
 
-                // Cria a coleção no banco de teste e insere os documentos
                 var targetCollection = targetDb.GetCollection<BsonDocument>(collectionName);
                 if (documents.Count > 0)
                 {

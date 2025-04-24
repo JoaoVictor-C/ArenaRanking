@@ -65,7 +65,6 @@ public class SetRegionService : ISetRegionService
          {
             player.Region = regionInfo.region;
             player.Server = regionInfo.server;
-            // playerRepository.UpdatePlayerAsync(player);
             _logger.LogInformation($"Updated player {player.GameName}#{player.TagLine} - Region: {player.Region}, Server: {player.Server}");
          }
          else

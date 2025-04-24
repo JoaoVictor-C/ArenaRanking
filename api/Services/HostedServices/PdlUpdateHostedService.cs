@@ -29,15 +29,12 @@ namespace ArenaBackend.Services
         {
             _logger.LogInformation("PDL Update Background Service starting");
 
-            // Small delay to let the application start completely
-            await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                // Check if PDL update is already running
                 if (!_isProcessing)
                 {
-                    // Start PDL processing on a separate thread
                     _ = ProcessPdlUpdateAsync(stoppingToken);
                 }
                 else
@@ -45,17 +42,14 @@ namespace ArenaBackend.Services
                     _logger.LogInformation("Ignorando verificação de PDL pois já existe um processamento em andamento");
                 }
 
-                // Wait for 2 minutes before next execution
                 await Task.Delay(TimeSpan.FromMinutes(6), stoppingToken);
             }
         }
 
         private async Task ProcessPdlUpdateAsync(CancellationToken stoppingToken)
         {
-            // Try to enter the semaphore (atomic check and set)
             if (!await _semaphore.WaitAsync(0, stoppingToken))
             {
-                // If we couldn't acquire the semaphore immediately, it means another thread is processing
                 return;
             }
 
@@ -72,7 +66,6 @@ namespace ArenaBackend.Services
                 
                 _logger.LogInformation("Verificação periódica de PDL finalizada");
 
-                // Resetar contador de erros após sucesso
                 _consecutiveErrors = 0;
             }
             catch (KeyNotFoundException ex)

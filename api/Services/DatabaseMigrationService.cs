@@ -1,9 +1,9 @@
 using MongoDB.Driver;
 using ArenaBackend.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using ArenaBackend.Configs;
 using MongoDB.Bson;
+using ArenaBackend.Services.Configuration;
 
 namespace ArenaBackend.Services;
 
@@ -16,13 +16,13 @@ public class DatabaseMigrationService
     public DatabaseMigrationService(
         IMongoClient client,
         ILogger<DatabaseMigrationService> logger,
-        IOptions<MongoDbSettings> settings)
+        IEnvironmentConfigProvider configProvider)
     {
         ArgumentNullException.ThrowIfNull(client);
         ArgumentNullException.ThrowIfNull(logger);
-        ArgumentNullException.ThrowIfNull(settings);
+        ArgumentNullException.ThrowIfNull(configProvider);
 
-        var dbSettings = settings.Value;
+        var dbSettings = configProvider.GetMongoDbSettings();
         _databaseName = dbSettings.IsDevelopment 
             ? $"{dbSettings.DatabaseName}{dbSettings.TestDatabaseSuffix}"
             : dbSettings.DatabaseName;
@@ -65,13 +65,11 @@ public class DatabaseMigrationService
         {
             _logger.LogInformation("Starting recentGames field migration");
 
-            // Get all players
             var filterReset = Builders<Player>.Filter.Empty;
 
             var updateReset = Builders<Player>.Update
                 .Set("matchStats.recentGames", new List<DetailedMatch>());
 
-            // Atualiza os documentos que não possuem o campo recentGames
             var result = await _players.UpdateManyAsync(filterReset, updateReset);
             _logger.LogInformation("Updated {Count} documents to initialize recentGames field", 
                 result.ModifiedCount);

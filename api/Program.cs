@@ -15,52 +15,64 @@ using System;
 using Microsoft.Extensions.Hosting;
 using System.Net.Http.Headers;
 using ArenaBackend.Factories;
-
-System.TimeZoneInfo.TryConvertIanaIdToWindowsId("America/Sao_Paulo", out var windowsTimeZoneId);
-Environment.SetEnvironmentVariable("TZ", "America/Sao_Paulo");
+using ArenaBackend.Services.Configuration;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Kestrel para usar HTTPS com certificados PEM
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+var loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder.AddConsole();
+    builder.SetMinimumLevel(LogLevel.Information);
+});
+var startupLogger = loggerFactory.CreateLogger<Program>();
+DotEnvLoader.Load(startupLogger);
+
+// Registrar o provedor de configuração
+builder.Services.AddSingleton<IEnvironmentConfigProvider, EnvironmentConfigProvider>();
+
+// Registrar serviços que dependem de configurações
+builder.Services.AddScoped<IRiotApiKeyManager>(provider =>
+{
+    var configProvider = provider.GetRequiredService<IEnvironmentConfigProvider>();
+    var logger = provider.GetRequiredService<ILogger<RiotApiKeyManager>>();
+    return new RiotApiKeyManager(configProvider, logger);
+});
+
+
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.Listen(System.Net.IPAddress.Any, 3002, listenOptions =>
     {
         listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
         
-        // Caminho para os certificados
+
         var certPath = Path.Combine(builder.Environment.ContentRootPath, "certificado", "fullchain.pem");
         var keyPath = Path.Combine(builder.Environment.ContentRootPath, "certificado", "privkey.pem");
         
-        // Verifica se os certificados existem
+
         if (File.Exists(certPath) && File.Exists(keyPath))
         {
-            // Carrega os certificados PEM
+
             var certificate = X509Certificate2.CreateFromPemFile(certPath, keyPath);
             listenOptions.UseHttps(certificate);
         }
     });
 });
 
-// Configure services
-builder.Services.Configure<MongoDbSettings>(
-    builder.Configuration.GetSection(nameof(MongoDbSettings)));
-
-builder.Services.Configure<RiotApiSettings>(
-    builder.Configuration.GetSection(nameof(RiotApiSettings)));
-
-builder.Services.AddSingleton<IMongoClient>(sp =>
+builder.Services.AddSingleton<IMongoClient>(provider =>
 {
-    var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
-    return new MongoClient(settings.ConnectionString);
+    var configProvider = provider.GetRequiredService<IEnvironmentConfigProvider>();
+    var mongoSettings = configProvider.GetMongoDbSettings();
+    return new MongoClient(mongoSettings.ConnectionString);
 });
 
-builder.Services.AddSingleton<IRiotApiKeyManager, RiotApiKeyManager>();
 builder.Services.AddSingleton<IRankingCacheService, RankingCacheService>();
-builder.Services.AddSingleton<IScheduleService, ScheduleService>();
 
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddScoped<IOldPlayerRepository, OldPlayerRepository>();
 builder.Services.AddScoped<IRiotApiService, RiotApiService>();
 builder.Services.AddScoped<IPdlHandlerService, PdlHandlerService>();
 builder.Services.AddScoped<IRiotIdUpdateService, RiotIdUpdateService>();
@@ -73,18 +85,14 @@ builder.Services.AddHostedService<RankingCacheUpdateHostedService>();
 builder.Services.AddHostedService<RiotIdUpdateHostedService>();
 builder.Services.AddHostedService<PdlUpdateHostedService>();
 
-// Adicione após as outras configurações de serviços
 builder.Services.AddHttpClient("RiotApi", client =>
 {
     client.DefaultRequestHeaders.Accept.Clear();
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-    // Não adicionamos o token aqui porque ele pode mudar dinamicamente
 });
 
-// Adicione após as outras configurações de serviços
 builder.Services.AddSingleton<IRepositoryFactory, RepositoryFactory>();
 
-// Add CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
@@ -96,16 +104,13 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
-// Build app
 var app = builder.Build();
 
-// Configure middleware
 app.UseCors("CorsPolicy");
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
 
-// Inicializar rankings após a inicialização completa da aplicação
 app.Lifetime.ApplicationStarted.Register(async () => 
 {
     using (var scope = app.Services.CreateScope())
@@ -123,21 +128,30 @@ app.Lifetime.ApplicationStarted.Register(async () =>
     }
 });
 
-/*
-if (builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>().IsDevelopment)
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var dbCloneService = scope.ServiceProvider.GetRequiredService<DatabaseCloneService>();
-        await dbCloneService.CloneProductionToTest();
-    }
-}
-*/
+
 using (var scope = app.Services.CreateScope())
 {
-    var migrationService = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
-    //await migrationService.MigrateRegionFields();
-    //await migrationService.MigrateRecentGamesField(); // Adicione esta linha
+    var configProvider = scope.ServiceProvider.GetRequiredService<IEnvironmentConfigProvider>();
+    var dbSettings = configProvider.GetMongoDbSettings();
+    var shouldCloneDatabase = dbSettings.IsDevelopment;
+
+    if (shouldCloneDatabase)
+    {
+        var dbCloneService = scope.ServiceProvider.GetRequiredService<DatabaseCloneService>();
+        //await dbCloneService.CloneProductionToTest();
+        Console.WriteLine("Database clone completed successfully.");
+    }
+    else
+    {
+        Console.WriteLine("Database clone skipped based on configuration.");
+    }
 }
+
+// using (var scope = app.Services.CreateScope())
+// {
+//     var migrationService = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
+//     await migrationService.MigrateRegionFields();
+//     await migrationService.MigrateRecentGamesField();
+// }
 
 app.Run();

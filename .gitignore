@@ -113,3 +113,5 @@ api/obj/project.assets.json
 api/obj/api.csproj.nuget.g.targets
 api/obj/api.csproj.nuget.dgspec.json
 api/bin/Debug/net8.0/api.dll
+.env
+*.sln

@@ -2,6 +2,8 @@ using ArenaBackend.Models;
 using ArenaBackend.Repositories;
 using Microsoft.Extensions.Logging;
 using ArenaBackend.Factories;
+using ArenaBackend.Services.Configuration;
+using ArenaBackend.Configs;
 
 namespace ArenaBackend.Services
 {
@@ -11,39 +13,19 @@ namespace ArenaBackend.Services
       private readonly IRiotApiService _riotApiService;
       private readonly IRepositoryFactory _repositoryFactory;
       private readonly IPlayerRepository _playerRepository;
-
-      // Constants organizados em grupos lógicos
-      private static class PdlFactors
-      {
-          public const int BASE = 50;
-          public const int NEW_PLAYER = 80;
-          public const int MAX = 140;
-          public const int MIN_MATCHES_STABLE = 10;
-          public const int DEFAULT = 1000;
-      }
-
-      // Placement multipliers usando ReadOnlyDictionary para garantir imutabilidade
-      private static readonly IReadOnlyDictionary<int, float> PLACEMENT_MULTIPLIERS = new Dictionary<int, float>
-      {
-          [1] = 1.3f,  // 1º lugar
-          [2] = 1.1f,  // 2º lugar
-          [3] = 0.8f,  // 3º lugar
-          [4] = 0.6f,  // 4º lugar
-          [5] = -0.4f, // 5º lugar
-          [6] = -0.6f, // 6º lugar
-          [7] = -1.0f, // 7º lugar
-          [8] = -1.7f  // 8º lugar
-      };
+      private readonly PdlCalculationSettings _pdlSettings;
 
       public PdlHandlerService(
          IRepositoryFactory repositoryFactory,
          ILogger<PdlHandlerService> logger,
-         IRiotApiService riotApiService)
+         IRiotApiService riotApiService,
+         IEnvironmentConfigProvider configProvider)
       {
          _repositoryFactory = repositoryFactory;
          _logger = logger;
          _riotApiService = riotApiService;
          _playerRepository = _repositoryFactory.GetPlayerRepository();
+         _pdlSettings = configProvider.GetPdlCalculationSettings();
       }
 
       public async Task<bool> ProcessPlayerPdlAsync(Player playerData)
@@ -66,7 +48,6 @@ namespace ArenaBackend.Services
 
          string lastMatchId = playerData.MatchStats.LastProcessedMatchId;
 
-         // Get match history for the player
          var matchIds = await _riotApiService.GetMatchHistoryPuuid(puuid, 30, "normal");
          if (matchIds == null || matchIds.Count == 0)
          {
@@ -74,7 +55,6 @@ namespace ArenaBackend.Services
             return false;
          }
 
-         // Determine which matches need to be processed
          var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
          var newMatchIds = GetNewMatches(matchIds, lastMatchId);
          if (newMatchIds.Count == 0)
@@ -84,7 +64,6 @@ namespace ArenaBackend.Services
             return true;
          }
 
-         // Process each match
          newMatchIds.Reverse();
          foreach (var matchId in newMatchIds)
          {
@@ -96,7 +75,6 @@ namespace ArenaBackend.Services
 
       private static List<string> GetNewMatches(List<string> allMatches, string lastProcessedMatchId)
       {
-         // If no last processed match, process all matches
          if (string.IsNullOrEmpty(lastProcessedMatchId))
          {
             return allMatches;
@@ -107,7 +85,7 @@ namespace ArenaBackend.Services
          {
             if (matchId == lastProcessedMatchId)
             {
-               break;  // Already processed up to here
+               break;
             }
             newMatchIds.Add(matchId);
          }
@@ -124,10 +102,8 @@ namespace ArenaBackend.Services
             return false;
          }
 
-         // Skip if the match is not arena mode
          if (matchDetails.info.gameMode != "CHERRY")
          {
-            // Set last game processed to the current one
             var player = await _playerRepository.GetPlayerByPuuidAsync(puuid);
             if (player != null)
             {
@@ -138,7 +114,6 @@ namespace ArenaBackend.Services
             return false;
          }
 
-         // Skip if match is older than when the player was added
          DateTime gameCreationDate = DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(matchDetails.info.gameCreation)).UtcDateTime;
 
          long gameCreation = gameCreationDate.Ticks;
@@ -154,7 +129,6 @@ namespace ArenaBackend.Services
          var participantsPuuids = matchDetails.info.participants.Select(p => p.puuid).ToList();
          var existingPlayers = new List<Player>();
 
-         // Get all existing players individually using the repository
          foreach (var participantPuuid in participantsPuuids)
          {
             var player = await _playerRepository.GetPlayerByPuuidAsync(participantPuuid);
@@ -166,7 +140,6 @@ namespace ArenaBackend.Services
 
          var existingPlayerDict = existingPlayers.ToDictionary(p => p.Puuid);
 
-         // Calculate average PDL
          int totalPdl = 0;
          int totalPlayers = participantsPuuids.Count;
          var puuidsToProcess = new List<string>();
@@ -191,7 +164,6 @@ namespace ArenaBackend.Services
                int playerWin = player.MatchStats.Win;
                int playerLoss = player.MatchStats.Loss;
 
-               // Skip if already processed
                if (player.MatchStats.LastProcessedMatchId == matchId || (player.TrackingEnabled && participant.puuid != puuid))
                {
                   totalPdl += pdl;
@@ -207,42 +179,35 @@ namespace ArenaBackend.Services
                loss[participant.puuid] = playerLoss + (isWin ? 0 : 1);
                profileIcon[participant.puuid] = participant.profileIcon;
 
-               // Update champion data in the list of dictionaries format
                var championEntry = new ChampionPlayed
                {
                   ChampionId = participant.championId.ToString(),
                   ChampionName = participant.championName
                };
 
-               // Check if player already has champion data
                if (player.MatchStats.ChampionsPlayed == null)
                {
                   player.MatchStats.ChampionsPlayed = new List<ChampionPlayed>();
                }
 
-               // Add new champion to the tracking list
                if (player.MatchStats.ChampionsPlayed.Count < 4)
                {
                   player.MatchStats.ChampionsPlayed.Add(championEntry);
                }
                else
                {
-                  // Remove oldest champion and add new one
                   player.MatchStats.ChampionsPlayed.RemoveAt(0);
                   player.MatchStats.ChampionsPlayed.Add(championEntry);
                }
 
-               // Store in the temporary dictionary for this match processing
                championsPlayed[participant.puuid] = player.MatchStats.ChampionsPlayed
                   .Select(c => new Dictionary<string, string> { { c.ChampionId, c.ChampionName } })
                   .ToList();
-               // Update player properties
 
                totalPdl += pdl;
             }
             else
             {
-               // When adding a new player, determine region and server from matchId
                string server = matchId.Split('_')[0];
                string region = GetBaseRegion(server);
                string? tier = await _riotApiService.GetTier(participant.puuid, server);
@@ -268,13 +233,11 @@ namespace ArenaBackend.Services
 
                totalPdl += pdl;
 
-               // Add new player to the database with region and server
                await AddPlayerAsync(participant.puuid, participant.riotIdGameName, participant.riotIdTagline, false, pdl, region, server);
             }
 
             var augments = new List<string>();
             var items = new List<int>();
-            // Go through augment properties in a for loop
             for (int i = 1; i <= 6; i++)
             {
                var augmentProperty = typeof(GetMatchDataModel.Info.ParticipantesInfo).GetProperty($"playerAugment{i}");
@@ -287,7 +250,6 @@ namespace ArenaBackend.Services
                   }
                }
             }
-            // Go through item properties in a for loop
             for (int i = 0; i <= 6; i++)
             {
                var itemProperty = typeof(GetMatchDataModel.Info.ParticipantesInfo).GetProperty($"item{i}");
@@ -300,7 +262,6 @@ namespace ArenaBackend.Services
                   }
                }
             }
-            // Check if augments and items are empty
             if (augments.Count == 0)
             {
                augments = null;
@@ -310,7 +271,6 @@ namespace ArenaBackend.Services
                items = null;
             }
 
-            // Create PlayerDTO for the match
             var playerDTO = new PlayerDTO
             {
                GameName = participant.riotIdGameName,
@@ -330,10 +290,8 @@ namespace ArenaBackend.Services
             playerDTOs.Add(playerDTO);
          }
 
-         // Calculate average PDL
-         int averagePdl = totalPlayers > 0 ? totalPdl / totalPlayers : PdlFactors.DEFAULT;
+         int averagePdl = totalPlayers > 0 ? totalPdl / totalPlayers : _pdlSettings.DefaultPdl;
 
-         // Process PDL updates in batch
          foreach (var playerPuuid in puuidsToProcess)
          {
             int pdlChange = CalculatePdlChange(
@@ -357,7 +315,6 @@ namespace ArenaBackend.Services
                playerDTOs
             );
 
-            // Log PDL changes for auto-checked players
             var playerData = await _playerRepository.GetPlayerByPuuidAsync(playerPuuid);
             if (playerData != null && playerData.TrackingEnabled)
             {
@@ -371,35 +328,30 @@ namespace ArenaBackend.Services
 
       public int CalculatePdlChange(int playerPdl, int averagePdl, int placement, int matchesPlayed)
       {
-         // k = valor bruto de ganho de pdl
-         // Determine appropriate K-factor
          float k;
-         if (matchesPlayed < PdlFactors.MIN_MATCHES_STABLE)
+         if (matchesPlayed < _pdlSettings.MinMatchesStable)
          {
-            k = PdlFactors.NEW_PLAYER;
+            k = _pdlSettings.FactorNewPlayer;
          }
          else
          {
-            // Dynamic factor based on difference between player PDL and average PDL
             if (averagePdl == 0)
             {
-               k = PdlFactors.BASE;
+               k = _pdlSettings.FactorBase;
             }
             else
             {
                int pdlDiff = Math.Abs(playerPdl - averagePdl);
-               // The larger the difference, the more adjustment is needed
-               k = (float)(PdlFactors.BASE + Math.Min(PdlFactors.MAX - PdlFactors.BASE,
+               k = (float)(_pdlSettings.FactorBase + Math.Min(_pdlSettings.FactorMax - _pdlSettings.FactorBase,
                      (10 / (1 + Math.Log10(1 + Math.Abs(pdlDiff)))) * Math.Abs(Math.Tanh(pdlDiff / 4.0f))));
 
-               // Additional adjustment for players with significantly higher/lower PDL
                if (playerPdl > averagePdl && placement > 6)
                {
-                  k *= 1.1f; // Higher penalty for strong players doing poorly
+                  k *= 1.1f;
                }
                else if (playerPdl < averagePdl && placement <= 2)
                {
-                  k *= 1.15f; // Higher bonus for weaker players doing well
+                  k *= 1.15f;
                }
             }
          }
@@ -409,14 +361,11 @@ namespace ArenaBackend.Services
             k = Math.Max(40, k - (placement - 4) * 10);
          }
 
-         // Get multiplier for placement
-         float multiplier = PLACEMENT_MULTIPLIERS.ContainsKey(placement) ?
-            PLACEMENT_MULTIPLIERS[placement] : 0;
+         float multiplier = _pdlSettings.PlacementMultipliers.ContainsKey(placement) ?
+            _pdlSettings.PlacementMultipliers[placement] : 0;
 
-         // Calculate final PDL adjustment
          int pdlChange = (int)(k * multiplier);
 
-         // Limit extreme changes
          return Math.Max(-100, Math.Min(100, pdlChange));
       }
 
@@ -429,7 +378,6 @@ namespace ArenaBackend.Services
 
             if (player != null)
             {
-               // Create detailed match 
                var detailedMatch = new DetailedMatch
                {
                   MatchId = lastMatchId,
@@ -438,11 +386,9 @@ namespace ArenaBackend.Services
                   GameDuration = matchInfo.gameDuration,
                };
 
-               // Update recent games
                if (!player.MatchStats.RecentGames.Any(g => g.MatchId == lastMatchId))
                {
                   player.MatchStats.RecentGames.Add(detailedMatch);
-                  // Keep only the 10 most recent games
                   while (player.MatchStats.RecentGames.Count > 10)
                   {
                      player.MatchStats.RecentGames = player.MatchStats.RecentGames
@@ -452,7 +398,6 @@ namespace ArenaBackend.Services
                   }
                }
 
-               // Update other player properties
                player.Pdl = newPdl;
                player.MatchStats.LastProcessedMatchId = lastMatchId;
                player.LastUpdate = DateTime.UtcNow;
@@ -461,7 +406,6 @@ namespace ArenaBackend.Services
                player.LastPlacement = placement;
                player.ProfileIconId = profileIcon;
 
-               // Update champions played
                player.MatchStats.ChampionsPlayed = championsPlayed.Select(dict =>
                {
                   var entry = dict.First();
@@ -472,7 +416,6 @@ namespace ArenaBackend.Services
                   };
                }).ToList();
 
-               // Update average placement
                int totalGames = player.MatchStats.Win + player.MatchStats.Loss;
                if (player.MatchStats.AveragePlacement == 0)
                {
@@ -509,33 +452,26 @@ namespace ArenaBackend.Services
             return;
          }
 
-         // Define o número máximo de processamentos paralelos
-         int maxConcurrency = 8; // Ajuste este valor conforme a capacidade do servidor
-
-         // Para controlar o número de tarefas concorrentes
+         int maxConcurrency = 2;
+         
          using var semaphore = new SemaphoreSlim(maxConcurrency);
 
-         // Lista para armazenar todas as tarefas
          var tasks = new List<Task>();
          int processedCount = 0;
          int totalPlayers = allPlayers.Count();
 
-         // Para cada jogador na lista
          foreach (var player in allPlayers)
          {
-            // Espera até que uma vaga esteja disponível no semáforo
             await semaphore.WaitAsync();
 
-            // Processa o jogador de forma assíncrona
             tasks.Add(Task.Run(async () =>
             {
                try
                {
                   await ProcessPlayerPdlAsync(player);
 
-                  // Incrementa o contador de processados de forma thread-safe
                   int processed = Interlocked.Increment(ref processedCount);
-                  if (processed % 10 == 0 || processed == totalPlayers)
+                  if (processed % 5 == 0 || processed == totalPlayers)
                   {
                      _logger.LogInformation("PDL processing progress: {Processed}/{Total} players", 
                         processed, totalPlayers);
@@ -548,16 +484,16 @@ namespace ArenaBackend.Services
                }
                finally
                {
-                  // Libera uma vaga no semáforo
+                  await Task.Delay(250);
                   semaphore.Release();
                }
             }));
+            
+            await Task.Delay(100);
          }
 
-         // Aguarda a conclusão de todas as tarefas
          await Task.WhenAll(tasks);
 
-         // Atualizar posições de ranking após processar o PDL de todos os jogadores
          _logger.LogInformation("Updating player rankings after processing all players...");
          await _playerRepository.UpdateAllPlayerRankingsAsync();
 
@@ -578,7 +514,7 @@ namespace ArenaBackend.Services
             "MASTER" => 3000,
             "GRANDMASTER" => 3500,
             "CHALLENGER" => 4000,
-            _ => 1500
+            _ => _pdlSettings.DefaultPdl
          };
       }
 
@@ -596,7 +532,7 @@ namespace ArenaBackend.Services
                DateAdded = DateTime.UtcNow,
                Region = region,
                Server = server,
-               MatchStats = new MatchStats() // Initialize with default values
+               MatchStats = new MatchStats()
             };
 
             await _playerRepository.CreatePlayerAsync(player);

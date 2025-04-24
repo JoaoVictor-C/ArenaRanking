@@ -29,17 +29,14 @@ namespace ArenaBackend.Services
         {
             _logger.LogInformation("Serviço de atualização de cache de ranking iniciado.");
 
-            // Pequeno atraso para permitir que a aplicação inicialize completamente
-            await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
 
-            // Atualize o cache imediatamente após a inicialização
             _ = ProcessCacheUpdateAsync(stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
                 if (!_isProcessing)
                 {
-                    // Inicie a atualização do cache em uma thread separada
                     _ = ProcessCacheUpdateAsync(stoppingToken);
                 }
                 else
@@ -47,7 +44,6 @@ namespace ArenaBackend.Services
                     _logger.LogInformation("Ignorando atualização do cache de ranking pois já existe um processamento em andamento");
                 }
 
-                // Aguarde o intervalo definido antes da próxima execução
                 await Task.Delay(_updateInterval, stoppingToken);
             }
 
@@ -56,10 +52,8 @@ namespace ArenaBackend.Services
 
         private async Task ProcessCacheUpdateAsync(CancellationToken stoppingToken)
         {
-            // Tente entrar no semáforo (verificação e configuração atômica)
             if (!await _semaphore.WaitAsync(0, stoppingToken))
             {
-                // Se não conseguirmos adquirir o semáforo imediatamente, significa que outra thread está processando
                 return;
             }
 
@@ -76,7 +70,6 @@ namespace ArenaBackend.Services
 
                 _logger.LogInformation("Atualização do cache de ranking finalizada");
 
-                // Resetar contador de erros após sucesso
                 _consecutiveErrors = 0;
             }
             catch (Exception ex)

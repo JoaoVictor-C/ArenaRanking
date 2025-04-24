@@ -25,7 +25,6 @@ namespace ArenaBackend.Services
         {
             await EnsureCacheIsUpdatedAsync();
             
-            // Aplicar paginação nos dados em cache
             lock (_cacheLock)
             {
                 return _cachedRanking
@@ -50,11 +49,9 @@ namespace ArenaBackend.Services
             try
             {
                 
-                // Obter o ranking completo do repositório
                 var playerRepository = _repositoryFactory.GetPlayerRepository();
                 var players = await playerRepository.GetRanking(page: 1, pageSize: 10000);
                 
-                // Atualizar o cache atomicamente
                 lock (_cacheLock)
                 {
                     _cachedRanking = players.ToList();
@@ -70,7 +67,6 @@ namespace ArenaBackend.Services
 
         private async Task EnsureCacheIsUpdatedAsync()
         {
-            // Se o cache estiver vazio ou expirado, atualize-o
             if (_cachedRanking.Count == 0 || DateTime.UtcNow - _lastCacheUpdate > _cacheValidityDuration)
             {
                 await RefreshCacheAsync();

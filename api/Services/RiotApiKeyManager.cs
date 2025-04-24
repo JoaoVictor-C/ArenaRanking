@@ -1,41 +1,29 @@
-using ArenaBackend.Configs;
-using Microsoft.Extensions.Options;
-using System.Net.Http.Headers;
-using Newtonsoft.Json;
-using ArenaBackend.Models;
-using System.Net;
-using System.Text;
+using Microsoft.Extensions.Logging;
+using ArenaBackend.Services.Configuration;
 
 namespace ArenaBackend.Services
 {
-
     public class RiotApiKeyManager : IRiotApiKeyManager
     {
-        private string _apiKey;
+        private readonly string _apiKey;
+        private readonly ILogger<RiotApiKeyManager> _logger;
 
-        public RiotApiKeyManager(IOptions<RiotApiSettings> settings)
+        public RiotApiKeyManager(
+            IEnvironmentConfigProvider configProvider, 
+            ILogger<RiotApiKeyManager> logger)
         {
-            _apiKey = settings.Value.ApiKey;
+            _logger = logger;
+            _apiKey = configProvider.GetRiotApiSettings().ApiKey;
+            
+            if (string.IsNullOrEmpty(_apiKey))
+            {
+                _logger.LogWarning("RIOT_API_KEY não foi definida no ambiente");
+            }
         }
 
         public string GetApiKey()
         {
             return _apiKey;
-        }
-
-        public void UpdateApiKey(string newApiKey)
-        {
-            if (!string.IsNullOrEmpty(newApiKey))
-            {
-                _apiKey = newApiKey;
-                // Save on appsettings.json:
-                string appSettingsPath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
-                var json = File.ReadAllText(appSettingsPath);
-                dynamic jsonObj = JsonConvert.DeserializeObject(json);
-                jsonObj["RiotApiSettings"]["ApiKey"] = newApiKey;
-                string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
-                File.WriteAllText(appSettingsPath, output);
-            }
         }
     }
 }

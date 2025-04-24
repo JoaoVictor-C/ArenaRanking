@@ -1,7 +1,7 @@
 using ArenaBackend.Configs;
 using ArenaBackend.Repositories;
+using ArenaBackend.Services.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace ArenaBackend.Factories
@@ -10,26 +10,26 @@ namespace ArenaBackend.Factories
     {
         private readonly IMongoClient _mongoClient;
         private readonly ILoggerFactory _loggerFactory;
-        private readonly IOptions<MongoDbSettings> _dbSettings;
+        private readonly IEnvironmentConfigProvider _configProvider;
         private IPlayerRepository? _playerRepository;
 
         public RepositoryFactory(
             IMongoClient mongoClient,
             ILoggerFactory loggerFactory,
-            IOptions<MongoDbSettings> dbSettings)
+            IEnvironmentConfigProvider configProvider)
         {
             _mongoClient = mongoClient;
             _loggerFactory = loggerFactory;
-            _dbSettings = dbSettings;
+            _configProvider = configProvider;
         }
 
         public IPlayerRepository GetPlayerRepository()
         {
-            // Lazy loading do repositório - criado somente quando necessário e reutilizado
+
             return _playerRepository ??= new PlayerRepository(
                 _mongoClient,
                 _loggerFactory.CreateLogger<PlayerRepository>(),
-                _dbSettings);
+                _configProvider);
         }
     }
 }
