@@ -45,14 +45,38 @@ public class PlayerController : ControllerBase
     public async Task<ActionResult<IEnumerable<Player>>> GetRanking([FromQuery] int page = 1, [FromQuery] int pageSize = 100)
     {
         var players = await _rankingCacheService.GetCachedRankingAsync(page, pageSize);
-        // Remove recent games before returning
-        foreach (var player in players)
-        {
-            player.MatchStats.RecentGames = [];
-        }
-        return Ok(players);
-    }
 
+
+        var playersWithoutRecentGames = players.Select(player => new Player
+        {
+            Id = player.Id,
+            Puuid = player.Puuid,
+            GameName = player.GameName,
+            TagLine = player.TagLine,
+            ProfileIconId = player.ProfileIconId,
+            Region = player.Region,
+            Server = player.Server,
+            Pdl = player.Pdl,
+            RankPosition = player.RankPosition,
+            LastPlacement = player.LastPlacement,
+            LastUpdate = player.LastUpdate,
+            TrackingEnabled = player.TrackingEnabled,
+            DateAdded = player.DateAdded,
+            MatchStats = new MatchStats
+            {
+                Win = player.MatchStats.Win,
+                Loss = player.MatchStats.Loss,
+                AveragePlacement = player.MatchStats.AveragePlacement,
+                ChampionsPlayed = player.MatchStats.ChampionsPlayed,
+                TotalGames = player.MatchStats.TotalGames,
+                WinRate = player.MatchStats.WinRate,
+                LastProcessedMatchId = player.MatchStats.LastProcessedMatchId,
+                RecentGames = [] // <-- Aqui sim a gente zera só na cópia
+            }
+        }).ToList();
+
+        return Ok(playersWithoutRecentGames);
+    }
     [HttpGet("ranking/total")]
     public async Task<ActionResult<int>> GetTotalPlayers()
     {
@@ -95,7 +119,7 @@ public class PlayerController : ControllerBase
         {
             players = players.Take(limit.Value).ToList();
         }
-        
+
         // Create a mask to return only the GameName, TagLine, ProfileIconId
         var maskedPlayers = players.Select(p => new Player
         {
