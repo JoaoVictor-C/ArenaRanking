@@ -46,37 +46,23 @@ public class PlayerController : ControllerBase
     {
         var players = await _rankingCacheService.GetCachedRankingAsync(page, pageSize);
 
-
-        var playersWithoutRecentGames = players.Select(player => new Player
+        foreach (var player in players)
         {
-            Id = player.Id,
-            Puuid = player.Puuid,
-            GameName = player.GameName,
-            TagLine = player.TagLine,
-            ProfileIconId = player.ProfileIconId,
-            Region = player.Region,
-            Server = player.Server,
-            Pdl = player.Pdl,
-            RankPosition = player.RankPosition,
-            LastPlacement = player.LastPlacement,
-            LastUpdate = player.LastUpdate,
-            TrackingEnabled = player.TrackingEnabled,
-            DateAdded = player.DateAdded,
-            MatchStats = new MatchStats
+            if (player.MatchStats?.RecentGames != null)
             {
-                Win = player.MatchStats.Win,
-                Loss = player.MatchStats.Loss,
-                AveragePlacement = player.MatchStats.AveragePlacement,
-                ChampionsPlayed = player.MatchStats.ChampionsPlayed,
-                TotalGames = player.MatchStats.TotalGames,
-                WinRate = player.MatchStats.WinRate,
-                LastProcessedMatchId = player.MatchStats.LastProcessedMatchId,
-                RecentGames = [] // <-- Aqui sim a gente zera só na cópia
+                player.MatchStats.RecentGames = player.MatchStats.RecentGames
+                    .Select(game => new RecentGameDto
+                    {
+                        MatchId = game.MatchId
+                        // Aqui podemos incluir mais campos se no futuro quiser
+                    })
+                    .ToList();
             }
-        }).ToList();
+        }
 
-        return Ok(playersWithoutRecentGames);
+        return Ok(players);
     }
+
     [HttpGet("ranking/total")]
     public async Task<ActionResult<int>> GetTotalPlayers()
     {
