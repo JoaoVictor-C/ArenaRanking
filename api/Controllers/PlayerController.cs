@@ -124,7 +124,7 @@ public class PlayerController : ControllerBase
     }
 
     [HttpGet("get/player")]
-    public async Task<ActionResult<IEnumerable<Player>>> GetPlayer([FromQuery] string? gameName, [FromQuery] string? tagLine, [FromQuery] string server)
+    public async Task<ActionResult<Player>> GetPlayer([FromQuery] string? gameName, [FromQuery] string? tagLine, [FromQuery] string server)
     {
         if (string.IsNullOrEmpty(gameName) && string.IsNullOrEmpty(tagLine))
         {
@@ -136,23 +136,14 @@ public class PlayerController : ControllerBase
             return BadRequest("Invalid server region specified");
         }
 
-        var players = await _rankingCacheService.GetCachedRankingAsync(1, 99999);
-        if (!string.IsNullOrEmpty(gameName))
+        var player = await _playerRepository.GetPlayerByRiotIdAsync(gameName, tagLine);
+
+        if (player == null)
         {
-            players = players.Where(p => p.GameName.Contains(gameName, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
-        if (!string.IsNullOrEmpty(tagLine))
-        {
-            players = players.Where(p => p.TagLine.Contains(tagLine, StringComparison.OrdinalIgnoreCase)).ToList();
-        }
-        if (!string.IsNullOrEmpty(server))
-        {
-            players = players.Where(p => p.Server.Equals(server, StringComparison.OrdinalIgnoreCase)).ToList();
+            return NotFound();
         }
 
-        players = players.Take(1).ToList();
-
-        return Ok(players);
+        return Ok(player);
     }
 
     [HttpGet("{id}")]
