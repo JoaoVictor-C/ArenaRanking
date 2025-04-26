@@ -51,12 +51,12 @@ public class PlayerController : ControllerBase
             if (player.MatchStats?.RecentGames != null)
             {
                 player.MatchStats.RecentGames = player.MatchStats.RecentGames
-                    .Select(g => new RecentGame
+                    .Select(g => new DetailedMatch
                     {
                         MatchId = g.MatchId,
                         GameCreation = g.GameCreation,
                         GameDuration = g.GameDuration,
-                        Players = [] // ← zeramos os Players para ranking ficar leve!
+                        Players = [] // ← limpa a lista de players para não pesar
                     })
                     .ToList();
             }
