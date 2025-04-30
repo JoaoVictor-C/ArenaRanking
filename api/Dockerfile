@@ -16,11 +16,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
-# Criar pasta para os certificados e copiar
-RUN mkdir -p /app/certificado
-COPY --from=build /src/certificado/fullchain.pem /app/certificado/
-COPY --from=build /src/certificado/privkey.pem /app/certificado/
-
 # Configurar variáveis de ambiente
 ENV ASPNETCORE_URLS=http://+:3002;https://+:3002
 ENV ASPNETCORE_ENVIRONMENT=Production

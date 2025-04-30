@@ -42,27 +42,6 @@ builder.Services.AddScoped<IRiotApiKeyManager>(provider =>
     return new RiotApiKeyManager(configProvider, logger);
 });
 
-
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.Listen(System.Net.IPAddress.Any, 3002, listenOptions =>
-    {
-        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-        
-
-        var certPath = Path.Combine(builder.Environment.ContentRootPath, "certificado", "fullchain.pem");
-        var keyPath = Path.Combine(builder.Environment.ContentRootPath, "certificado", "privkey.pem");
-        
-
-        if (File.Exists(certPath) && File.Exists(keyPath))
-        {
-
-            var certificate = X509Certificate2.CreateFromPemFile(certPath, keyPath);
-            listenOptions.UseHttps(certificate);
-        }
-    });
-});
-
 builder.Services.AddSingleton<IMongoClient>(provider =>
 {
     var configProvider = provider.GetRequiredService<IEnvironmentConfigProvider>();
@@ -138,7 +117,7 @@ using (var scope = app.Services.CreateScope())
     if (shouldCloneDatabase)
     {
         var dbCloneService = scope.ServiceProvider.GetRequiredService<DatabaseCloneService>();
-        //await dbCloneService.CloneProductionToTest();
+        await dbCloneService.CloneProductionToTest();
         Console.WriteLine("Database clone completed successfully.");
     }
     else
