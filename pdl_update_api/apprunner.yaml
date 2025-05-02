@@ -3,12 +3,11 @@ runtime: dotnet6
 build:
   commands:
     build:
-      - cd pdl_update_api
       - dotnet restore
       - dotnet publish -c Release -o /app/publish
 run:
   runtime-version: 6.0.0
-  command: dotnet pdl_update_api/api.dll
+  command: dotnet /app/publish/api.dll
   network:
     port: 3002
     env: PORT
