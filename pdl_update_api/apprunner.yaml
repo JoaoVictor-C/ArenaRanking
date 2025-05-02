@@ -10,7 +10,7 @@ run:
   runtime-version: 6.0.0
   command: dotnet pdl_update_api/api.dll
   network:
-    port: 8080
+    port: 3002
     env: PORT
   env:
     - name: ASPNETCORE_ENVIRONMENT
