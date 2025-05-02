@@ -115,3 +115,4 @@ api/obj/api.csproj.nuget.dgspec.json
 api/bin/Debug/net8.0/api.dll
 .env
 *.sln
+node_modules
