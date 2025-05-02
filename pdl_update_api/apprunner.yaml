@@ -1,0 +1,17 @@
+version: 1.0
+runtime: dotnet8
+build:
+  commands:
+    build:
+      - cd pdl_update_api
+      - dotnet restore
+      - dotnet publish -c Release -o /app/publish
+run:
+  runtime-version: 8.0.0
+  command: dotnet pdl_update_api/api.dll
+  network:
+    port: 8080
+    env: PORT
+  env:
+    - name: ASPNETCORE_ENVIRONMENT
+      value: Development
