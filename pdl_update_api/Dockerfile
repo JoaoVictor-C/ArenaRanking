@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
 # Copiar arquivos de projeto e restaurar dependências
@@ -12,7 +12,7 @@ COPY . .
 RUN dotnet publish -c Release -o /app/publish
 
 # Construir a imagem final
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
