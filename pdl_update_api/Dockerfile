@@ -18,10 +18,10 @@ WORKDIR /app
 COPY --from=build /app/publish .
 
 # Expose port 3002 for Cloud Run
-EXPOSE 3002
+EXPOSE 5000
 
 # Set environment variables for ASP.NET Core
-ENV ASPNETCORE_URLS=http://+:3002
+ENV ASPNETCORE_URLS=http://+:5000
 ENV ASPNETCORE_ENVIRONMENT=Production
 
 # Entry point to run the application
