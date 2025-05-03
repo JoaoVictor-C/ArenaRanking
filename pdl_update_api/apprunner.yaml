@@ -7,10 +7,18 @@ build:
       - dotnet publish -c Release -o /app/publish
 run:
   runtime-version: 6.0.0
-  command: dotnet /app/publish/api.dll
+  command: dotnet /publish/api.dll
   network:
     port: 3002
     env: PORT
-  env:
+    env:
     - name: ASPNETCORE_ENVIRONMENT
       value: Development
+    - name: RIOT_API_KEY
+      value: RGAPI-9fed5759-8b4d-4682-a03b-ce15daf903d0
+    - name: MONGODB_CONNECTION_STRING
+      value: mongodb+srv://Crazzy:UGTTEAQwkMUukC7v@arenarank.1gphd.mongodb.net/arena_rank?retryWrites=true&w=majority
+    - name: MONGODB_DATABASE_NAME
+      value: arena_rank
+    - name: MONGODB_TEST_DB_SUFFIX
+      value: _test
